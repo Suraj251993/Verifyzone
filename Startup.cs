@@ -64,7 +64,7 @@ namespace OrgCheck
                 options.Cookie.Expiration = TimeSpan.FromDays(7);
                 options.SlidingExpiration = true;
             });
-            string conn = Configuration.GetConnectionString("OrgCheckDbConnectionString");
+            string conn = BuildConnectionString(Configuration);
             services.AddDbContext<Models.PostgresContext>(options => options.UseNpgsql(conn));
             var constants = Configuration.GetSection("ApplicationSettings").Get<OrgCheck.Services.Constants>();
             services.AddSingleton(constants);
@@ -80,6 +80,20 @@ namespace OrgCheck
             services.AddScoped<ExecutionContext, ExecutionContext>();
         }
 
+        // Render (and most container hosts) provide the database as a "postgres://user:pass@host:port/db" URI
+        // via DATABASE_URL rather than the ADO-style keyword string Npgsql expects locally. Convert it when present.
+        private static string BuildConnectionString(IConfiguration configuration)
+        {
+            string databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            if (string.IsNullOrEmpty(databaseUrl))
+                return configuration.GetConnectionString("OrgCheckDbConnectionString");
+
+            var uri = new Uri(databaseUrl);
+            var userInfo = uri.UserInfo.Split(':', 2);
+            int port = uri.Port > 0 ? uri.Port : 5432;
+            return $"Host={uri.Host};Port={port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -93,10 +107,15 @@ namespace OrgCheck
             //    app.UseHsts();
             //}
             //app.UseHsts();  // Disable in development. Enable only during Production build            
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            var forwardedHeadersOptions = new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
+            };
+            // Render's edge proxy IP isn't fixed/known in advance, so the default "trusted proxies" allowlist
+            // (loopback only) would silently ignore its X-Forwarded-Proto header and cause an HTTPS redirect loop.
+            forwardedHeadersOptions.KnownNetworks.Clear();
+            forwardedHeadersOptions.KnownProxies.Clear();
+            app.UseForwardedHeaders(forwardedHeadersOptions);
             app.Use(async (context, next) =>
             {
                 var nonce = Convert.ToBase64String(Guid.NewGuid().ToByteArray());

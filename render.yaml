@@ -1,0 +1,62 @@
+databases:
+  - name: verifyzone-db
+    databaseName: orgcheck
+    user: orgcheck
+    plan: free
+
+services:
+  - type: web
+    name: verifyzone
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: verifyzone-db
+          property: connectionString
+      - key: ApplicationSettings__SecretKey
+        sync: false
+      - key: ApplicationSettings__EmailAPIKey
+        sync: false
+      - key: ApplicationSettings__EmailFromId
+        sync: false
+      - key: ApplicationSettings__EmailFromPass
+        sync: false
+      - key: ApplicationSettings__EmailFromUsername
+        value: "VerifyZone Support"
+      - key: ApplicationSettings__PasswordSalt
+        sync: false
+      - key: ApplicationSettings__SmtpClient
+        value: "smtp.gmail.com"
+      - key: ApplicationSettings__SmtpPort
+        value: "587"
+      - key: ApplicationSettings__NoRecordNotificationEmail
+        sync: false
+      - key: ApplicationSettings__AppLog
+        value: "/app/Log/"
+      - key: ApplicationSettings__UploadPath
+        value: "/app/data/uploads/"
+      - key: ApplicationSettings__Reports
+        value: "/app/data/reports/"
+      - key: ApplicationSettings__AWSAccessKey
+        sync: false
+      - key: ApplicationSettings__AWSSecretKey
+        sync: false
+      - key: ApplicationSettings__AWSBucketName
+        sync: false
+      - key: ApplicationSettings__CreditQuestionThreshold
+        value: "4"
+      - key: ReCaptcha__SiteKey
+        sync: false
+      - key: ReCaptcha__SecretKey
+        sync: false
+      - key: ReCaptcha__Version
+        value: "v3"
+      - key: ReCaptcha__UseRecaptchaNet
+        value: "true"
+      - key: ReCaptcha__ScoreThreshold
+        value: "0.5"

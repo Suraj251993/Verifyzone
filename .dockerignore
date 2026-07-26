@@ -1,0 +1,8 @@
+bin/
+obj/
+.vs/
+.git/
+.dotnetcli/
+appsettings.Development.json
+DB scripts/
+*.md
