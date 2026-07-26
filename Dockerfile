@@ -13,7 +13,7 @@ RUN mkdir -p /app/Log /app/data/uploads /app/data/reports
 # from inside Render's network (works around external networks that block TLS on port 5432).
 RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client && rm -rf /var/lib/apt/lists/*
 COPY --from=build /app/publish .
-COPY "DB scripts" /app/dbscripts/
+COPY ["DB scripts", "/app/dbscripts/"]
 COPY orgcheck_17022025.sql /app/dbscripts/
 
 ENV ASPNETCORE_ENVIRONMENT=Production
