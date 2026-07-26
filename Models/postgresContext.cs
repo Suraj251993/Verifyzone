@@ -436,9 +436,13 @@ public partial class PostgresContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.Browser).HasColumnName("browser");
             entity.Property(e => e.Consentdate).HasColumnName("consentdate");
+            entity.Property(e => e.Consentdocumentversion).HasColumnName("consentdocumentversion");
             entity.Property(e => e.Consentrequestid)
                 .IsRequired()
                 .HasColumnName("consentrequestid");
+            entity.Property(e => e.Consentsource)
+                .HasDefaultValue("EmailLink")
+                .HasColumnName("consentsource");
             entity.Property(e => e.Createdby).HasColumnName("createdby");
             entity.Property(e => e.Createddate)
                 .HasDefaultValueSql("now()")

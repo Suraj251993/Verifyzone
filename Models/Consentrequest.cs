@@ -37,6 +37,10 @@ public partial class Consentrequest
 
     public string Browser { get; set; }
 
+    public string Consentdocumentversion { get; set; }
+
+    public string Consentsource { get; set; }
+
     public int Createdby { get; set; }
 
     public DateTime Createddate { get; set; }

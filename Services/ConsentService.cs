@@ -16,6 +16,8 @@ namespace OrgCheck.Services
     public class ConsentService : IConsentService
     {
         private const int TokenValidityDays = 7;
+        private const string ConsentDocumentVersion = "v1.0";
+        private const string ConsentSourceEmailLink = "EmailLink";
         private readonly IServiceProvider _serviceProvider;
         private readonly ExecutionContext _executionContext;
         private readonly EmailService _emailService;
@@ -117,7 +119,8 @@ namespace OrgCheck.Services
                 customer?.Name ?? string.Empty,
                 consentLink,
                 request.Tokenexpirydate.ToString("dd-MMM-yyyy"),
-                hrUser != null ? $"{hrUser.Displayname} ({hrUser.Emailid})" : string.Empty);
+                hrUser != null ? $"{hrUser.Displayname} ({hrUser.Emailid})" : string.Empty,
+                baseUrl.TrimEnd('/'));
 
             consentDA.AddAuditLog(new Consentauditlog
             {
@@ -194,6 +197,11 @@ namespace OrgCheck.Services
                 message = "This consent request has expired. Please contact your HR representative.";
                 return false;
             }
+            if (!model.Documentviewed)
+            {
+                message = "Please review the consent statement before submitting.";
+                return false;
+            }
             if (!model.Consentaccepted)
             {
                 message = "Please accept the consent statement before submitting.";
@@ -216,6 +224,8 @@ namespace OrgCheck.Services
             request.Device = device;
             request.Browser = browser;
             request.Optionalemail = string.IsNullOrWhiteSpace(model.Optionalemail) ? null : model.Optionalemail.Trim();
+            request.Consentdocumentversion = ConsentDocumentVersion;
+            request.Consentsource = ConsentSourceEmailLink;
             request.Tokenconsumed = true;
             request.Modifieddate = DateTime.UtcNow;
             consentDA.UpdateConsentRequest(request);
@@ -228,6 +238,7 @@ namespace OrgCheck.Services
                 Newstatusid = 2,
                 Ipaddress = ipAddress,
                 Useragent = userAgent,
+                Remarks = $"Consent document {ConsentDocumentVersion} reviewed and accepted via {ConsentSourceEmailLink}",
                 Createddate = DateTime.UtcNow
             });
             return true;

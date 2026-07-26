@@ -15,5 +15,8 @@ namespace OrgCheck.ViewModels
 
         [JsonPropertyName("consentaccepted")]
         public bool Consentaccepted { get; set; }
+
+        [JsonPropertyName("documentviewed")]
+        public bool Documentviewed { get; set; }
     }
 }
