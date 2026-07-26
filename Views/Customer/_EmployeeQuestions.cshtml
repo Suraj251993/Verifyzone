@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+@model List<OrgCheck.ViewModels.EmployeeQuestionaireViewModel>
+<form id="frmQuestionaireMapping">
+    <div id="frmdiv">
+        @foreach (var record in Model)
+        {
+            <div class="form-floating form-floating-outline mb-4">
+                <input type="hidden" id='QQ-@record.QuestionId' name='QQ-@record.QuestionId' value='@record.QuestionId' />
+                <input type="text" class="form-control" id='QS-@record.QuestionId' name='QS-@record.QuestionId' />
+                <label for='QS-@record.QuestionId'>@record.Questionname</label>
+            </div>
+        }
+    </div>
+</form>

@@ -1,0 +1,147 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_SupportLayout.cshtml";
+}
+
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>User Management Screen</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.DropDownList("searchusertype", (IEnumerable<SelectListItem>)ViewBag.SearchUserTypes, "Please choose UserType", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-primary mb-1" id="getusers" name="getusers" disabled>Get Users</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="table-responsive">
+                                        <table id="userMaster" class="display table nowrap table-striped table-hover" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Login name</th>
+                                                    <th>Designation</th>
+                                                    <th>Email</th>
+                                                    <th>Contact #</th>
+                                                    <th>Reset</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+<script>
+        $(function () {
+            $('#loading').hide();
+        })
+
+        $('#searchusertype').change(function () {
+            var id = $('#searchusertype option:selected').val();
+            $("#getusers").prop("disabled", id == 'Please choose UserType');
+        });
+        $('#getusers').click(function (e) {
+            $('#loading').show();
+            BindUsers();
+            $('#loading').hide();
+        });
+
+        function BindUsers() {
+            var usertypeId = $('#searchusertype option:selected').val();
+            if (usertypeId == 0)
+                showErrorMessage('Select Usertype ');
+            else {
+                $.ajax(
+                    {
+                        type: 'GET',
+                        dataType: 'JSON',
+                        url: '@Url.Action("GetUsers", "Admin")',
+                        data: { usertypeId: usertypeId },
+                        success:
+                            function (response) {
+                                // Generate HTML table.
+                                setUserToTable(response);
+                                //convertJsonToHtmlTable(JSON.parse(response), $("#cityMaster"));
+                            },
+                        error:
+                            function (response) {
+                                alert("Error: " + response);
+                            }
+                    }
+                );
+            }
+        }
+        function setUserToTable(jsonData) {
+            //console.log(jsonData);
+            $('#userMaster').DataTable({
+                pagination: "bootstrap",
+                filter: true,
+                data: jsonData,
+                destroy: true,
+                lengthMenu: [5, 10, 25],
+                pageLength: 10,
+                "columns": [
+                    { "data": "displayname", "name": "Name", "autoWidth": true },
+                    { "data": "loginname", "name": "Login name", "autoWidth": true },
+                    { "data": "designation", "name": "Designation", "autoWidth": true },
+                    { "data": "emailid", "name": "Email ID", "autoWidth": true },
+                    { "data": "contactnumber", "name": "Contact #", "autoWidth": true },
+                    {
+                        "render": function (data, type, full, meta) { return '<div onclick="ResetUser(' + full.id + ')"><a href="#"><i class="fas fa-sync-alt"></i></a></div>'; }
+                    },
+                ]
+            });
+        }
+        
+        function ResetUser(userId) {
+            $('#loading').show();
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'JSON',
+                    url: '@Url.Action("ResetUser", "Support")',
+                    data: { id: userId.toString() },
+                    success:
+                        function (response) {
+                            $('#loading').hide();
+                            if (response == true) {
+                                showSuccessMessage("The password was reset and sent to the respective user");
+                            }
+                            else {
+                                showErrorMessage("Error occurred while reset the password. Please contact support");
+                            }
+                        },
+                    error:
+                        function (response) {
+                            console.log(response);
+                            $('#loading').hide();
+                            alert("Error: " + response);
+                        }
+                });
+            };
+       
+</script>
+}

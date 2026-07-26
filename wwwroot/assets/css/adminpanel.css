@@ -1,0 +1,8 @@
+.navbar-admin-text{
+    background-color: var(--purple-color);
+    padding: 3px 15px 5px 15px;
+    border-radius: 50px;
+    font-weight: 900 !important;
+    font-size: 20px;
+    color: white;
+}

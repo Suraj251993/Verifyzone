@@ -1,0 +1,91 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@model OrgCheck.ViewModels.CustomerDashboardCount;
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/apex-charts/apex-charts.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/chartjs/chartjs.dist.js"></script>
+    <script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.dist.js"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
+    <script src="~/js/common.js"></script>
+}
+
+@section PageStyles {
+    <link rel="stylesheet" href="~/vendor/css/pages/app-logistics-dashboard.dist.css" />
+}
+
+@* ************** Content ************** *@
+<!-- Card Border Shadow -->
+<div class="row">
+    <div class="col-sm-6 col-lg-4 mb-6">
+        <div class="card card-border-shadow-success h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="avatar me-4">
+                        <span class="avatar-initial rounded bg-label-success text-heading">
+                            <i class="ri-check-double-line ri-24px"></i>
+                        </span>
+                    </div>
+                    <h4 class="mb-0">@Model.CompletedCount</h4>
+                </div>
+                <h6 class="mb-0 fw-normal">Re-verification completed</h6>
+                <p class="mb-0">
+                    <small class="text-muted">on @Model.Month, @Model.Year</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-4 mb-6">
+        <div class="card card-border-shadow-warning h-100">
+            <div class="card-body" onclick="window.location = '/Customer/StudentApproval';">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="avatar me-4">
+                        <img src="/svg/icons/check.svg" alt="Check" class="img-fluid">
+                    </div>
+                    <h4 class="mb-0">@Model.ApprovalCount</h4>
+                </div>
+                <h6 class="mb-0 fw-normal">Student Re-vertify</h6>
+                <p class="mb-0">
+                    <small class="text-muted">as of now</small>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-4 mb-6">
+        <div class="card card-border-shadow-warning h-100">
+            <div class="card-body" onclick="window.location = '/Customer/StudentInfoRequest';">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="avatar me-4">
+                        <img src="/svg/icons/check.svg" alt="Check" class="img-fluid">
+                    </div>
+                    <h4 class="mb-0">@Model.RequestCount</h4>
+                </div>
+                <h6 class="mb-0 fw-normal">Student request</h6>
+                <p class="mb-0">
+                    <small class="text-muted">as of now</small>
+                </p>
+            </div>
+        </div>
+    </div>    
+</div>
+<!--/ Card Border Shadow -->
+
+<script>
+    $(document).ready(function () {
+        var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
+        ShowBalance(balanceurl);
+        $('#loading').hide();
+    });
+</script>

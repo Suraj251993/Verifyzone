@@ -1,0 +1,58 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+@model List<OrgCheck.ViewModels.QuestionaireMappingViewModel>
+<input type="hidden" id="cid" name="cid" value='@Model[0].CompanyId' />
+<form id="frmQuestionaireMapping">
+    <div id="frmdiv">
+        <div class="row clearfix">
+        @foreach (var record in Model)
+        {
+                <div class="form-check mb-4 col-md-4">
+                    <input type="hidden" id='QQ-@record.Id' name='QQ-@record.Id' value='@record.Id' />
+                    <input class="form-check-input" type="checkbox" value="" id='QS-@record.QuestionId' name='QS-@record.QuestionId' />
+                    <label class="form-check-label" for='QS-@record.QuestionId'>
+                        @record.Question
+                    </label>
+                </div>                           
+        }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-sm-1">
+            <button type="button" class="btn btn-primary" id="SaveQuestionMapper" onclick="SaveQuestionMapping()">Save</button>
+        </div>
+        <div class="col-lg-6 col-sm-1">
+            <button type="button" class="btn btn-secondary" id="btnqnsclose" name="btnqnsclose" onclick="CloseQuestionMapping()">Close</button>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetQuestionsByCompany", "Admin")',
+            data: { companyId: $('#cid').val() },
+            contentType: "application/json",
+            dataType: 'json', // changing data type to json
+            success: function (jsonData) { // here I'm adding data as a parameter which stores the response
+                console.log(jsonData); // instead of alert I'm changing this to console.log which logs all the response in console.
+                if (jsonData != null || jsonData.length > 0) {
+                    for (let i = 0; i < jsonData.length; i++) {                        
+                        if (jsonData[i].isSelected == true) {
+                            document.getElementById('QS-' + jsonData[i].questionId).checked = true;
+                        }
+                    }
+                }
+                $('#loading').hide();
+            },
+            error: function (err) {
+                $('#loading').hide();
+                alert(err);
+            }
+        });
+    });
+</script>

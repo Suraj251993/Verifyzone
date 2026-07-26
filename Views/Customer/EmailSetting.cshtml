@@ -1,0 +1,153 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_VZoneLayout.cshtml";
+}
+@model OrgCheck.ViewModels.CustomerEmailSettingViewModel;
+<link rel="stylesheet" href="/assets/css/bulk.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/new-request.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Customer/VIndex"><i
+            class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+        style="color: var(--purple-color)"></i> <span
+        style="color: var(--purple-color);font-size: 14px;">V-Zone</span> <i class="ri-arrow-right-s-line"
+        style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Email settings</span>
+</div>
+@if (ViewBag.AccessLevel == 2 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+        <h5 class="bulk-table-heading mb-4">Email settings</h5>
+        <form id="msform">
+            <div class="row">            
+                <div class="col-md-6">
+                    @Html.HiddenFor(model => model.Templateid)
+                    <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
+                        <input required="required" autocomplete="off"
+                               placeholder="-- Choose email template --" type="text" readonly class="input-container">
+                        <label class="usernameLabel">Choose email template</label>
+                        <i class="ri-group-2-line userIcon"></i>
+                        <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                            <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                                24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                                24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                                9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                                9.4-33.9 0z" />
+                        </svg>
+                        <div id="mddtemplate" class="newinput-dropdown-menu"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    @Html.HiddenFor(model => model.Customerid)
+                    <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
+                        <input required="required" autocomplete="off"
+                               placeholder="-- Choose employer --" type="text" readonly class="input-container">
+                        <label class="usernameLabel">Choose employer</label>
+                        <i class="ri-group-2-line userIcon"></i>
+                        <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                            <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                                    24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                                    24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                                    9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                                    9.4-33.9 0z" />
+                        </svg>
+                        <div id="mddcustomer" class="newinput-dropdown-menu"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                <div class="inputContainer">
+                    @Html.TextAreaFor(model => model.Templatecontent, new { @class = "input-container", @placeholder = "Enter the email content", @autocomplete = "off", @type = "text", @rows = "7"})
+                    <label class="usernameLabel">Enter the email content</label>
+                    <i class="ri-file-text-line userIcon"></i>
+
+                </div>
+            </div>            
+            </div>
+        </form>
+        <div class="w-100 d-flex justify-content-center mt-2">
+            <button class="btn-submit" id="Save">
+                <div class="original">Save</div>
+                <div class="letters">
+                    <span>S</span>
+                    <span>a</span>
+                    <span>v</span>
+                    <span>e</span>
+
+                </div>
+            </button>
+        </div>
+        <div class="card p-0 mt-3 mb-4 border-0">
+            <table>
+                <thead style="background: #f8ece2">
+                    <tr>
+                        <th class="sortable">
+                            Template <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                        </th>
+                        <th class="sortable">
+                            Customer <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                        </th>
+                        <th class="sortable">
+                            Template content <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody class="tbody-tr tbodyTr" id="tableIdx">
+                </tbody>
+            </table>
+            <div class="text-center" id="divnorecord">
+                <img src="/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+                <h6 class="no-data-found-text">No record found</h6>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}
+
+<script src="~/assets/js/pages/emailsetting.js?ver=2" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    $(document).ready(function () {
+        var searchurl = '@Url.Action("GetCustomerEmailSetting", "Customer")';
+        var geturl = '@Url.Action("GetCustomers", "Customer")';
+        var addurl = '@Url.Action("AddEmailSetting", "Customer")';
+        var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
+        ShowBalance(balanceurl);
+        BindEmailTemplate();
+        BindCustomers(geturl);
+        BindEmailSettings(searchurl);
+    });
+    const saveBtn = document.getElementById("Save");
+    saveBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        saveSettings(searchurl);
+    });
+    document.addEventListener("click", function (e) {
+        const link = e.target.closest(".page-link-custom");
+        if (!link) return;
+
+        e.preventDefault();
+
+        const page = parseInt(link.dataset.page);
+        if (!isNaN(page)) {
+            changePage(page);
+        }
+    });
+</script>

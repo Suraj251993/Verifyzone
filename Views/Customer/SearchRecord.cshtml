@@ -1,0 +1,168 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_VZoneLayout.cshtml";
+}
+<link rel="stylesheet" href="/assets/css/bulk.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/new-request.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Customer/VIndex"><i
+            class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+        style="color: var(--purple-color)"></i> <span
+        style="color: var(--purple-color);font-size: 14px;">V-Zone</span> <i class="ri-arrow-right-s-line"
+        style="color: var(--purple-color)"></i> <span
+        style="color: var(--purple-color);font-size: 14px;">Classfied section</span> <i
+        class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i><span style="font-size: 14px;">Search record</span>
+</div>
+@if (ViewBag.AccessLevel == 2 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+        <h5 class="bulk-table-heading mb-4">Search record</h5>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="inputContainer">
+                    <input autocomplete="off" class="input-container" placeholder="Candidate name"
+                    type="text" id="Name" maxlength="25">
+                    <label class="usernameLabel">Candidate name</label>
+                    <i class="ri-user-line userIcon"></i>
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="inputContainer">
+                    <input autocomplete="off" class="input-container" placeholder="Mobile no"
+                    type="text" id="Mobile" maxlength="10">
+                    <label class="usernameLabel">Mobile no</label>
+                    <i class="ri-phone-line userIcon"></i>
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="inputContainer">
+                    <input autocomplete="off" class="input-container" placeholder="Email id"
+                    type="text" id="EmailId" maxlength="50">
+                    <label class="usernameLabel">Email id</label>
+                    <i class="ri-mail-line userIcon"></i>
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="inputContainer">
+                    <input autocomplete="off" class="input-container" placeholder="UAN no"
+                    type="text" id="Uan" maxlength="20">
+                    <label class="usernameLabel">UAN no</label>
+                    <i class="ri-id-card-line userIcon"></i>
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="inputContainer">
+                    <input required="required" autocomplete="off" class="input-container" placeholder="Any additional details (like previous employers name,institution name,mentioned in the CV)"
+                    type="text" id="Details" maxlength="150">
+                    <label class="usernameLabel">Any additional details (like previous employers name,institution name,mentioned in the CV)</label>
+                    <i class="ri-file-text-line userIcon"></i>
+
+                </div>
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center mt-2">
+            <button class="btn-submit" id="GetDetail">
+                <div class="original">Search Details</div>
+                <div class="letters">
+                    <span>S</span>
+                    <span>e</span>
+                    <span>a</span>
+                    <span>r</span>
+                    <span>c</span>
+                    <span>h</span>
+                    <span class="ms-1"></span>
+                    <span>D</span>
+                    <span>e</span>
+                    <span>t</span>
+                    <span>a</span>
+                    <span>i</span>
+                    <span>l</span>
+                    <span>s</span>
+
+                </div>
+            </button>
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}
+
+
+@* 
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-12">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Below are the best matched results for your search criteria</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="mb-12 col-md">
+                        <table id="tablelist" class="datatables-ajax table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Employer name</th>
+                                    <th>Employee code</th>
+                                    <th>Employee name</th>
+                                    <th>Join date</th>
+                                    <th>Last working date</th>
+                                    <th>Linked-in URL</th>
+                                    <th>Download CV</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@
+<script src="~/assets/js/pages/searchrecord.js?ver=1" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    $(document).ready(function () {
+        var searchurl = '@Url.Action("GetResults", "Customer")';
+        var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
+        ShowBalance(balanceurl);
+        //$('#loading').hide();
+        const searchBtn = document.getElementById("GetDetail");
+        searchBtn.addEventListener("click", () => {
+            BindDetail(searchurl);
+        });
+    });
+    document.addEventListener("click", function (e) {
+        const link = e.target.closest(".page-link-custom");
+        if (!link) return;
+
+        e.preventDefault();
+
+        const page = parseInt(link.dataset.page);
+        if (!isNaN(page)) {
+            changePage(page);
+        }
+    });
+</script>

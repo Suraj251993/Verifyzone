@@ -1,0 +1,383 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
+}
+<link rel="stylesheet" href="~/assets/css/search-candidate.css">
+<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/bulk.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/Index">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i>
+    <span style="color: var(--purple-color);font-size: 14px;">Ex-Zone</span> <i class="ri-arrow-right-s-line"
+                                                                                style="color: var(--purple-color)"></i> <span style="font-size: 14px;">View Ex-employee</span>
+</div>
+
+@if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+    <div class="d-flex justify-content-between">
+        <div>
+            <h5 class="bulk-table-heading mb-2">View Ex-Employee details</h5>
+        </div>
+        <div class="d-flex gap-2">
+            <div>
+                <button class="btn-submit" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="tooltip-delete" title="Export" id="export">
+                    <div class="original"> <i class="ri-download-cloud-2-line"></i></div>
+                    <div class="letters">
+                        <span> <i class="ri-download-cloud-2-line"></i></span>
+                    </div>
+                </button>
+            </div>
+            <div data-bs-toggle="modal" data-bs-target="#Viewpage">
+                <button class="btn-submit" data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="tooltip-delete" title="Customize">
+                    <div class="original"> <i class="ri-settings-5-line"></i></div>
+                    <div class="letters">
+                        <span> <i class="ri-settings-5-line"></i></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="cardz px-0 pb-0 mb-3">
+                <div class="card p-0 mt-3 mb-4 border-0">
+                    <table>
+                        <thead style="background: #f8ece2">
+                            <tr>                                
+                                <th class="sortable">Employee name</th>
+                                <th class="sortable">Employee code</th>
+                                <th class="sortable">Actions</th>
+                                <th class="sortable">From date</th>
+                                <th class="sortable">To date</th>
+                                <th class="sortable">Designation</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody-tr tbodyTr" id="tableIdx">
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="d-flex justify-content-end w-100">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination-custom">
+                            <li class="page-item-custom">
+                                <a class="page-link-custom prev" href="#" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="ri-arrow-left-s-line"></i></span>
+                                </a>
+                            </li>
+
+                            <li class="page-item-custom active">
+                                <a class="page-link-custom" href="#">1</a>
+                            </li>
+
+                            <li class="page-item-custom">
+                                <a class="page-link-custom next" href="#" aria-label="Next">
+                                    <span aria-hidden="true"><i class="ri-arrow-right-s-line"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>        
+    </div>
+    <div class="text-center mt-5" id="divnorecord" style="display: none;">
+        <img src="~/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+        <h6 class="no-data-found-text">No record found</h6>
+    </div>
+    <div class="modal fade" id="Viewpage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h4 class="bulk-table-heading">Customize</h4>
+                    <button type="button" class="btn-close apply-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-add" class="filter-check"
+                                           data-column="designation" data-label="Designation">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Designation
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-add" class="filter-check"
+                                           data-column="typeofexit" data-label="TypeOf Exit">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Type of exit
+                            </div>
+                        </div>
+                        <div class="col-md-6 pt-4">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-add" class="filter-check"
+                                           data-column="location" data-label="Location">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Location
+                            </div>
+                        </div>
+                        <div class="col-md-6 pt-4">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-add" class="filter-check"
+                                           data-column="jobtype" data-label="Job Type">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Job type
+                            </div>
+                        </div>
+                        <div class="col-md-6 pt-4">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-add" class="filter-check"
+                                           data-column="salary" data-label="Salary">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Last draw salary
+                            </div>
+                        </div>
+                        <div class="col-md-6 pt-4">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-add" class="filter-check"
+                                           data-column="reporting" data-label="Reporting">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Reporting to
+                            </div>
+                        </div>
+                        <div class="col-md-6 pt-4">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-add" class="filter-check"
+                                           data-column="managerdesignation" data-label="Manager Designation">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Manager designation
+                            </div>
+                        </div>
+                        <div class="col-md-6 pt-4">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-add" class="filter-check"
+                                           data-column="managerdesignation" data-label="Manager Designation">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Attribute employee on alert etc.
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button class="btn-submit apply-btn" type="button" name="next">
+                        <div class="original">Apply</div>
+                        <div class="letters">
+                            <span>A</span>
+                            <span>p</span>
+                            <span>p</span>
+                            <span>l</span>
+                            <span>y</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}
+
+<script src="~/assets/js/sort.js" asp-append-version="true"></script>
+<script src="~/assets/js/canvasjs.min.js"></script>
+<script src="~/assets/js/pages/viewemployee.js?ver=2" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    var editurl = '@Url.Action("ExportEmployees", "Customer")';
+    var bindurl = '@Url.Action("GetAllEmployees", "Customer")';
+    var excludeurl = '@Url.Action("ExcludeEmployee", "Customer")';
+    document.getElementById("export").addEventListener("click", function() { exportEmployees(editurl); }, false);
+    BindEmployees(bindurl);
+
+    document.addEventListener("click", function (e) {
+        const link = e.target.closest(".page-link-custom");
+        if (!link) return;
+
+        e.preventDefault();
+
+        const page = parseInt(link.dataset.page);
+        if (!isNaN(page)) {
+            changePage(page);
+        }
+    });
+    document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".action-btn");
+        if (!btn) return;
+
+        const id = btn.dataset.id;
+
+        excludeemployee(id, excludeurl);
+    });
+</script>

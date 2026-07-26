@@ -1,0 +1,42 @@
+.generate-report-form {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* padding: 20px; */
+}
+
+.generate-report-logo {
+    height: 30px;
+}
+
+.generate-report-header {
+    text-align: center;
+    margin: 10px;
+    font-weight: bold;
+}
+
+.generate-previous-emp-header {
+    /* text-align: center; */
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+.header-border-report {
+    border-left: 3px solid var(--purple-color);
+    padding-left: 5px;
+}
+
+.generate-form-field-color {
+    background-color: rgb(229, 244, 248);
+}
+
+.generate-form-final-desc {
+    font-size: 13px;
+    color: gray;
+}
+
+.equal-table {
+    width: 100%;
+    table-layout: fixed;
+}

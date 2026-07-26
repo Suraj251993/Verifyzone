@@ -1,0 +1,44 @@
+﻿-- Table: orgcheck.employeerequest
+
+-- DROP TABLE IF EXISTS orgcheck.employeerequest;
+
+CREATE TABLE IF NOT EXISTS orgcheck.employeerequest
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    searchid integer NOT NULL,
+    empcode text COLLATE pg_catalog."default" NOT NULL DEFAULT ''::text,
+    customerid integer NOT NULL,
+    requestcomments text COLLATE pg_catalog."default" NOT NULL DEFAULT ''::text,
+    raisedby integer NOT NULL,
+    raiseddate timestamp with time zone NOT NULL,
+    hrcomments text COLLATE pg_catalog."default",
+    repliedby integer,
+    replieddate timestamp with time zone,
+    status integer NOT NULL DEFAULT 1,
+    CONSTRAINT employeerequest_pkey PRIMARY KEY (id),
+    CONSTRAINT er_customer FOREIGN KEY (customerid)
+        REFERENCES orgcheck.customer (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT er_request FOREIGN KEY (raisedby)
+        REFERENCES orgcheck.logins (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT er_response FOREIGN KEY (repliedby)
+        REFERENCES orgcheck.logins (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT er_search FOREIGN KEY (searchid)
+        REFERENCES orgcheck.employeesearch (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS orgcheck.employeerequest
+    OWNER to postgres;

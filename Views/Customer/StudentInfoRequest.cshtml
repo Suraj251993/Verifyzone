@@ -1,0 +1,188 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@model List<OrgCheck.ViewModels.StudentRequestViewModel>;
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+@section VendorScripts {
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
+    <script src="~/js/common.js"></script>
+}
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Student Information Request</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row gy-6">
+
+    <!-- Four Cards -->
+    <div class="col-xl-12 col-md-6">
+        <div class="row gy-6" id="divpagedata">
+            <!-- Total Profit Weekly Project -->
+            @if (Model.Count > 0)
+            {
+                @foreach (var mod in Model)
+                {
+                    <div class="col-sm-4" id='div+@mod.Id'>
+                        <div class="card h-100">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <div class="avatar">
+                                    <div class="avatar-initial bg-secondary rounded-circle shadow-xs">
+                                        <i class="ri-pie-chart-2-line ri-24px"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="mb-1">@mod.Regno</h6>
+                                <div class="d-flex flex-wrap mb-1 align-items-center">
+                                    <h5 class="mb-0 me-2">@mod.Requestcomments</h5>
+                                </div>
+                                <small>@mod.RaisedByName on @mod.Raiseddate</small>
+                                <button type="button" class="btn btn-primary" id="btnrespond" onclick="OpenRequest(@mod.Id, '@mod.Regno', '@mod.Requestcomments')">Respond</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ Total Profit Weekly Project -->
+                }
+            }
+            else
+            {
+                <div class="col-sm-12">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap mb-1 align-items-center">
+                                <h7 class="mb-0 me-2">No pending requests.</h7>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <!--/ four cards -->
+</div>
+
+<div class="modal fade" id="educloserequestModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel3">Student Response</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col mb-2">
+                        <div class="form-floating form-floating-outline">
+                            <input type="hidden" id="stuclosehdnid" />
+                            <input type="text" id="txtregno" class="form-control" readonly>
+                            <label for="txtregno">Reg. code/Student Id</label>
+                        </div>
+                    </div>
+                    <div class="col mb-2">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" id="txtstucomments" class="form-control" readonly>
+                            <label for="txtstucomments">Request comments</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-6 mt-2">
+                        <div class="form-floating form-floating-outline">
+                            @if (ViewBag.StuVerificationResponses != null)
+                            {
+                                @Html.DropDownList("sturesponsetype", (IEnumerable<SelectListItem>)ViewBag.StuVerificationResponses, "Please choose Response category", new { @class = "form-control show-tick" })
+                            }
+                            <label for="details">Choose response category</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-6 mt-2">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" id="txtstudetails" multiple class="form-control">
+                            <label for="txtstudetails">Response comments</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @* <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button> *@
+                <button type="button" class="btn btn-primary" id="btnstucloserequest">Send response</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        ShowBalance();
+        //BindRequests();
+        $('#btnstucloserequest').click(function (e) {
+            e.preventDefault();
+            if ($('#sturesponsetype').val() == "" || $('#txtstudetails').val() == "") {
+                showErrorMessage("Response category and comments are required");
+                return;
+            }
+            requestData = {
+                id: parseInt($('#stuclosehdnid').val()),
+                regno: $.trim($('#txtregno').val()),
+                responsetype: $('#sturesponsetype').val(),
+                replycomments: $.trim($('#txtstudetails').val()),
+            };
+            $.ajax({
+                url: '@Url.Action("UpdateStudentRequest", "Customer")',
+                type: 'POST',
+                data: JSON.stringify(requestData),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                },
+                success: function (result) {
+                    if (result == true) {
+                        $("#educloserequestModal").modal('hide');
+                        $('#txtregno').val('');
+                        $('#txtstudetails').val('');
+                        $('#txtstucomments').val('');
+                        BindRequests();
+                        // Show success toast message
+                        showSuccessMessage('Request was responded');
+                    }
+                    else {
+                        showErrorMessage('Error occured while closing the request');
+                    }
+                },
+                async: true,
+                processData: false
+            });
+        });
+        $('#loading').hide();
+    });
+    function BindRequests() {
+        $('#loading').show();
+        var url = "/Customer/GetStudentRequests";
+        $('#divpagedata').load(url + " #divpagedata");
+        $('#loading').hide();
+    }
+    function OpenRequest(id, regno, comments) {
+        //console.log(id + "--" + regno + "--" + comments);
+        $('#loading').show();
+        $("#educloserequestModal").modal('show');
+        $('#stuclosehdnid').val(id);
+        $('#txtregno').val(regno);
+        $('#txtstucomments').val(comments);
+        $('#sturesponsetype').focus();
+        $('#loading').hide();
+    }
+
+</script>

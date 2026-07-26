@@ -1,0 +1,39 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "ConnectionStrings": {
+    //"OrgCheckDbConnectionString": "Host=<production-host>;Database=orgcheck;Username=<production-username>;Password=<REDACTED>"  // Production connection string
+    //"OrgCheckDbConnectionString": "Host=<production-host>:5433;Database=postgres;Username=postgres;Password=<REDACTED>"
+    "OrgCheckDbConnectionString": "Host=127.0.0.1;Database=postgres;Username=postgres;Password=postgres123"
+  },
+  "ApplicationSettings": {
+    "SecretKey": "<REDACTED-RSA-PRIVATE-KEY-SET-VIA-ENV-VAR-OR-USER-SECRETS>",
+    "EmailAPIKey": "<REDACTED-SENDGRID-API-KEY-SET-VIA-ENV-VAR-OR-USER-SECRETS>",
+    "EmailFromId": "it.support@verifyzone.in",
+    "EmailFromPass": "<REDACTED-EMAIL-APP-PASSWORD-SET-VIA-ENV-VAR-OR-USER-SECRETS>",
+    "EmailFromUsername": "VerifyZone Support",
+    "PasswordSalt": "<REDACTED-BCRYPT-SALT-SET-VIA-ENV-VAR-OR-USER-SECRETS>",
+    "SmtpClient": "smtp.gmail.com",
+    "SmtpPort": 587,
+    "NoRecordNotificationEmail": "kshiva2k@gmail.com",
+    "AppLog": "D:\\Projects\\Repos\\kshiva2k\\VerifyZone\\App_Log\\",
+    "UploadPath": "D:\\Projects\\Repos\\kshiva2k\\VerifyZone\\Upload_Files\\",
+    "Reports": "D:\\Projects\\Repos\\kshiva2k\\VerifyZone\\Reports\\",
+    "AWSAccessKey": "<REDACTED-AWS-ACCESS-KEY-SET-VIA-ENV-VAR-OR-USER-SECRETS>",
+    "AWSSecretKey": "<REDACTED-AWS-SECRET-KEY-SET-VIA-ENV-VAR-OR-USER-SECRETS>",
+    "AWSBucketName": "verifyzone",
+    "CreditQuestionThreshold": 4
+  },
+  "ReCaptcha": {
+    "SiteKey": "6Lemai4pAAAAAFGZ_v_81gIjwITHgnnCcsGVSq5P",
+    "SecretKey": "<REDACTED-RECAPTCHA-SECRET-SET-VIA-ENV-VAR-OR-USER-SECRETS>",
+    "Version": "v3", // The ReCaptcha version to use, can be v2, v2invisible or v3
+    "UseRecaptchaNet": true, // Value whether to use google recaptcha or recaptcha.net
+    "ScoreThreshold": 0.5 // Only applicable for recaptcha v3, specifies the score threshold when it is considered successful
+  }
+}

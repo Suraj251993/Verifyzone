@@ -1,0 +1,170 @@
+.bulk-upload-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.drop-area {
+    height: 110px;
+    border: 2px dashed var(--purple-color);
+    border-radius: 6px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-status.selected {
+    color: var(--purple-color) !important;
+    font-weight: 500;
+}
+
+.drop-area {
+    height: 150px;
+    border: 2px dashed rgb(196, 195, 195);
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.drop-area:hover {
+    border: 2px dashed var(--purple-color);
+    background-color: #f3f3f3;
+
+}
+
+.bulk-up-title {
+    visibility: hidden;
+    color: var(--purple-color);
+      transition: opacity .3s;
+        opacity: 0;
+}
+.upload-component:hover .bulk-up-title {
+    visibility:visible;
+      opacity: 1;
+}
+
+.file-prompt {
+    color: var(--purple-color);
+    font-weight: 500;
+}
+
+.file-status {
+    font-style: italic;
+}
+
+.btn-upload {
+    background-color: var(--light-purple);
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.btn-upload:hover {
+    background-color: var(--purple-color);
+}
+
+
+.download-btn {
+    background-color: var(--purple-color) !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 6px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out !important;
+}
+
+.download-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4),
+        0 0 0 0.2rem rgba(138, 43, 226, 0.5);
+    background-color: var(--light-purple);
+}
+
+/* //panination */
+
+.pagination-custom {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 2px;
+}
+
+.page-item-custom {
+    width: 40px;
+    height: 40px;
+}
+
+.page-link-custom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80%;
+    text-decoration: none;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    color: #808080;
+    background-color: #dedddd;
+    transition: all 0.3s ease;
+}
+
+.page-item-custom.active .page-link-custom {
+    background-color: #8a2be2;
+    color: white;
+    box-shadow: 0 0 13px 3px rgba(138, 43, 226, 0.6);
+}
+
+/* Styling for the Arrows (Prev/Next) */
+.page-link-custom.prev,
+.page-link-custom.next {
+    color: #808080;
+    /* Gray arrow color */
+    font-size: 15px;
+}
+
+/* Hover Effect (Optional) */
+.page-link-custom:hover:not(.active) {
+    background-color: #ebebeb;
+    color: #8a2be2;
+    box-shadow: none;
+}
+
+.bulk-table-reject {
+    background-color: rgb(242, 177, 177);
+    color: red;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.bulk-table-approve {
+    background-color: rgb(180, 247, 180);
+    color: green;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.bulk-table-pending {
+    background-color: rgb(243, 248, 178);
+    color: rgb(222, 163, 1);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.bulk-table-upload {
+    background-color: rgb(255, 234, 191);
+    color: rgb(184, 123, 10);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}

@@ -1,0 +1,292 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.dist.js"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
+    <script src="~/js/common.js"></script>
+}
+@model OrgCheck.ViewModels.StudentViewModel
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">View added student details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-6 col-md-3">
+                        <input type="text" class="form-control" id="txtcode" autocomplete="off" placeholder="Enter Student Id/Reg.code here" autofocus />
+                        <label for="basic-default-ecode">Student Id/Reg.code</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        <button type="button" class="btn btn-primary" id="GetStu">View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row gy-4" id="studentlist" style="display: none;">
+    <div class="col-xl-12">
+        <div class="card mb-12">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Search results</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="mb-12 col-md">
+                        <table id="tablelist" class="datatables-ajax table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>Student Name</th>
+                                    <th>Student Id</th>
+                                    <th>Degree Type</th>
+                                    <th>Major Subject</th>
+                                    <th>Education Period</th>
+                                    <th>Choose</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row gy-6" id="studentform" style="display: none;">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            <input type="hidden" id="id" name="id" />
+                            @Html.TextBoxFor(model => model.Studentname, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Studentname'>Student name</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Studentid, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Studentid'>Reg code/Student Id</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md-6">
+                            @Html.TextBoxFor(model => model.Degreetype, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Degreetype'>Degree type</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Majorsubject, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Majorsubject'>Major subject</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Periodfrom, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Periodfrom'>Period from</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Periodto, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Periodto'>Period to</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Passyear, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Passyear'>Pass year</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Marksobtained, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Marksobtained'>Marks obtained</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.StudyMode, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.StudyMode'>Study mode</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.EligibleAttainDegree, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.EligibleAttainDegree'>Eligible to attain degree</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Comments, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for="Comments">Comments</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.AuthorizedBy, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for="AuthorizedBy">Latest authorized by</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.AuthorizedDate, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for="AuthorizedDate">Last authorized on</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/vendor/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#studentlist').hide();
+        $('#studentform').hide();
+        $('#loading').hide();
+
+        $('#GetStu').click(function (e) {
+            e.preventDefault();
+            
+            if ($('#txtcode').val() == '') {
+                showErrorMessage('Enter Student Id to search');
+                return;
+            }
+            $('#studentlist').show();
+            $('#studentform').hide();
+            ClearData();
+            $('#loading').show();
+            var url = '@Url.Action("GetStudents", "Customer")';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: { studentid: $('#txtcode').val() },
+                contentType: "application/json",
+                dataType: 'json', // changing data type to json
+                success: function (jsonData) { // here I'm adding data as a parameter which stores the response
+                    //console.log(data); // instead of alert I'm changing this to console.log which logs all the response in console.
+                    if (jsonData.length > 0) {
+                        var data = [];
+                        for (let i = 0; i < jsonData.length; i++) {
+                            data.push({
+                                "id": jsonData[i].id,
+                                "studentname": jsonData[i].studentname,
+                                "studentid": jsonData[i].studentid,
+                                "degreetype": jsonData[i].degreetype,
+                                "majorsubject": jsonData[i].majorsubject,
+                                "educationperiod": jsonData[i].educationperiod,
+                                "action": "Choose"
+                            });
+                        }
+                        var ajaxdata = {
+                            "data": data
+                        };
+
+                        var dt_ajax = $('#tablelist').dataTable({
+                            destroy: true,
+                            processing: true,
+                            dom: 'rtip',
+                            data: ajaxdata.data,
+                            columns: [
+                                { data: 'id' },
+                                { data: 'studentname' },
+                                { data: 'studentid' },
+                                { data: 'degreetype' },
+                                { data: 'majorsubject' },
+                                { data: 'educationperiod' },
+                                { data: 'action' }
+                            ],
+                            columnDefs: [
+                                {
+                                    targets: 0,
+                                    searchable: false,
+                                    visible: false
+                                },
+                                {
+                                    // Label
+                                    targets: 6,
+                                    render: function (data, type, full, meta) {
+                                        var $id = full['id'];
+                                        return (
+                                            '<button type="button" class="btn rounded-pill btn-info" onclick="GetRecord(' + $id + ')">Choose</button>'
+                                        );
+                                    }
+                                },
+                            ],
+                            //dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                            language: {
+                                paginate: {
+                                    next: '<i class="ri-arrow-right-s-line"></i>',
+                                    previous: '<i class="ri-arrow-left-s-line"></i>'
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        showErrorMessage('Student details not found');
+                        ClearData();
+                    }
+                    $('#loading').hide();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
+    });
+    function ClearData() {
+        $('#id').val('');
+        $('#Studentname').val('');
+        $('#Studentid').val('');
+        $('#Degreetype').val('');
+        $('#Majorsubject').val('');
+        $('#Periodfrom').val('');
+        $('#Periodto').val('');
+        $('#Passyear').val('');
+        $('#Studymode').val('');
+        $('#Eligibleattaindegree').val('');
+        $('#Marksobtained').val('');
+        $('#Comments').val('');
+        $('#Authorizedby').val('');
+        $('#Authorizeddate').val('');
+    }
+    function GetRecord(id) {
+        $('#loading').show();
+        $.ajax({
+            type: 'GET',
+            dataType: 'JSON',
+            url: '@Url.Action("GetStudent", "Customer")',
+            data: { id: id },
+            success:
+                function (response) {
+                    $('#studentform').show();
+                    $('#id').val(response.id);
+                    $('#Studentname').val(response.studentname);
+                    $('#Studentid').val(response.studentid);
+                    $('#Degreetype').val(response.degreetype);
+                    $('#Majorsubject').val(response.majorsubject);
+                    $('#Periodfrom').val(response.periodfrom);
+                    $('#Periodto').val(response.periodto);
+                    $('#Passyear').val(response.passyear);
+                    $('#Marksobtained').val(response.marksobtained);
+                    $('#StudyMode').val(response.studymode);
+                    $('#EligibleAttainDegree').val(response.eligibleattaindegree);
+                    $('#Comments').val(response.comments);
+                    $('#AuthorizedBy').val(response.authorizedby);
+                    $('#AuthorizedDate').val(response.authorizeddate);
+                    $('#loading').hide();
+                },
+            error:
+                function (response) {
+                    $('#loading').hide();
+                    alert("Error: " + response);
+                }
+        });
+    }
+</script>

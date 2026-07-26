@@ -1,0 +1,223 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
+}
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="~/assets/css/bulk.css">
+<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/search-candidate.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/Index">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i>
+    <span style="color: var(--purple-color);font-size: 14px;">Ex-Zone</span>
+    <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Employee Consent</span>
+</div>
+@if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+        <h5 class="bulk-table-heading">Send Consent Request</h5>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="cardz px-0 pb-0 pt-4 mt-3 mb-4">
+                    <div class="form-card">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="inputContainer">
+                                    <input id="Firstname" class="input-container" type="text" placeholder="First name" autocomplete="off" required="required" />
+                                    <label class="usernameLabel">First name <span>*</span></label>
+                                    <i class="ri-user-6-line userIcon"></i>
+                                    <span class="validationMessage" style="display:none;">*Please enter first name</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inputContainer">
+                                    <input id="Lastname" class="input-container" type="text" placeholder="Last name" autocomplete="off" required="required" />
+                                    <label class="usernameLabel">Last name <span>*</span></label>
+                                    <i class="ri-user-6-line userIcon"></i>
+                                    <span class="validationMessage" style="display:none;">*Please enter last name</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inputContainer">
+                                    <input id="Employeecode" class="input-container" type="text" placeholder="Employee code" autocomplete="off" />
+                                    <label class="usernameLabel">Employee code</label>
+                                    <i class="ri-user-settings-line userIcon"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inputContainer">
+                                    <input id="Employeeemail" class="input-container" type="text" placeholder="Employee email" autocomplete="off" required="required" />
+                                    <label class="usernameLabel">Employee email <span>*</span></label>
+                                    <i class="ri-mail-line userIcon"></i>
+                                    <span class="validationMessage" style="display:none;">*Please enter a valid employee email</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-end d-flex justify-content-end p-2">
+                        <button class="btn-submit" type="button" id="btnsendconsent">
+                            <div class="original">Send Consent</div>
+                            <div class="letters">
+                                <span>S</span><span>e</span><span>n</span><span>d</span><span class="ms-1"></span>
+                                <span>C</span><span>o</span><span>n</span><span>s</span><span>e</span><span>n</span><span>t</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="bulk-table-heading mt-2">Consent Requests</h5>
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-md-3">
+                    <div class="inputContainer">
+                        <input id="txtsearchname" class="input-container" type="text" placeholder="Employee name" autocomplete="off" />
+                        <label class="usernameLabel">Employee name</label>
+                        <i class="ri-user-6-line userIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="inputContainer">
+                        <input id="txtsearchcode" class="input-container" type="text" placeholder="Employee code" autocomplete="off" />
+                        <label class="usernameLabel">Employee code</label>
+                        <i class="ri-user-settings-line userIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="inputContainer">
+                        <input id="txtsearchemail" class="input-container" type="text" placeholder="Email" autocomplete="off" />
+                        <label class="usernameLabel">Email</label>
+                        <i class="ri-mail-line userIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="inputContainer reasonContainer" id="statusFilterContainer" style="position: relative;">
+                        <input autocomplete="off" class="input-container" placeholder="-- All statuses --" type="text" id="txtsearchstatus" readonly>
+                        <label class="usernameLabel">Status</label>
+                        <i class="ri-flag-line userIcon"></i>
+                        <input type="hidden" id="hdnstatus" value="0" />
+                        <div id="dropdownStatus" class="newinput-dropdown-menu"></div>
+                    </div>
+                </div>
+                <div class="col-md-1_5">
+                    <div class="dateInputContainer">
+                        <input autocomplete="off" id="fromDate" class="fromDate" type="text" placeholder="From date" />
+                        <div class="label-container">
+                            <i class="ri-calendar-line label-icon"></i>
+                            <label class="dateLabel" for="fromDate">From date</label>
+                        </div>
+                        <i class="ri-calendar-line dateIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-1_5">
+                    <div class="dateInputContainer">
+                        <input autocomplete="off" id="toDate" class="toDate" type="text" placeholder="To date" />
+                        <div class="label-container">
+                            <i class="ri-calendar-2-line label-icon"></i>
+                            <label class="dateLabel" for="toDate">To date</label>
+                        </div>
+                        <i class="ri-calendar-2-line dateIcon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100 d-flex justify-content-center mt-2">
+                <button class="btn-submit" id="btnsearchconsent">
+                    <div class="original">Search</div>
+                    <div class="letters">
+                        <span>S</span><span>e</span><span>a</span><span>r</span><span>c</span><span>h</span>
+                    </div>
+                </button>
+            </div>
+            <div class="cardz px-0 pb-0 mt-4 mb-3">
+                <div class="card p-0 mt-3 mb-4 border-0">
+                    <table>
+                        <thead style="background: #f8ece2">
+                            <tr>
+                                <th>Consent ID</th>
+                                <th>Employee name</th>
+                                <th>Employee code</th>
+                                <th>Employee email</th>
+                                <th>Request date</th>
+                                <th>Status</th>
+                                <th>Consent date</th>
+                                <th>Last updated</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody-tr tbodyTr" id="tableIdx">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-end w-100">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination-custom">
+                            <li class="page-item-custom">
+                                <a class="page-link-custom prev" href="#" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="ri-arrow-left-s-line"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="text-center mt-5" id="divnorecord" style="display: none;">
+                <img src="~/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+                <h6 class="no-data-found-text">No record found</h6>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}
+
+<script src="/assets/js/sort.js" asp-append-version="true"></script>
+<script src="~/assets/js/pages/employeeconsent.js?ver=1" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    var csrfToken = '@Antiforgery.GetAndStoreTokens(Context).RequestToken';
+    var sendConsentUrl = '@Url.Action("SendConsentRequest", "Customer")';
+    var listConsentUrl = '@Url.Action("GetConsentRequests", "Customer")';
+    var statusesUrl = '@Url.Action("GetConsentStatuses", "Customer")';
+    var cancelConsentUrl = '@Url.Action("CancelConsentRequest", "Customer")';
+    InitConsentStatuses(statusesUrl);
+    RefreshConsentList(listConsentUrl);
+    document.getElementById("btnsendconsent").addEventListener("click", function () { SendConsentRequest(sendConsentUrl, listConsentUrl); }, false);
+    document.getElementById("btnsearchconsent").addEventListener("click", function () { RefreshConsentList(listConsentUrl); }, false);
+    document.addEventListener("click", function (e) {
+        const link = e.target.closest(".page-link-custom");
+        if (!link) return;
+        e.preventDefault();
+        const page = parseInt(link.dataset.page);
+        if (!isNaN(page)) changeConsentPage(page);
+    });
+    document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".consent-cancel-btn");
+        if (!btn) return;
+        CancelConsentRequest(btn.dataset.id, cancelConsentUrl, listConsentUrl);
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        flatpickr("#fromDate", { dateFormat: "d-m-Y" });
+        flatpickr("#toDate", { dateFormat: "d-m-Y" });
+    });
+</script>

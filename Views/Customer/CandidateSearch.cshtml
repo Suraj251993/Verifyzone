@@ -1,0 +1,323 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_VZoneLayout.cshtml";
+}
+<link rel="stylesheet" href="/assets/css/bulk.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/new-request.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="/assets/css/generate-report.css">
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+<script src="~/js/common.js" asp-append-version="true"></script>
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/VIndex">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i> <span style="color: var(--purple-color);font-size: 14px;">V-Zone</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> 
+            <span style="color: var(--purple-color);font-size: 14px;">Employment verification</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i><span style="font-size: 14px;">Search a candidate</span>
+</div>
+@if (ViewBag.AccessLevel == 2 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+    <h5 class="bulk-table-heading mb-4">Search a candidate</h5>
+    <div class="row justify-content-center">        
+        <div class="col-md-4">
+            <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
+                <input required="required" autocomplete="off"
+                       placeholder="-- Choose employer --" type="text" readonly class="input-container">
+                <label class="usernameLabel">Choose employer</label>
+                <i class="ri-group-2-line userIcon"></i>
+                <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                    <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                        24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                        24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                        9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                        9.4-33.9 0z" />
+                </svg>
+                <div id="mddsearchcustomer" class="newinput-dropdown-menu"></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="inputContainer">
+                <input id="txtcode" required="required" autocomplete="off" class="input-container" placeholder="Employee code"
+                       type="text">
+                <label class="usernameLabel">Employee code</label>
+                <i class="ri-user-settings-line userIcon"></i>
+            </div>
+        </div>
+            <div class="col-md-4">
+                <div class="dateInputContainer">
+                    <input required autocomplete="off" id="lastworkingDate" class="fromDate" type="text"
+                           placeholder="Last working date" />
+                    <div class="label-container">
+                        <i class="ri-calendar-line label-icon"></i>
+                        <label class="dateLabel" for="fromDate">Last working date</label>
+                    </div>
+                    <i class="ri-calendar-line dateIcon"></i>
+                </div>
+            </div>
+    </div>
+
+    <div class="w-100 d-flex justify-content-center mt-2">
+        @Html.Hidden("hdncategory", (object)ViewBag.IsBGV)
+        <button class="btn-submit" id="GetEmp">
+            <div class="original">Get Details</div>
+            <div class="letters">
+                <span>G</span>
+                <span>e</span>
+                <span>t</span>
+                <span class="ms-1"></span>
+                <span>D</span>
+                <span>e</span>
+                <span>t</span>
+                <span>a</span>
+                <span>i</span>
+                <span>l</span>
+                <span>s</span>
+
+            </div>
+        </button>
+    </div>
+    
+    <div id="employeeform" class="row justify-content-center" style="display: none;">
+        <h5 class="bulk-table-heading mt-3 mb-4">Candidate Details</h5>
+
+        <input type="hidden" id="id" name="id" />
+        <input type="hidden" id="hdnsearch" name="hdnsearch" />
+        <div class="col-md-4">
+            <div class="inputContainer">
+                <input id="Candidatename" readonly autocomplete="off" class="input-container" placeholder="Candidate name"
+                       type="text">
+                <label class="usernameLabel">Candidate name</label>
+                <i class="ri-user-3-line userIcon"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="inputContainer">
+                <input id="Employeecode" readonly autocomplete="off" class="input-container" placeholder="Employee code"
+                       type="text">
+                <label class="usernameLabel">Employee code</label>
+                <i class="ri-user-settings-line userIcon"></i>
+                <input type="hidden" id="isedit" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="inputContainer">
+                <input id="Designation" readonly autocomplete="off" class="input-container" placeholder="Designation"
+                       type="text">
+                <label class="usernameLabel">Designation</label>
+                <i class="ri-focus-2-line userIcon"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="inputContainer">
+                <input id="Employmentperiod" readonly autocomplete="off" class="input-container" placeholder="Employement period"
+                       type="text">
+                <label class="usernameLabel">Employement period</label>
+                <i class="ri-calendar-todo-line userIcon"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="inputContainer">
+                <input id="Lastauthorizedby" readonly autocomplete="off" class="input-container" placeholder="Last authorized by"
+                       type="text">
+                <label class="usernameLabel">Last authorized by</label>
+                <i class="ri-calendar-schedule-line userIcon"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="inputContainer">
+                <input id="Lastauthorizeddate" readonly autocomplete="off" class="input-container" placeholder="Last authorized date"
+                       type="text">
+                <label class="usernameLabel">Last authorized date</label>
+                <i class="ri-calendar-line userIcon"></i>
+            </div>
+        </div>
+        <div class="col-md-12 mb-2" id="editapprovalrow" style="display: none;">
+            <h6 class="vzone-candi-alert-msg" style="color: red;">
+                <i class="ri-alert-line"></i> BGV questions are not available for this candidate.Please send a request to the HR clicking 'Request for Re-verify' button,
+                if you need answers for the BGV questions. You can also generate report directly with the existing information.
+            </h6>
+        </div>
+    </div>
+
+    <div class="w-100 d-flex gap-2 justify-content-center mt-2">
+        @* <button class="btn-submit" id="GetEditApproval" style="display: none;">
+            <div class="original">Edit & Re-Verify</div>
+            <div class="letters">
+                <span>E</span>
+                <span>d</span>
+                <span>i</span>
+                <span>t</span>
+                <span class="ms-1"></span>
+                <span>&</span>
+                <span class="ms-1"></span>
+                <span>R</span>
+                <span>e</span>
+                <span>-</span>
+                <span>V</span>
+                <span>e</span>
+                <span>r</span>
+                <span>i</span>
+                <span>f</span>
+                <span>y</span>
+
+            </div>
+        </button> *@
+        <button class="btn-submit" style="width: 200px;" id="GetApproval" style="display: none;">
+            <div class="original">Request for Re-verify</div>
+            <div class="letters">
+                <span>R</span>
+                <span>e</span>
+                <span>q</span>
+                <span>u</span>
+                <span>e</span>
+                <span>s</span>
+                <span>t</span>
+                <span class="ms-1"></span>
+                <span>F</span>
+                <span>o</span>
+                <span>r</span>
+                <span class="ms-1"></span>
+                <span>R</span>
+                <span>e</span>
+                <span>-</span>
+                <span>V</span>
+                <span>e</span>
+                <span>r</span>
+                <span>i</span>
+                <span>f</span>
+                <span>y</span>
+
+            </div>
+        </button>
+        <button class="btn-submit" id="GenerateReport" style="display: none;">
+            <div class="original">Generate Report</div>
+            <div class="letters">
+                <span>G</span>
+                <span>e</span>
+                <span>n</span>
+                <span>e</span>
+                <span>r</span>
+                <span>a</span>
+                <span>t</span>
+                <span>e</span>
+                <span class="ms-1"></span>
+                <span>R</span>
+                <span>e</span>
+                <span>p</span>
+                <span>o</span>
+                <span>r</span>
+                <span>t</span>
+            </div>
+        </button>
+    </div>
+    <!-- client name popup -->
+    <div class="modal fade" id="clientname" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h1 class="modal-title bulk-table-heading fs-5" id="staticBackdropLabel">
+                        Client name
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="inputContainer" style=" position: relative;">
+                                <input required autocomplete="off" class="input-container" class="login-pass"
+                                        placeholder="Enter the client name for which you are doing the verification" type="text" id="txtclientname">
+                                <label class="usernameLabel">Client name</label>
+                                <i class="ri-lock-password-line userIcon"></i>
+                            </div>
+                                <input type="hidden" id="hdnsearch" name="hdnsearch" />
+                        </div>                        
+                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button class="btn-closes border-0" data-bs-dismiss="modal"
+                            style="background-color: gray;">
+                        <div class="original" style="background-color: gray;">Close</div>
+                        <div class="letters" style="background-color: gray;">
+                            <span>C</span>
+                            <span>l</span>
+                            <span>o</span>
+                            <span>s</span>
+                            <span>e</span>
+                        </div>
+                    </button>&nbsp;&nbsp;
+                    <button class="btn-submit" type="button" name="save" value="Save" id="btnGenerateReport">
+                        <div class="original">Generate report</div>
+                        <div class="letters">
+                            <span>G</span>
+                            <span>e</span>
+                            <span>n</span>
+                            <span>e</span>
+                            <span>r</span>
+                            <span>a</span>
+                            <span>t</span>
+                            <span>e</span>
+                            <span class="ms-1"></span>
+                            <span>R</span>
+                            <span>e</span>
+                            <span>p</span>
+                            <span>o</span>
+                            <span>r</span>
+                            <span>t</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}
+
+<script src="~/assets/js/html2canvas.min.js"></script>
+<script src="~/assets/js/jspdf.umd.min.js"></script>
+<script src="~/assets/js/steps.js" asp-append-version="true"></script>
+<script src="~/assets/js/sort.js" asp-append-version="true"></script>
+<script src="~/assets/js/canvasjs.min.js"></script>
+<script src="~/assets/js/exit-details.js?ver=2" asp-append-version="true"></script>
+@* <script src="~/assets/js/common.js?ver=1" asp-append-version="true"></script> *@
+<script src="~/assets/js/pages/candidatesearch.js?ver=2" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    const fromPicker = flatpickr(".fromDate", {
+                dateFormat: "d-m-Y"
+            });
+    var getempurl = '@Url.Action("GetCandidate", "Customer")';
+    var approvalurl = '@Url.Action("GetEmployeeApproval", "Customer")';
+    var reporturl = '@Url.Action("GenerateReportDataBySearchId", "Customer")';
+    var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
+    var custurl = '@Url.Action("GetCustomers", "Customer")';
+    document.getElementById("GetEmp").addEventListener("click", function() { GetEmployee(getempurl); }, false);
+    document.getElementById("GetApproval").addEventListener("click", function() { SendApproval($('#id').val(), $('#hdnsearch').val(), $('#isedit').val(), approvalurl); }, false);
+    @* document.getElementById("GetEditApproval").addEventListener("click", function() { SendApproval($('#id').val(), $('#hdnsearch').val(), "true", approvalurl); }, false); *@
+    document.getElementById("GenerateReport").addEventListener("click", function() { OpenClientPopup(balanceurl, reporturl); }, false);
+    document.getElementById("btnGenerateReport").addEventListener("click", function() { btnGenerateReport(balanceurl, reporturl); }, false);    
+    ShowBalance(balanceurl);
+    BindCustomers('mddsearchcustomer', custurl);
+</script>

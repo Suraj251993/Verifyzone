@@ -1,0 +1,137 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@model OrgCheck.ViewModels.UserProfileViewModel
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js" asp-append-version="true"></script>
+    <script src="~/vendor/libs/toastr/toastr.dist.js" asp-append-version="true"></script>
+    <script src="~/js/common.js" asp-append-version="true"></script>
+}
+<div class="row gy-6">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Profile details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        @Html.Hidden("mdid", @Model.Id)
+                        @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control", @type = "text", @placeholder = "Please enter here", autofocus = "autofocus" })
+                        <label for='@Model.DisplayName <span style="color: red">*</span>'>Display name</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        @Html.TextBoxFor(model => model.Designation, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                        <label for='@Model.Designation <span style="color: red">*</span>'>Designation</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        @Html.TextBoxFor(model => model.Contactnumber, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                        <label for='@Model.Contactnumber'>Contact number</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                        <label for='@Model.Email'>Email</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        @Html.TextBoxFor(model => model.Team, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                        <label for='@Model.Team'>Team</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        @Html.TextBoxFor(model => model.Function, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                        <label for='@Model.Function'>Function</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        @Html.TextBoxFor(model => model.Reportingmgrname, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                        <label for='@Model.Reportingmgrname'>Reporting manager name</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        @Html.TextBoxFor(model => model.Reportingmgrdesignation, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                        <label for='@Model.Reportingmgrdesignation'>Reporting manager designation</label>
+                    </div>
+                </div>
+                <div class="row">                        
+                    <div class="form-floating form-floating-outline mb-6 col-md-2">
+                        <button type="button" class="btn btn-primary" id="SaveProfile">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#loading').show();
+        var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
+        ShowBalance(balanceurl);
+        $('#loading').hide();
+        $('#SaveProfile').click(function (e) {
+            var isAns = true;
+
+            if ($.trim($('#DisplayName').val()) == "" || $.trim($('#Designation').val()) == "" || $.trim($('#Contactnumber').val()) == "" || $.trim($('#Email').val()) == "") {
+                showErrorMessage("* fields are mandatory");
+                return;
+            }
+
+            //if (!$('#frmEmpForm').valid()) return;
+            e.preventDefault();
+            $('#loading').show();
+
+            var postdata = {
+                id: $("#mdid").val(),
+                displayname: $("#DisplayName").val(),
+                contactnumber: $("#Contactnumber").val(),
+                designation: $("#Designation").val(),
+                email: $("#Email").val(),
+                team: $("#Team").val(),
+                function: $("#Function").val(),
+                rptmgrname: $("#Reportingmgrname").val(),
+                rptmgrdesignation: $("#Reportingmgrdesignation").val(),
+            }
+            SaveProfile(postdata);
+        });
+    });
+
+    function SaveProfile(postdata) {
+        var url = '@Url.Action("UpdateProfile", "Customer")';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(postdata),
+            contentType: "application/json",
+            dataType: 'json', // changing data type to json
+            success: function (data) { // here I'm adding data as a parameter which stores the response
+                //console.log(data); // instead of alert I'm changing this to console.log which logs all the response in console.
+                if (data == true) {
+                    //clearFields();
+                    $('#loading').hide();
+                    showSuccessMessage('Profile saved');
+                }
+                else {
+                    showErrorMessage(data);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+                $('#loading').hide();
+            }
+        });
+    }
+
+</script>

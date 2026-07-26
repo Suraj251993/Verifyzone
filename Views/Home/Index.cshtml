@@ -1,0 +1,230 @@
+﻿@page
+@model OrgCheck.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Verifyzone</title>
+        
+    <link rel="icon" href="~/assets/img/logotop.png" />
+    <link href="~/assets/css/login.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/css/toast.css" asp-append-version="true">
+    <link href="~/assets/css/exit-details.css" rel="stylesheet">
+    <link href="~/assets/css/sidebar.css" rel="stylesheet">
+    <!-- Include Remix Icons CDN -->
+    <link href="/assets/remix/fonts/remixicon.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/echarts.min.js" asp-append-version="true"></script>
+    <script src="~/assets/js/common.js?ver=1" asp-append-version="true"></script>
+    <script src="~/assets/js/jquery-3.7.1.min.js" asp-append-version="true" ></script>
+    <script nonce="@ViewContext.HttpContext.Items["CSPNonce"]" type="text/javascript">
+        var myError = '@ViewBag.Error';
+    </script>
+        
+</head>
+<div class="login-bg"></div>
+
+<div class="container lcon">
+    <div class="login-container">
+        <div class="login-left" id="loginFormBox">
+            <h5 class="login-welcome">WELCOME TO VERIFYZONE!</h5>
+            <p class="login-subtext">
+                Log in to access your dashboard, manage your tasks, and continue your journey
+                with us.
+            </p>
+
+            <form id="formAuthentication" action="/Home/Index" method="POST" autocomplete="off">
+                <div class="inputContainer" style="margin-top: 35px;">
+                    @Html.TextBoxFor(model => model.LoginName, new { @placeholder = "Enter your email", @class = "input-container", @type = "text", @autofocus = "autofocus", required = "required", autocomplete = "off" })
+                    <label class="usernameLabel">Email</label>
+                    <i class="ri-mail-send-line userIcon"></i>
+                </div>
+                <div class="inputContainer" style="margin-top: 35px; position: relative;">                    
+                    @Html.PasswordFor(model => model.Password, new { @class = "login-pass input-container", @placeholder = "Enter your password", @type = "password", required = "required", autocomplete = "off" })
+                    <label class="usernameLabel">Password</label>
+                    <i class="ri-lock-password-line userIcon"></i>
+
+                    <i class="ri-eye-line togglePassword" id="togglePassword"></i>
+                </div>
+                <div class="captcha-section" style="margin-top: 35px;">
+                    <div class="inputContainer m-0 w-100">
+                        <input required="required" autocomplete="off" class="input-container" placeholder="Enter captcha"
+                               type="text" id="txtcaptcha">
+                        <label class="usernameLabel">Captcha</label>
+                        <i class="ri-verified-badge-line userIcon"></i>
+                    </div>
+                    <div class="captcha-refresh">
+                        <i class="ri-refresh-line"></i>
+                    </div>
+                    <div class="">
+                        <h5 class="captcha-place">EdT23</h5>
+                    </div>
+                </div>
+                <p id="captchaMessage"
+                   style="margin-top: 5px; font-size: 14px; display: flex; align-items: center; gap: 5px;">
+                </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="checkbox-wrapper-12 d-flex gap-2">
+                            @* <div class="cbx">
+                                @Html.CheckBoxFor(model => model.RememberMe, new { @type = "checkbox" })
+                                <label for="cbx-12"></label>
+                                <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                    <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                </svg>
+                            </div>
+
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <filter id="goo-12">
+                                        <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                        </feGaussianBlur>
+                                        <feColorMatrix result="goo-12"
+                                                       values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" mode="matrix"
+                                                       in="blur"></feColorMatrix>
+                                        <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                    </filter>
+                                </defs>
+                            </svg> <span>&nbsp;&nbsp;Remember me</span> *@
+
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="text-align: right;">
+                        <span class="forget-pass-text" data-bs-toggle="modal" data-bs-target="#forgetpopup">
+                            Forgot password?
+                        </span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="button" id="loginBtn" class="btn btn-primary login-btn">Log in</button>
+                </div>
+
+            </form>
+            <div class="ui-abstergo" id="loaderBox" style="display:none;">
+                <div class="abstergo-loader" style="padding-bottom: 20px;">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="ui-text">
+                    Processing
+                    <div class="ui-dot"></div>
+                    <div class="ui-dot"></div>
+                    <div class="ui-dot"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="login-right">
+            <img src="~/assets/img/logo-login copy.png" alt="User Icon" />
+            <h5>New Here?</h5>
+            <p>Create an account and start exploring all the amazing features today!</p>
+            @* <a href="#">
+                <button type="button" class="btn signup-btn">Sign up</button>
+            </a> *@
+            @* <p>Please reach out to divya(a)tarajyau.in for further details</p> *@
+        </div>
+    </div>
+    <div class="modal fade" id="forgetpopup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h1 class="modal-title bulk-table-heading" id="staticBackdropLabel">Forgot password</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="inputContainer">
+                        <input required="required" class="input-container" autocomplete="off"
+                               placeholder="Please enter your registered email" type="text" id="txtemail">
+                        <label class="usernameLabel">Please enter your registered email</label>
+                        <i class="ri-mail-line userIcon"></i>
+                        <span class="validationMessage" id="forgotvalidationMessage"
+                              style="display:none;">
+                            *Please
+                            enter registered email
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            style="padding: 3px 20px;">
+                        Close
+                    </button>
+
+                    <button class="btn-submit" type="button" name="Submit" value="Submit" id="Submit">
+                        <div class="original">Submit</div>
+                        <div class="letters">
+                            <span>S</span>
+                            <span>u</span>
+                            <span>b</span>
+                            <span>m</span>
+                            <span>i</span>
+                            <span>t</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modals -->
+<div id="error" class="toast-modal">
+    <div class="modal-content model-toast error">
+        <div class="modal-header border-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="icon"><i class="ri-close-line"></i></div>
+
+        <p id="errormessage"></p>
+    </div>
+</div>
+
+<script src="~/assets/js/popper.min.js"></script>
+<script src="~/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/assets/js/pages/login.js?ver=1" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    $(function () {
+        document.getElementById("Submit").addEventListener("click", forgotPassword);
+        document.getElementById("error").addEventListener("click", function() {
+                closeModal(this);
+            });
+        
+        function forgotPassword() {    
+            var _url = '@Url.Action("ForgotPassword", "Home")';
+            //$('.loader').show();
+            $.ajax({
+                type: 'GET',
+                dataType: 'JSON',
+                url: _url,
+                data: { emailId: $("#txtemail").val().trim() },
+                success:
+                    function (result) {
+
+                        if (result == true) {
+                            // Show success toast message
+                            showSuccessMessage('Request sent to the support team. You will be notified soon.');
+                        }
+                        else {
+                            // Show success toast message
+                            showErrorMessage('User not found');
+                        }
+                        $("#txtemail").val('');
+                        $("#smallModal").modal('hide');
+                    },
+                error:
+                    function (response) {
+                        showErrorMessage("Error: " + response.statusText);
+                    }
+            });
+        }        
+    })
+</script>

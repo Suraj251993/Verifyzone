@@ -1,0 +1,220 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model OrgCheck.ViewModels.QuestionViewModel
+<link rel="stylesheet" href="/assets/css/active-autopilot.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="~/assets/js/exit-details.js?ver=2" asp-append-version="true"></script>
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Admin/Index"><i
+        class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+    style="color: var(--purple-color)"></i> <span
+    style="color: var(--purple-color);font-size: 14px;">Admin</span> <i class="ri-arrow-right-s-line"
+    style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Questions</span>
+</div>
+
+<div class="content">
+    <h5 class="bulk-table-heading mb-2">Questions</h5>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex gap-2">
+                
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex gap-2 justify-content-end pt-4">
+                
+                <div class="pt-1">
+                    <button class="btn-submit border-0" data-bs-toggle="modal" data-bs-target="#addquestion"
+                            style="background-color: rgb(16, 114, 16);" id="btnadd">
+                        <div class="original" style="background-color: rgb(16, 114, 16);"> Add</div>
+                        <div class="letters" style="background-color: rgb(16, 114, 16);">
+                            <span>A</span>
+                            <span>d</span>
+                            <span>d</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card p-0 mt-3 mb-4 border-0">
+        <table>
+            <thead style="background: #f8ece2">
+                <tr>
+                    <th class="sortable">
+                        Questions <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Actions <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="tbody-tr tbodyTr" id="tableIdx">
+        </table>
+    </div>
+    
+    <div class="modal fade" id="addquestion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h1 class="bulk-table-heading modal-title fs-5" id="staticBackdropLabel">Add question</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        @Html.HiddenFor(model => model.Id)
+                        <div class="col-md-12">
+                            <div class="inputContainer">
+                                @Html.HiddenFor(model => model.Id)
+                                @Html.TextBoxFor(model => model.Question, new { @class = "input-container", @type = "text", @placeholder = "Enter the question", @autocomplete = "off", required = "required" })
+                                <label class="usernameLabel">Enter the question</label>
+                                <i class="ri-user-3-line userIcon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button class="btn-closes border-0" data-bs-dismiss="modal" style="background-color: gray;">
+                        <div class="original" style="background-color: gray;">Close</div>
+                        <div class="letters" style="background-color: gray;">
+                            <span>C</span>
+                            <span>l</span>
+                            <span>o</span>
+                            <span>s</span>
+                            <span>e</span>
+                        </div>
+                    </button>&nbsp;&nbsp;
+                    <button class="btn-submit" type="button" name="save" value="Save" id="Save">
+                        <div class="original">Save</div>
+                        <div class="letters">
+                            <span>S</span>
+                            <span>a</span>
+                            <span>v</span>
+                            <span>e</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deletequestion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h5 class="logout-popup-dahx-icon"><i class="ri-delete-bin-7-line"></i></h5>
+                    <h6 class="logout-popup-dahx">
+                        Are you sure <br>
+                        you want to delete the question ?
+                    </h6>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button class="btn-closes" data-bs-dismiss="modal">
+                        <div class="original">No</div>
+                        <div class="letters">
+                            <span>N</span>
+                            <span>o</span>
+                        </div>
+                    </button>&nbsp;&nbsp;
+                    <button class="btn-submit" type="button" name="next">
+                        <div class="original">Yes</div>
+                        <div class="letters">
+                            <span>Y</span>
+                            <span>e</span>
+                            <span>s</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row gy-6" id="questionform" style="display: none;">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0" id="questionlabel">Questions</h5>
+            </div>
+            <div class="card-body">
+                <form id="frmQuestion">
+                    <div class="row">
+                        @Html.HiddenFor(model => model.Id, new { @id = "mdid" })
+                        <input id="estayId" type="hidden" value="">
+
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Question, new { @class = "form-control", @type = "text", @placeholder = "Please enter here", autofocus = "autofocus" })
+                            <label for='@Model.Question'>Question</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-2 col-md-1">
+                            <button type="button" class="btn btn-primary" id="Save">Save</button>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-2 col-md-1">
+                            <button type="button" class="btn btn-secondary" id="Close">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/sort.js" asp-append-version="true"></script>
+<script src="~/assets/js/pages/adminquestion.js?ver=1" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    $(function () {
+        var bindurl = '@Url.Action("GetQuestions", "Admin")';
+        var editurl = '@Url.Action("GetQuestion", "Admin")';
+
+        document.getElementById("Save").addEventListener("click", saveData);
+        document.getElementById("btnadd").addEventListener("click", clearFields);
+        function saveData() {
+            var customerid = $('#Id').val();
+            var url = '@Url.Action("AddQuestion", "Admin")';
+            if (customerid != '0') {
+                url = '@Url.Action("UpdateQuestion", "Admin")';
+            }
+            saveQuestion(url);
+        }
+
+        BindQuestions(bindurl);
+        // Show loader overlay
+        const overlay = document.getElementById("formLoaderOverlay");
+        overlay.style.display = "none";
+
+        document.addEventListener("click", function (e) {
+            if (e.target.closest(".manage-hr-pencil-edit")) {
+                const row = e.target.closest("#editid");
+                EditQuestion(row.dataset.id, editurl);
+            }
+        });
+
+        document.addEventListener("click", function (e) {
+            const link = e.target.closest(".page-link-custom");
+            if (!link) return;
+
+            e.preventDefault();
+
+            const page = parseInt(link.dataset.page);
+            if (!isNaN(page)) {
+                changePage(page);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,182 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_VZoneLayout.cshtml";
+}
+<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/new-request.css">
+<link rel="stylesheet" href="~/assets/css/bulk.css">
+<script src="~/js/common.js" asp-append-version="true"></script>
+<link rel="stylesheet" href="/assets/css/generate-report.css">
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/VIndex">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i> <span style="color: var(--purple-color);font-size: 14px;">V-Zone</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> <span style="color: var(--purple-color);font-size: 14px;">Employment verification</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i><span style="font-size: 14px;">
+        Initiated verification status
+    </span>
+</div>
+@if (ViewBag.AccessLevel == 2 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+    <h5 class="bulk-table-heading mb-4">Initiated verification status</h5>
+    <div class="row justify-content-center">        
+        <div class="col-md-4">
+            <div class="inputContainer reasonContainer" id="inputContainer"
+                 style="position: relative;">
+                <input required="required" autocomplete="off" class="input-container" placeholder="-- Search result --"
+                       type="text" readonly>
+                <label class="usernameLabel">Search result</label>
+                <i class="ri-search-line userIcon"></i>
+                <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                    <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                        24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                        24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                        9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                        9.4-33.9 0z" />
+                </svg>
+                <div id="searchresultdropdownMenu" class="newinput-dropdown-menu">                    
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="inputContainer">
+                <input required="required" autocomplete="off" class="input-container" placeholder="Request number"
+                       type="text" id="requestnumber">
+                <label class="usernameLabel">Request number</label>
+                <i class="ri-file-list-3-line userIcon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center mt-2">
+        <button class="btn-submit" id="Search">
+            <div class="original">Get Details</div>
+            <div class="letters">
+                <span>G</span>
+                <span>e</span>
+                <span>t</span>
+                <span class="ms-1"></span>
+                <span>D</span>
+                <span>e</span>
+                <span>t</span>
+                <span>a</span>
+                <span>i</span>
+                <span>l</span>
+                <span>s</span>
+
+            </div>
+        </button>
+    </div>
+    <div class="card p-0 mt-5 mb-4 border-0">
+        <table>
+            <thead style="background: #f8ece2">
+                <tr>
+                    @* <th class="sortable">
+                        ID<i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th> *@
+                    <th class="sortable">
+                        Request number<i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Employee code <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Employee Name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Customer name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Search result <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Action <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="tbody-tr tbodyTr" id="tableIdx">
+            </tbody>
+        </table>
+        <div class="text-center" id="divnorecord">
+            <img src="/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+            <h6 class="no-data-found-text">No record found</h6>
+        </div>
+
+    </div>
+</div>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}
+<script src="~/assets/js/html2canvas.min.js"></script>
+<script src="~/assets/js/jspdf.umd.min.js"></script>
+@* <script src="~/assets/js/common.js?ver=1" asp-append-version="true"></script> *@
+<script src="~/assets/js/steps.js" asp-append-version="true"></script>
+<script src="~/assets/js/sort.js" asp-append-version="true"></script>
+<script src="~/assets/js/pages/exrequeststatus.js?ver=2" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropmenus = document.querySelectorAll(".newinput-dropdown-menu");
+        dropmenus.forEach(dropmenu => {
+            dropmenu.addEventListener("click", () => {
+                dropmenu.classList.toggle("show");
+            });
+        });
+    });
+    var searchurl = '@Url.Action("GetVerificationRequestStatus", "Customer")';
+    var reporturl = '@Url.Action("GenerateReportByRequestId", "Customer")';
+    var reminderurl = '@Url.Action("SendRequestReminder", "Customer")';
+    var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
+
+    document.getElementById("Search").addEventListener("click", function(e) {
+        //e.preventDefault();
+        refreshGrid(searchurl);
+    });
+    document.addEventListener("click", function (e) {
+        const btn = e.target.closest(".action-btn");
+        if (!btn) return;
+
+        const id = btn.dataset.id;
+        const action = btn.dataset.action;
+        
+        switch (action) {
+            case "generate":
+                GenerateReportRequest(id, reporturl, searchurl);
+                break;
+            case "reminder":
+                SendReminder(id, reminderurl);
+                break;
+        }
+    });
+    // pagination
+    document.addEventListener("click", function (e) {
+        const link = e.target.closest(".page-link-custom");
+        if (!link) return;
+
+        e.preventDefault();
+
+        const page = parseInt(link.dataset.page);
+        if (!isNaN(page)) {
+            changePage(page);
+        }
+    });
+    
+    ShowBalance(balanceurl);
+</script>

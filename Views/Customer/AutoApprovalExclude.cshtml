@@ -1,0 +1,157 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
+}
+@model OrgCheck.ViewModels.AutoApprovalConfigViewModel
+<link rel="stylesheet" href="~/assets/css/active-autopilot.css">
+<link rel="stylesheet" href="~/assets/css/search-candidate.css">
+<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/bulk.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="~/js/common.js" asp-append-version="true"></script>
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/Index">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i> 
+            <span style="color: var(--purple-color);font-size: 14px;">Ex-Zone</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Setup Exclusions</span>
+</div>
+
+@if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+    <h5 class="bulk-table-heading mb-4">Setup Exclusions</h5>
+        
+    <div class="card p-0 mt-3 mb-4 border-0">
+        <table>
+            <thead style="background: #f8ece2">
+                <tr>
+                    <th class="sortable">
+                        Employee code <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Ex-employee name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Excluded by <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Excluded on <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th>
+                        Action <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="tbody-tr tbodyTr" id="tableIdx">
+            </tbody>
+        </table>
+        <div class="text-center border-bottom" id="divnorecord" style="display: none;">
+            <img src="/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+            <h6 class="no-data-found-text">No record found</h6>
+        </div>
+        <!-- deactivate popup -->
+        <div class="modal fade" id="deleteuser" data-bs-backdrop="static" data-bs-keyboard="false"
+             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header border-0">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div>
+                            <h5 class="activate-popup-toggle-icon"><i class="ri-error-warning-line"></i></h5>
+                            <h5 class="activate-popup-toggle-content">
+                                <strong>
+                                    Are you sure <br>
+                                    You want to remove the ex-employee from autopilot exclusion?
+                                </strong>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 justify-content-center">
+                        <button class="btn-closes" data-bs-dismiss="modal">
+                            <div class="original">Close</div>
+                            <div class="letters">
+                                <span>C</span>
+                                <span>l</span>
+                                <span>o</span>
+                                <span>s</span>
+                                <span>e</span>
+
+                            </div>
+                        </button>&nbsp;&nbsp;
+                        <button class="btn-submit" type="button" id="btnDelete">
+                            <div class="original">Yes</div>
+                            <div class="letters">
+                                <span>Y</span>
+                                <span>e</span>
+                                <span>s</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/assets/js/sort.js" asp-append-version="true"></script>
+<script src="~/assets/js/pages/autoapprovalexclude.js" asp-append-version="true"></script>
+
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    var deleteid = 0;
+    
+    document.addEventListener("click", function (e) {
+        const link = e.target.closest(".page-link-custom");
+        if (!link) return;
+
+        e.preventDefault();
+
+        const page = parseInt(link.dataset.page);
+        if (!isNaN(page)) {
+            changePage(page);
+        }
+    });
+    $(document).ready(function () {
+        var url = '@Url.Action("GetAllExclusions", "Customer")';
+        var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
+        ShowBalance(balanceurl);
+        BindConfig(url);
+    });
+    document.addEventListener("click", function (e) {
+        if (e.target.closest(".manage-hr-pencil-delete")) {
+            const row = e.target.closest("#delid");
+            SetDeleteExclusion(row.dataset.id);
+        }
+    });
+
+    var deleteurl = '@Url.Action("DeleteApprovalExclusion", "Customer")';
+    document.getElementById("btnDelete").addEventListener("click", function() { DeleteApproval(deleteurl); }, false);
+</script>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}

@@ -1,0 +1,154 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
+}
+<link rel="stylesheet" href="~/assets/css/search-candidate.css">
+<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/bulk.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="~/assets/css/new-request.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="/js/common.js" asp-append-version="true"></script>
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/Index">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i> 
+            <span style="color: var(--purple-color);font-size: 14px;">Ex-Zone</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> 
+            <span style="font-size: 14px;">Verification history</span>
+</div>
+@if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+
+    <h5 class="bulk-table-heading mb-4 mt-3">Verification history</h5>
+
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="dateInputContainer">
+                <input required autocomplete="off" id="fromDate" class="fromDate" type="text"
+                       placeholder="From date" />
+                <div class="label-container">
+                    <i class="ri-calendar-line label-icon"></i>
+                    <label class="dateLabel" for="fromDate">From date</label>
+                </div>
+                <i class="ri-calendar-line dateIcon"></i>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dateInputContainer">
+                <input required autocomplete="off" id="toDate" class="toDate" type="text"
+                       placeholder="To date" />
+                <div class="label-container">
+                    <i class="ri-calendar-2-line label-icon"></i>
+                    <label class="dateLabel" for="toDate">To date</label>
+                </div>
+                <i class="ri-calendar-2-line dateIcon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <button class="btn-submit" id="Search">
+            <div class="original">Search</div>
+            <div class="letters">
+                <span>S</span>
+                <span>e</span>
+                <span>a</span>
+                <span>r</span>
+                <span>c</span>
+                <span>h</span>
+            </div>
+        </button>
+    </div>
+
+    <h5 class="bulk-table-heading mb-4 mt-3">Search Result</h5>
+    <div class="card p-0 mt-4 mb-4 border-0">
+        <table>
+            <thead style="background: #f8ece2">
+                <tr>
+                    <th class="sortable">
+                        Employee code <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Employee name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Approved date <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="tbody-tr tbodyTr" id="tableIdx">
+            </tbody>
+        </table>
+
+    </div>
+    </div>
+    <script src="~/assets/js/sort.js" asp-append-version="true"></script>
+    <script src="~/assets/js/canvasjs.min.js"></script>
+    <script src="~/assets/js/pages/approvalhistory.js?ver=2" asp-append-version="true"></script>
+    <script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const fromPicker = flatpickr(".fromDate", {
+                dateFormat: "d-m-Y",
+                onChange: function (selectedDates) {
+                    if (selectedDates.length === 0) return;
+
+                    let nextDay = new Date(selectedDates[0]);
+                    nextDay.setDate(nextDay.getDate() + 1);
+
+                    toPicker.set("minDate", nextDay);
+
+                    if (toPicker.selectedDates.length > 0 && toPicker.selectedDates[0] < nextDay) {
+                        toPicker.clear();
+                    }
+                }
+            });
+
+            const toPicker = flatpickr(".toDate", {
+                dateFormat: "d-m-Y"
+            });
+
+        });
+        document.addEventListener("click", function (e) {
+            const link = e.target.closest(".page-link-custom");
+            if (!link) return;
+
+            e.preventDefault();
+
+            const page = parseInt(link.dataset.page);
+            if (!isNaN(page)) {
+                changePage(page);
+            }
+        });
+        document.getElementById("Search").addEventListener("click", searchData);
+        function searchData() {
+            var url = '@Url.Action("GetApprovalHistory", "Customer")';        
+            refreshGrid(url);
+        }
+        var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
+        ShowBalance(balanceurl);
+    </script>
+
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}

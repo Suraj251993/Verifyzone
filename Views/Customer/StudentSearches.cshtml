@@ -1,0 +1,276 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.dist.js"></script>
+    <script src="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.js"></script>
+    <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/js/common.js?ver=1"></script>
+}
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Past searches - Education</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-3 col-md">
+                        <input type="text" class="form-control" id="startdate" placeholder="DD/MM/YYYY" />
+                        <label for="startdate">From date</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-3 col-md">
+                        <input type="text" class="form-control" id="enddate" placeholder="DD/MM/YYYY" />
+                        <label for="enddate">To date</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-8 col-md">
+                        <select class="form-select" id="searchresult" aria-label="Default select example">
+                            <option value="">-- Choose option--</option>
+                            <option value="Searched">Searched</option>
+                            <option value="Sent for Approval">Sent for Approval</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Generated">Generated</option>
+                        </select>
+                        <label for="searchresult">Search result</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-3 col-md">
+                        <button type="button" class="btn btn-primary" id="Search">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-12">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Search results</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="mb-12 col-md">
+                        <table id="tablelist" class="datatables-ajax table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Student Id</th>
+                                    <th>Customer Name</th>
+                                    <th>Search result</th>
+                                    <th>Final result</th>
+                                    <th>Search date</th>
+                                    <th>Approved date</th>
+                                    <th>Report link</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/vendor/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#loading').hide();
+        var bsDatepickerFromdate = $('#startdate'),
+            bsDatepickerTodate = $('#enddate');
+        bsDatepickerFromdate.datepicker({
+            todayHighlight: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            orientation: isRtl ? 'auto right' : 'auto left'
+        });
+        bsDatepickerTodate.datepicker({
+            todayHighlight: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            orientation: isRtl ? 'auto right' : 'auto left'
+        });
+        ShowBalance();
+    });
+
+    function refreshGrid() {
+        var schtype = $('#searchresult').val();
+
+
+        $.ajax({
+            type: 'GET',
+            data: { fromdate: $('#startdate').val(), todate: $('#enddate').val(), finalresult: schtype },
+            dataType: 'JSON',
+            url: '@Url.Action("GetStudentSearchHistory", "Customer")',
+            error: function (xhr) {
+                alert('Error: ' + xhr.statusText);
+            },
+            success: function (result) {
+                //console.log('ds', result);
+                setToTable(result);
+
+            },
+            async: true,
+            processData: false
+        });
+    }
+    $('#Search').click(function () {
+        $('#loading').show();
+        if ($('#startdate').val() == "" || $('#enddate').val() == "") {
+            showErrorMessage("Both date filters are mandatory");
+            $('#loading').hide();
+            return;
+        }
+        refreshGrid();
+        $('#loading').hide();
+    });
+
+    function setToTable(jsonData) {
+        var data = [];
+        for (let i = 0; i < jsonData.length; i++) {
+            data.push({
+                "id": jsonData[i].id,
+                "employeecode": jsonData[i].studentid,
+                "name": jsonData[i].customername,
+                "searchresult": jsonData[i].searchresult,
+                "finalresult": jsonData[i].finalresult,
+                "createddate": jsonData[i].createddate,
+                "approveddate": jsonData[i].approveddate,
+                "reportlink": jsonData[i].reportlink,
+                "actionstatus": jsonData[i].actionstatus
+            });
+            //arraydata.push(data);
+        }
+        var ajaxdata = {
+            "data": data
+        };
+        var dt_ajax = $('#tablelist').dataTable({
+            destroy: true,
+            processing: true,
+            data: ajaxdata.data,
+            columns: [
+                { data: 'id' },
+                { data: 'employeecode' },
+                { data: 'name' },
+                { data: 'searchresult' },
+                { data: 'finalresult' },
+                { data: 'createddate' },
+                { data: 'approveddate' },
+                { data: 'reportlink' },
+                { data: 'actionstatus' }
+            ],
+            columnDefs: [
+                {
+                    targets: 0,
+                    searchable: false,
+                    visible: false
+                },
+                {
+                    // Label
+                    targets: 8,
+                    render: function (data, type, full, meta) {
+                        var $status_number = full['actionstatus'];
+                        var $id = full['id'];
+                        var $status = {
+                            1: { title: 'Download Report', class: ' btn-success' },
+                            2: { title: 'Generate Report', class: ' btn-info' }
+                        };
+                        if (typeof $status[$status_number] === 'undefined') {
+                            return data;
+                        }
+                        return (
+                            '<button type="button" class="btn rounded-pill ' +
+                            $status[$status_number].class +
+                            '" onclick="gridAction(' + $id + ')">' +
+                            $status[$status_number].title +
+                            '</button>'
+                        );
+                    }
+                },
+            ],
+            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+            language: {
+                paginate: {
+                    next: '<i class="ri-arrow-right-s-line"></i>',
+                    previous: '<i class="ri-arrow-left-s-line"></i>'
+                }
+            }
+        });
+    }
+    
+    function gridAction(id) {
+        var type = '';
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetStudentSearchById", "Customer")',
+            data: { id: id },
+            dataType: 'json', //changing data type to json
+            success: function (data) { //here I'm adding data as a parameter which stores the response
+                //console.log(data); //instead of alert I'm changing this to console.log which logs all the response in console.
+                type = data.finalresult;
+                if (type == 'Generated') {
+                    window.open("/Customer/DownloadStudentFile?searchid=" + id, '_blank');
+                }
+                else if (type = 'Approved') {
+                    //GenerateReportByCode
+                    $('#loading').show();
+                    $.ajax({
+                        type: 'GET',
+                        url: '@Url.Action("GetCustomerBalance", "Customer")',
+                        dataType: 'json', //changing data type to json
+                        success: function (data) { //here I'm adding data as a parameter which stores the response
+                            //console.log(data); //instead of alert I'm changing this to console.log which logs all the response in console.
+                            if (data == 0) {
+                                showErrorMessage("Insufficient balance to generate report");
+                                $('#loading').hide();
+                            }
+                            else
+                                GenerateReport(id);
+                        },
+                        error: function (err) {
+                            showErrorMessage("Unexpected error occured while generating report");
+                            $('#loading').hide();
+                            console.log(err);
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function GenerateReport(id) {
+        var url = '@Url.Action("GenerateStudentReportBySearchId", "Customer")';
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: { searchid: id, studid: "", custid: "", studentid: "" },
+            contentType: "application/json",
+            dataType: 'json', // changing data type to json
+            success: function (data) { // here I'm adding data as a parameter which stores the response
+                //console.log(data); // instead of alert I'm changing this to console.log which logs all the response in console.
+                if (data == true) {
+                    $('#loading').hide();
+                    window.open("/Company/DownloadStudentFile?searchid=" + id, '_blank');
+                    ShowBalance();
+                    refreshGrid();
+                }
+                else {
+                    $('#loading').hide();
+                    showSuccessMessage('Error occured while Generating Report');
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+</script>

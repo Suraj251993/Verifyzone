@@ -1,0 +1,384 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/active-autopilot.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@model OrgCheck.ViewModels.UserViewModel
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Admin/Index"><i
+        class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+    style="color: var(--purple-color)"></i> <span
+    style="color: var(--purple-color);font-size: 14px;">Admin</span> <i class="ri-arrow-right-s-line"
+    style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Users</span></div>
+
+<div class="content">
+    <h5 class="bulk-table-heading mb-4">Users</h5>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
+                        <input required="required" autocomplete="off" class="input-container"
+                               placeholder="-- Choose usertype --" type="text" readonly>
+                        <label class="usernameLabel">Choose usertype</label>
+                        <i class="ri-group-2-line userIcon"></i>
+                        <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                            <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                        24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                        24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                        9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                        9.4-33.9 0z" />
+                        </svg>
+                        <div id="dropdownSearchUsertypeMenu" class="newinput-dropdown-menu"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 pt-3">
+                    <div class="d-flex gap-2">
+                        <button class="btn-submit" id="getusers">
+                            <div class="original">Get User</div>
+                            <div class="letters">
+                                <span>G</span>
+                                <span>e</span>
+                                <span>t</span>
+                                <span class="ms-1"></span>
+                                <span>U</span>
+                                <span>s</span>
+                                <span>e</span>
+                                <span>r</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">           
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex gap-2 justify-content-end pt-4">
+                <div class="pt-1">
+                    @* data-bs-target="#adduser" data-bs-toggle="modal" *@
+                    <button class="btn-submit border-0" 
+                            style="background-color: rgb(16, 114, 16); width: 100px;" id="btnadd">
+                        <div class="original" style="background-color: rgb(16, 114, 16);"> Add User</div>
+                        <div class="letters" style="background-color: rgb(16, 114, 16);">
+                            <span>A</span>
+                            <span>d</span>
+                            <span>d</span>
+                            <span class="ms-1"></span>
+                            <span>U</span>
+                            <span>s</span>
+                            <span>e</span>
+                            <span>r</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card p-0 mt-3 mb-4 border-0">
+        <table>
+            <thead style="background: #f8ece2">
+                <tr>
+                    <th class="sortable">
+                        Name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Login name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Designation <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Email <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Contact <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Actions <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="tbody-tr tbodyTr" id="tableIdx">
+        </table>
+    </div>
+
+    <div class="modal fade" id="adduser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h1 class="bulk-table-heading modal-title fs-5" id="staticBackdropLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="frmUser">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="inputContainer">
+                                    @Html.HiddenFor(model => model.Id)
+                                    @Html.TextBoxFor(model => model.DisplayName, new { @class = "input-container", @type = "text", @placeholder = "User name", @autocomplete = "off", required = "required" })
+                                    <label class="usernameLabel">User name</label>
+                                    <i class="ri-user-3-line userIcon"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inputContainer">
+                                    @Html.TextBoxFor(model => model.LoginName, new { @class = "input-container", @type = "text", @placeholder = "Login name", @autocomplete = "off", required = "required" })
+                                    <label class="usernameLabel">Login name</label>
+                                    <i class="ri-user-star-line userIcon"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="inputContainer">
+                                    @Html.TextBoxFor(model => model.Emailid, new { @class = "input-container", @type = "text", @placeholder = "Email id", @autocomplete = "off", required = "required" })
+                                    <label class="usernameLabel">Email id</label>
+                                    <i class="ri-mail-line userIcon"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inputContainer">
+                                    @Html.TextBoxFor(model => model.Contactnumber, new { @class = "input-container", @type = "text", @placeholder = "Contact number", @autocomplete = "off", required = "required" })
+                                    <label class="usernameLabel">Contact number</label>
+                                    <i class="ri-phone-line userIcon"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="inputContainer">
+                                    @Html.TextBoxFor(model => model.Designation, new { @class = "input-container", @type = "text", @placeholder = "Designation", @autocomplete = "off", required = "required" })
+                                    <label class="usernameLabel">Designation</label>
+                                    <i class="ri-id-card-line userIcon"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inputContainer reasonContainer" id="inputContainer"
+                                     style="position: relative;">
+                                    <input required="required" autocomplete="off" class="input-container"
+                                           placeholder="-- Choose usertype --" type="text" readonly>
+                                    <label class="usernameLabel">Choose usertype</label>
+                                    <i class="ri-group-2-line userIcon"></i>
+                                    <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                                        <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                            24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                            24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                            9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                            9.4-33.9 0z" />
+                                    </svg>
+                                    <div id="dropdownUserTypeMenu" class="newinput-dropdown-menu"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="inputContainer reasonContainer" id="inputContainerCustomer"
+                                     style="position: relative;">
+                                    <input required="required" autocomplete="off" class="input-container"
+                                           placeholder="-- Please choose customer --" type="text" readonly>
+                                    <label class="usernameLabel">Please choose customer</label>
+                                    <i class="ri-group-2-line userIcon"></i>
+                                    <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                                        <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                            24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                            24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                            9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                            9.4-33.9 0z" />
+                                    </svg>
+                                    <div id="dropdownCustomerMenu" class="newinput-dropdown-menu"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="inputContainer reasonContainer" id="inputContainer"
+                                     style="position: relative;">
+                                    <input required="required" autocomplete="off" class="input-container"
+                                           placeholder="-- Please choose access level --" type="text" readonly>
+                                    <label class="usernameLabel">
+                                        Please choose access level
+                                    </label>
+                                    <i class="ri-group-2-line userIcon"></i>
+                                    <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                                        <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                            24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                            24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                            9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                            9.4-33.9 0z" />
+                                    </svg>
+                                    <div id="dropdownAccessLevelMenu" class="newinput-dropdown-menu"></div>                                
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="inputContainer reasonContainer" id="inputContainer"
+                                     style="position: relative;">
+                                    <input required="required" autocomplete="off" class="input-container"
+                                           placeholder="-- Please choose user category --" type="text" readonly>
+                                    <label class="usernameLabel">Please choose user category</label>
+                                    <i class="ri-group-2-line userIcon"></i>
+                                    <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                                        <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                            24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                            24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                            9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                            9.4-33.9 0z" />
+                                    </svg>
+                                    <div id="dropdownCategoryMenu" class="newinput-dropdown-menu"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button class="btn-closes border-0" data-bs-dismiss="modal" style="background-color: gray;" id="Close">
+                        <div class="original" style="background-color: gray;">Close</div>
+                        <div class="letters" style="background-color: gray;">
+                            <span>C</span>
+                            <span>l</span>
+                            <span>o</span>
+                            <span>s</span>
+                            <span>e</span>
+                        </div>
+                    </button>&nbsp;&nbsp;
+                    <button class="btn-submit" type="button" name="save" value="Save" id="Save">
+                        <div class="original">Save</div>
+                        <div class="letters">
+                            <span>S</span>
+                            <span>a</span>
+                            <span>v</span>
+                            <span>e</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteuser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h5 class="logout-popup-dahx-icon"><i class="ri-delete-bin-7-line"></i></h5>
+                    <h6 class="logout-popup-dahx">
+                        Are you sure <br>
+                        you want to delete the user ?
+                    </h6>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button class="btn-closes" data-bs-dismiss="modal">
+                        <div class="original">No</div>
+                        <div class="letters">
+                            <span>N</span>
+                            <span>o</span>
+                        </div>
+                    </button>&nbsp;&nbsp;
+                    <button class="btn-submit" type="button" name="next">
+                        <div class="original">Yes</div>
+                        <div class="letters">
+                            <span>Y</span>
+                            <span>e</span>
+                            <span>s</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="resetuser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h5 class="logout-popup-dahx-icon"><i class="ri-delete-bin-7-line"></i></h5>
+                    <h6 class="logout-popup-dahx">
+                        Are you sure <br>
+                        you want to reset the user ?
+                    </h6>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button class="btn-closes" data-bs-dismiss="modal">
+                        <div class="original">No</div>
+                        <div class="letters">
+                            <span>N</span>
+                            <span>o</span>
+                        </div>
+                    </button>&nbsp;&nbsp;
+                    <button class="btn-submit" type="button" name="next" id="btnreset">
+                        <div class="original">Yes</div>
+                        <div class="letters">
+                            <span>Y</span>
+                            <span>e</span>
+                            <span>s</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/sort.js" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    $(function () {
+        var bindurl = '@Url.Action("GetUsers", "Admin")';
+        var cusurl = '@Url.Action("GetCustomers", "Admin")';
+        var reseturl = '@Url.Action("ResetUser", "Admin")';
+        var editurl = '@Url.Action("GetUser", "Admin")';
+
+        document.getElementById("Save").addEventListener("click", function(e) {
+            e.preventDefault();
+            var userid = $('#Id').val();
+            var url = '@Url.Action("AddUser", "Admin")';
+            if (userid != '') {
+                url = '@Url.Action("UpdateUser", "Admin")';
+            }
+            SaveUser(url, bindurl);
+        });
+        document.getElementById("btnadd").addEventListener("click", function(e) { 
+            addUser(cusurl);
+        });
+        document.getElementById("getusers").addEventListener("click", function(e) {
+            e.preventDefault();
+            BindUsers(bindurl);
+        });
+        document.getElementById("btnreset").addEventListener("click", function(e) {
+            e.preventDefault();
+            ResetUser(reseturl);
+        });
+        
+        // Show loader overlay
+        const overlay = document.getElementById("formLoaderOverlay");
+        overlay.style.display = "none";
+        document.addEventListener("click", function (e) {
+            if (e.target.closest(".manage-hr-pencil-edit")) {
+                const row = e.target.closest("#editid");
+                EditUser(row.dataset.id, editurl, cusurl);
+            }
+            else if (e.target.closest(".manage-hr-pencil-delete")) {
+                const row = e.target.closest("#delid");
+                userid = row.dataset.id;
+            }
+            else if (e.target.closest(".manage-hr-pencil-reset")) {
+                const row = e.target.closest("#resid");
+                userid = row.dataset.id;
+            }
+        });
+
+        BindSearchUsertype();
+        //BindCustomers(cusurl);
+    });
+</script>
+<script src="~/assets/js/pages/adminusers.js?ver=2" asp-append-version="true"></script>

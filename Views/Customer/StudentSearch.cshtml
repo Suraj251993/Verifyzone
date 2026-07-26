@@ -1,0 +1,215 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_VZoneLayout.cshtml";
+}
+<link rel="stylesheet" href="/assets/css/bulk.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/new-request.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Customer/VIndex"><i
+            class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+        style="color: var(--purple-color)"></i> <span
+        style="color: var(--purple-color);font-size: 14px;">V-Zone</span> <i class="ri-arrow-right-s-line"
+        style="color: var(--purple-color)"></i> <span
+        style="color: var(--purple-color);font-size: 14px;">Education verification</span> <i
+        class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i><span
+        style="font-size: 14px;">Student search</span>
+</div>
+
+<div class="content">
+    <h5 class="bulk-table-heading mb-4">Student Search</h5>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
+                <input required="required" autocomplete="off" class="input-container"
+                       placeholder="-- Choose Institution --" type="text" readonly>
+                <label class="usernameLabel">Choose Institution</label>
+                <i class="ri-group-2-line userIcon"></i>
+                <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                    <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                        24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                        24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                        9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                        9.4-33.9 0z" />
+                </svg>
+                <div id="institutiondropdownMenu" class="newinput-dropdown-menu"></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="inputContainer">
+                <input id="txtcode" required="required" autocomplete="off" class="input-container" placeholder="Student Id/Reg.code"
+                       type="text">
+                <label class="usernameLabel">Student Id/Reg.code</label>
+                <i class="ri-user-settings-line userIcon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 d-flex justify-content-center mt-2">
+        <button class="btn-submit" id="GetStu">
+            <div class="original">Get Details</div>
+            <div class="letters">
+                <span>G</span>
+                <span>e</span>
+                <span>t</span>
+                <span class="ms-1"></span>
+                <span>D</span>
+                <span>e</span>
+                <span>t</span>
+                <span>a</span>
+                <span>i</span>
+                <span>l</span>
+                <span>s</span>
+
+            </div>
+        </button>
+    </div>
+    <div class="card p-0 mt-5 mb-4 border-0">
+        <table id="studentlist">
+            <thead style="background: #f8ece2">
+                <tr>
+                    <th class="sortable">
+                        ID<i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Student name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Student Id <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Type of Degree <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Major Subject <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Education Period <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="tbody-tr tbodyTr" id="tableIdx">
+            </tbody>
+        </table>
+        <div class="text-center" id="divnorecord" style="display: none">
+            <img src="/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+            <h6 class="no-data-found-text">No record found</h6>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+<script src="~/assets/js/steps.js" asp-append-version="true"></script>
+<script src="~/assets/js/sort.js" asp-append-version="true"></script>
+<script src="~/assets/js/exit-details.js?ver=2" asp-append-version="true"></script>
+<script src="~/assets/js/common.js" asp-append-version="true"></script>
+<script src="~/assets/js/pages/studentsearch.js" asp-append-version="true"></script>
+<!--
+<div id="studentform" class="row gy-4" style="display: none;">
+    <div class="col-xl-12">
+        <div class="card mb-12">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Student detail</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <input type="hidden" id="id" name="id" />
+                    <input type="hidden" id="hdnsearch" name="hdnsearch" />
+                    <div class="form-floating form-floating-outline mb-4 col-md">
+                        <input type="text" class="form-control" id="lblstudentname" autocomplete="off" readonly />
+                        <label for="lblstudentname">Student name</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4 col-md">
+                        <input type="text" class="form-control" id="lblstudentid" autocomplete="off" readonly />
+                        <label for="lblstudentid">Student Id/Reg. code</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4 col-md">
+                        <input type="text" class="form-control" id="lbldegreetype" autocomplete="off" readonly />
+                        <label for="lbldegreetype">Degree type</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-4 col-md">
+                        <input type="text" class="form-control" id="lblmajorsubject" autocomplete="off" readonly />
+                        <label for="lblmajorsubject">Major subject</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4 col-md">
+                        <input type="text" class="form-control" id="lblperiodfrom" autocomplete="off" readonly />
+                        <label for="lblperiodfrom">Period from</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4 col-md">
+                        <input type="text" class="form-control" id="lblperiodto" autocomplete="off" readonly />
+                        <label for="lblperiodto">Period to</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-4 col-md">
+                        <input type="text" class="form-control" id="lblauthorizedby" autocomplete="off" readonly />
+                        <label for="lblauthorizedby">Last authorized by</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4 col-md">
+                        <input type="text" class="form-control" id="lblauthorizeddate" autocomplete="off" readonly />
+                        <label for="lblauthorizeddate">Last authorized date</label>
+                    </div>
+                </div>
+                <div id="actionrow" class="row">
+                    <div class="form-floating form-floating-outline mb-3 col-md">
+                        <button type="button" class="btn btn-primary" id="GetApproval">Request for Re-verify</button>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-3 col-md">
+                        <button type="button" class="btn btn-primary" id="RaiseRequest" data-toggle="modal" data-target="sturaiserequestModal">Raise Request</button>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-3 col-md">
+                        <button type="button" class="btn btn-primary" id="GenerateReport">Generate Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="sturaiserequestModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel3">Raise request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col mb-6 mt-2">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" id="txtsturegno" class="form-control">
+                            <label for="txtsturegno">Student Id/Reg code</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-6 mt-2">
+                        <div class="form-floating form-floating-outline">
+                            <input type="text" id="txtstudentdetails" class="form-control">
+                            <label for="txtstudentdetails">Enter additional details</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @* <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button> *@
+                <button type="button" class="btn btn-primary" id="btnsturaiserequest">Raise request</button>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+

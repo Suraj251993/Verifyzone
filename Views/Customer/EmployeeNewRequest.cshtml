@@ -1,0 +1,521 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_VZoneLayout.cshtml";
+}
+@model OrgCheck.ViewModels.RequestViewModel;
+<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/new-request.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="~/assets/css/bulk.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/VIndex">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i> <span style="color: var(--purple-color);font-size: 14px;">V-Zone</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> 
+            <span style="color: var(--purple-color);font-size: 14px;">Employment verification</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i><span style="font-size: 14px;">
+        Initiate a new verification
+    </span>
+</div>
+
+@if (ViewBag.AccessLevel == 2 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+        <h5 class="bulk-table-heading mb-2">Initiate a new verification</h5>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
+                    <input required="required" autocomplete="off" class="input-container"
+                           placeholder="-- Choose employer --" type="text" readonly>
+                    <label class="usernameLabel">Choose employer</label>
+                    <i class="ri-group-2-line userIcon"></i>
+                    <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                        <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                            24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                            24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                            9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                            9.4-33.9 0z" />
+                    </svg>
+                    <div id="mddsearchcustomer" class="newinput-dropdown-menu"></div>
+                </div>
+            </div>
+            <div class="col-md-4 pt-4" style="display: none;">
+                <div class="checkbox-wrapper-12 d-flex gap-3">
+                    <div class="cbx">
+                        <input type="checkbox" id="check-box-add" style="display: none">
+                        <label for="cbx-12"></label>
+                        <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                            <path d="M2 8.36364L6.23077 12L13 2"></path>
+                        </svg>
+                    </div>
+
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <filter id="goo-12">
+                                <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                </feGaussianBlur>
+                                <feColorMatrix result="goo-12" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                               mode="matrix" in="blur"></feColorMatrix>
+                                <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                            </filter>
+                        </defs>
+                    </svg>
+                    Add new company details
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-6 extraInputs" style="display: none;">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Customername, new { @class = "input-details input-container", @type = "text", @placeholder = "Company name", @autocomplete = "off" })
+                    <label class="usernameLabel">Company Name </label>
+                    <i class="ri-organization-chart userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-6 extraInputs" style="display: none;">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Customeraddress, new { @class = "input-details input-container", @type = "text", @placeholder = "Company address", @autocomplete = "off" })
+                    <label class="usernameLabel">Company Address </label>
+                    <i class="ri-mail-send-line userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-6 extraInputs" style="display: none;">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Hrname, new { @class = "input-details input-container", @type = "text", @placeholder = "HR name", @autocomplete = "off" })
+                    <label class="usernameLabel">HR name </label>
+                    <i class="ri-user-6-line userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-6 extraInputs" style="display: none;">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Hremail, new { @class = "input-details input-container", @type = "text", @placeholder = "HR Email", @autocomplete = "off" })
+                    <label class="usernameLabel">HR email </label>
+                    <i class="ri-mail-send-line userIcon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12 extraInputs">
+                <div class="inputContainer">
+                    @Html.TextAreaFor(model => model.Emailbody, new { @class = "input-details input-container", @rows = 5, @type = "text", @placeholder = "Email requisition content", @autocomplete = "off" })
+                    <label class="usernameLabel">Email requisition content</label>
+                    <i class="ri-mail-send-line userIcon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="cardz px-0 pb-0">
+                    <form id="msform">
+                        <!-- Progressbar -->
+                        <ul id="progressbar">
+                            <li class="active" id="account">
+                                <i class="ri-user-2-fill"></i>
+                                <strong>Basic Details</strong>
+                            </li>
+                            <li id="personal">
+                                <i class="ri-question-answer-line"></i>
+                                <strong>Add Attributes</strong>
+                            </li>
+                        </ul>
+                        <br>
+
+                        <!-- Step 1 -->
+                        <fieldset>
+                            <div class="form-card">
+                                <div class="row">
+                                    <div class="col-7">
+                                    </div>
+                                    <div class="col-5">
+                                        <h2 class="steps">Step 1 - 2</h2>
+                                    </div>
+                                    @Html.HiddenFor(model => model.SearchId)
+                                    <div class="col-md-6">
+                                        <div class="inputContainer">
+                                            @Html.TextBoxFor(model => model.Name, new { @class = "input-details input-container", @type = "text", @placeholder = "Employee name", @autocomplete = "off", required = "required" })
+                                            <label class="usernameLabel">
+                                                Employee
+                                                name <span>*</span>
+                                            </label>
+                                            <i class="ri-user-6-line userIcon"></i>
+                                            <span class="validationMessage"
+                                                  style="display:none;">
+                                                Please
+                                                enter employee
+                                                name
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="inputContainer">
+                                            @Html.TextBoxFor(model => model.Employeecode, new { @class = "input-details input-container", @type = "text", @placeholder = "Employee code", @autocomplete = "off", required = "required" })
+                                            <label class="usernameLabel">Employee code<span>*</span></label>
+                                            <i class="ri-user-settings-line userIcon"></i>
+                                            <span class="validationMessage"
+                                                  style="display:none;">
+                                                Please
+                                                enter employee
+                                                code
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="inputContainer">
+                                            @Html.TextBoxFor(model => model.Designation, new { @class = "input-details input-container", @type = "text", @placeholder = "Designation", @autocomplete = "off", required = "required" })
+                                            <label class="usernameLabel">Designation<span>*</span></label>
+                                            <i class="ri-bar-chart-grouped-line userIcon"></i>
+                                            <span class="validationMessage"
+                                                  style="display:none;">
+                                                Please
+                                                enter designation
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="dateInputContainer">
+                                            @Html.TextBoxFor(model => model.Fromdate, new { @class = "input-details fromDate", @type = "text", @placeholder = "From date", @autocomplete = "off", required = "required" })
+                                            <div class="label-container">
+                                                <i class="ri-calendar-line label-icon"></i>
+                                                <label class="dateLabel" for="fromDate">
+                                                    From
+                                                    date
+                                                </label>
+                                            </div>
+                                            <i class="ri-calendar-line dateIcon"></i>
+                                            <span class="validationMessage"
+                                                  style="display:none;">
+                                                Please
+                                                choose FromDate
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="dateInputContainer">
+                                            @Html.TextBoxFor(model => model.Todate, new { @class = "input-details toDate", @type = "text", @placeholder = "To date", @autocomplete = "off", required = "required" })
+                                            <div class="label-container">
+                                                <i class="ri-calendar-2-line label-icon"></i>
+                                                <label class="dateLabel" for="toDate">
+                                                    To
+                                                    date
+                                                </label>
+                                            </div>
+                                            <i class="ri-calendar-2-line dateIcon"></i>
+                                            <span class="validationMessage"
+                                                  style="display:none;">
+                                                Please
+                                                choose ToDate
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="inputContainer">
+                                            @Html.TextBoxFor(model => model.Reasonforleaving, new { @class = "input-details input-container", @type = "text", @placeholder = "Reason for leaving", @autocomplete = "off" })
+                                            <label class="usernameLabel">Reason for leaving</label>
+                                            <i class="ri-map-pin-user-line userIcon"></i>
+                                            <span class="validationMessage"
+                                                  style="display:none;">
+                                                Please
+                                                enter Reason for leaving
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="inputContainer reasonContainer"
+                                             id="inputContainer" style="position: relative;">
+                                            <input class="input-container" required="required" autocomplete="off"
+                                                   placeholder="Type of exit"
+                                                   type="text" readonly>
+                                            <label class="usernameLabel">
+                                                Type
+                                                of exit
+                                            </label>
+                                            <i class="ri-run-line userIcon"></i>
+                                            <!-- Chevron Icon -->
+                                            <svg viewBox="0 0 320 512" class="chevronIcon"
+                                                 id="chevronIcon">
+                                                <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                            24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                            24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                            9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                            9.4-33.9 0z" />
+                                            </svg>
+                                            <!-- Dropdown Menu -->
+                                            <div id="dropdownExitType" class="newinput-dropdown-menu"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="inputContainer">
+                                            @Html.TextBoxFor(model => model.Location, new { @class = "input-details input-container", @type = "text", @placeholder = "Work location", @autocomplete = "off" })
+                                            <label class="usernameLabel">Work location</label>
+                                            <i class="ri-map-pin-user-line userIcon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="inputContainer">
+                                            @Html.TextBoxFor(model => model.Jobtype, new { @class = "input-details input-container", @type = "text", @placeholder = "Job type (Permanent/Contract/Others)", @autocomplete = "off" })
+                                            <label class="usernameLabel">
+                                                Job
+                                                type
+                                                (Permanent/Contract/Other)
+                                            </label>
+                                            <i class="ri-user-settings-line userIcon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="inputContainer">
+                                            @Html.TextBoxFor(model => model.Lastdrawnsalary, new { @class = "input-container", @type = "text", @placeholder = "Last drawn salary", @autocomplete = "off" })
+                                            <label class="usernameLabel">
+                                                Last
+                                                drawn
+                                                salary
+                                            </label>
+                                            <i class="ri-wallet-3-line userIcon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="inputContainer">
+                                            @Html.TextBoxFor(model => model.Reportingto, new { @class = "input-container", @type = "text", @placeholder = "Reporting to", @autocomplete = "off" })
+                                            <label class="usernameLabel">Reporting to</label>
+                                            <i class="ri-folder-chart-line userIcon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="inputContainer">
+                                            @Html.TextBoxFor(model => model.Managerdesignation, new { @class = "input-container", @type = "text", @placeholder = "Manager designation", @autocomplete = "off" })
+                                            <label class="usernameLabel">
+                                                Manager
+                                                designation
+                                            </label>
+                                            <i class="ri-contacts-line userIcon"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- Replace "Next" with a Submit button -->
+                            <div class="col-md-12 text-end d-flex justify-content-end gap-2 p-2">                            
+                                <button class="btn-submit submitbutton button-submit-validate" type="button" id="next" name="next"
+                                        value="Next">
+                                    <div class="original">Next</div>
+                                    <div class="letters">
+                                        <span>N</span>
+                                        <span>e</span>
+                                        <span>x</span>
+                                        <span>t</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </fieldset>
+
+                        <!-- Step 2 -->
+                        <fieldset>
+                            <div class="form-card">
+                                <div class="row" id="divQuestions">
+                                    <div class="col-7">
+                                    </div>
+                                    <div class="col-5">
+                                        <h2 id="step2-label" class="steps">Step 2 - 2</h2>
+                                    </div>
+                                    @foreach (var qn in Model.EmployeeQuestions)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                <input id='qns_@qn.QuestionId' class="input-container" required="required" autocomplete="off"
+                                                       placeholder='@qn.Questionname' value="@qn.Answer"
+                                                       type="text">
+                                                <label class="usernameLabel">
+                                                    @qn.Questionname
+                                                </label>
+                                                <i class="ri-creative-commons-by-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                    }                                
+                                </div>
+                            </div>
+                            <!-- Replace "Next" with a Submit button -->
+                            <div class="col-md-12 text-end d-flex justify-content-end p-2">
+                                <button class="btn-closes" id="btnclose">
+                                    <div class="original">Previous</div>
+                                    <div class="letters">
+                                        <span>P</span>
+                                        <span>r</span>
+                                        <span>e</span>
+                                        <span>v</span>
+                                        <span>i</span>
+                                        <span>o</span>
+                                        <span>u</span>
+                                        <span>s</span>
+                                    </div>
+                                </button>&nbsp;&nbsp;                            
+                                <button class="btn-submit" id="btnsubmits2" type="button"
+                                        name="btnsubmits2">
+                                    <div class="original">Submit</div>
+                                    <div class="letters">
+                                        <span>S</span>
+                                        <span>u</span>
+                                        <span>b</span>
+                                        <span>m</span>
+                                        <span>i</span>
+                                        <span>t</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}
+
+@* <script src="~/assets/js/common.js?ver=1" asp-append-version="true"></script> *@
+<script src="~/assets/js/pages/employeenewrequest.js?ver=3" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    const inputFields = document.querySelectorAll(".input-details");
+    const nextButton = document.querySelector(".button-submit-validate");
+    
+    var cusurl = '@Url.Action("GetCustomers", "Admin")';    
+    BindCustomers(cusurl);
+
+    inputFields.forEach(inputField => {
+        const validationMessage = inputField.parentElement.querySelector(".validationMessage");
+        const dateIcon = inputField.parentElement.querySelector(".dateIcon");
+
+
+        inputField.addEventListener("blur", () => {
+            validateField(inputField, validationMessage, dateIcon);
+        });
+
+
+        inputField.addEventListener("input", () => {
+            if (inputField.value.trim().length > 0) {
+                inputField.style.border = "";
+                if (validationMessage != null) {
+                    validationMessage.style.display = "none";
+                }
+                if (dateIcon) dateIcon.style.top = "";
+            }
+        });
+    });
+
+
+    function validateField(inputField, validationMessage, dateIcon) {
+        if (inputField.value.length === 0) {
+            if(inputField.style != null) inputField.style.border = "1px solid red";
+            if (validationMessage != null) validationMessage.style.display = "block";
+            if (dateIcon) dateIcon.style.top = "30%";
+            return false;
+        } else {
+            inputField.style.border = "";
+            if (validationMessage != null) validationMessage.style.display = "none";
+            if (dateIcon) dateIcon.style.top = "";
+            return true;
+        }
+    }
+
+
+    nextButton.addEventListener("click", () => {
+        let isValid = true;
+        inputFields.forEach(inputField => {
+            const validationMessage = inputField.parentElement.querySelector(".validationMessage");
+            const dateIcon = inputField.parentElement.querySelector(".dateIcon");
+
+            const fieldValid = validateField(inputField, validationMessage, dateIcon);
+            if (!fieldValid) {
+                isValid = false;
+            }
+        });
+    });
+
+    var saveurl = '@Url.Action("SendExRequest", "Customer")';
+    var nextbtn = document.getElementById('next');
+    var closebtn = document.getElementById('btnclose');
+
+    document.getElementById("btnsubmits2").addEventListener("click", function() { SaveEmployee(saveurl); }, false);
+    nextbtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        gotoNext(this);
+    });
+    
+    closebtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        gotoClose(this);
+    });    
+</script>
+
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropmenus = document.querySelectorAll(".newinput-dropdown-menu");
+        dropmenus.forEach(dropmenu => {
+            dropmenu.addEventListener("click", () => {
+                dropmenu.classList.toggle("show");
+            });
+        });
+    });
+    
+    // ShowBalance();
+</script>
+
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    document.addEventListener('DOMContentLoaded', function () {
+        const fromPicker = flatpickr("#Fromdate", {
+            dateFormat: "d-m-Y",
+            onChange: function (selectedDates) {
+                if (selectedDates.length === 0) return;
+
+                let nextDay = new Date(selectedDates[0]);
+                nextDay.setDate(nextDay.getDate());
+
+                toPicker.set("minDate", nextDay);
+
+                if (toPicker.selectedDates.length > 0 && toPicker.selectedDates[0] < nextDay) {
+                    toPicker.clear();
+                }
+            }
+        });
+
+        const toPicker = flatpickr("#Todate", {
+            dateFormat: "d-m-Y"
+        });
+
+        // Initialize all tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        [...tooltipTriggerList].forEach(el => new bootstrap.Tooltip(el));
+    });
+</script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    const extraInputs = document.querySelectorAll('.extraInputs');
+    const checkbox = document.querySelector('#check-box-add');
+
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            extraInputs.forEach(el => el.style.display = 'block');
+        } else {
+            extraInputs.forEach(el => el.style.display = 'none');
+        }
+    });
+</script>

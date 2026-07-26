@@ -1,0 +1,222 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@model List<OrgCheck.ViewModels.StudentApprovalViewModel>;
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+@section VendorScripts {
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
+    <script src="~/js/common.js"></script>
+}
+@* ************** Content ************** *@
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Student Re-vertify</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row gy-6">
+    
+    <!-- Four Cards -->
+    <div class="col-xl-8 col-md-6">
+        <div class="row gy-6">
+            <!-- Total Profit Weekly Project -->
+            @if(Model.Count > 0) {
+                @foreach (var mod in Model)
+                {
+                    <div class="col-sm-4" id='div+@mod.Id'>
+                        <div class="card h-100">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <div class="avatar">
+                                    <div class="avatar-initial bg-secondary rounded-circle shadow-xs">
+                                        <i class="ri-pie-chart-2-line ri-24px"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="mb-1">@mod.StudentName</h6>
+                                <div class="d-flex flex-wrap mb-1 align-items-center">
+                                    <a href="#" onclick="openForm(@mod.StudentId)"><h4 class="mb-0 me-2">@mod.RegNo</h4></a>
+                                </div>
+                                <small>@mod.RequestedBy (@mod.RequestedOrganisation) - @mod.RequestedDate</small>
+                                <button type="button" class="btn btn-primary" id="btnApprove" onclick="approve(@mod.Id)">Approve</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ Total Profit Weekly Project -->
+                }
+            }
+            else
+            {
+                
+            }
+        </div>
+    </div>
+    <!--/ four cards -->
+    <div class="col-xl-4 col-md-6">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Student details</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-regcode" />
+                        <label for="basic-default-regcode">Student Id/Reg. code</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-studentname" />
+                        <label for="basic-default-studentname">Student name</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-university" />
+                        <label for="basic-default-university">University</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-degreetype" />
+                        <label for="basic-default-degreetype">Degree type</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-majorsubject" />
+                        <label for="basic-default-majorsubject">Major subject</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-periodfrom" />
+                        <label for="basic-default-periodfrom">Period from</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-periodto" />
+                        <label for="basic-default-periodto">Period to</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-passyear" />
+                        <label for="basic-default-passyear">Pass out year</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-marks" />
+                        <label for="basic-default-marks">Marks obtained</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-studymode" />
+                        <label for="basic-default-studymode">Study mode</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-attaindegree" />
+                        <label for="basic-default-attaindegree">Eligible attain degree</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-comments" />
+                        <label for="basic-default-comments">Comments</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-authorizedby" />
+                        <label for="basic-default-authorizedby">Last authorized by</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-4">
+                        <input type="text" class="form-control" id="basic-default-authorizeddate" />
+                        <label for="basic-default-authorizeddate">Authorized date</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/vendor/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () {       
+        ShowBalance();
+        $('#loading').hide();
+    });
+    function approve(id){
+        var url = '@Url.Action("StudentApproval", "Customer")';
+        var ids = [];
+        ids.push(id);
+
+        $('#loading').show();
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { Ids: ids },
+            dataType: 'json', // changing data type to json
+            success: function (data) { // here I'm adding data as a parameter which stores the response
+                //console.log(data); // instead of alert I'm changing this to console.log which logs all the response in console.
+                if (data == 'True') {
+                    showSuccessMessage('Approved successfully');
+                    $('#div' + id).hide();
+                    $('#loading').hide();
+                }
+                else {
+                    $('#loading').hide();
+                    showErrorMessage(data);
+                }
+            },
+            error: function (err) {
+                $('#loading').hide();
+                console.log(err);
+            }
+        });
+    }
+    function ClearData() {
+        $('#basic-default-regcode').val('');
+        $('#basic-default-studentname').val('');
+        $('#basic-default-university').val('');
+        $('#basic-default-degreetype').val('');
+        $('#basic-default-majorsubject').val('');
+        $('#basic-default-periodfrom').val('');
+        $('#basic-default-periodto').val('');
+        $('#basic-default-passyear').val('');
+        $('#basic-default-marks').val('');
+        $('#basic-default-studymode').val('');
+        $('#basic-default-attaindegree').val('');
+        $('#basic-default-comemnts').val('');
+        $('#basic-default-authorizedby').val('');
+        $('#basic-default-authorizeddate').val('');
+    }
+    function openForm(id) {
+        if (id != '') {
+            $.ajax({
+                type: 'GET',
+                dataType: 'JSON',
+                url: '@Url.Action("GetStudent", "Customer")',
+                data: { id: id },
+                success:
+                    function (data) {
+                        if (data == null || data.id == null) {
+                            ClearData();
+                            showErrorMessage('Student details not found');
+                        }
+                        else {
+                            $('#basic-default-regcode').val(data.studentid);
+                            $('#basic-default-studentname').val(data.studentname);
+                            $('#basic-default-university').val(data.university);
+                            $('#basic-default-degreetype').val(data.degreetype);
+                            $('#basic-default-majorsubject').val(data.majorsubject);
+                            $('#basic-default-periodfrom').val(data.periodfrom);
+                            $('#basic-default-periodto').val(data.periodto);
+                            $('#basic-default-passyear').val(data.passyear);
+                            $('#basic-default-marks').val(data.marksobtained);
+                            $('#basic-default-studymode').val(data.studymode);
+                            $('#basic-default-attaindegree').val(data.eligibleattaindegree);
+                            $('#basic-default-comemnts').val(data.comments);
+                            $('#basic-default-authorizedby').val(data.authorizedby);
+                            $('#basic-default-authorizeddate').val(data.authorizeddate);
+                        }
+                    },
+                error:
+                    function (response) {
+                        alert("Error: " + response);
+                    }
+            });
+            $('#divstudentform').load("/Customer/BindStudentForm?Id=" + id);
+        }
+    }
+</script>

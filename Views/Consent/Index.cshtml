@@ -1,0 +1,144 @@
+@model OrgCheck.ViewModels.ConsentTokenViewModel
+@{
+    Layout = null;
+}
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Consent | Verifyzone</title>
+
+    <link rel="icon" href="~/assets/img/logotop.png" />
+    <link href="~/assets/css/login.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/css/toast.css" asp-append-version="true">
+    <link href="~/assets/css/exit-details.css" rel="stylesheet">
+    <link href="/assets/remix/fonts/remixicon.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/common.js?ver=1" asp-append-version="true"></script>
+    <script src="~/assets/js/jquery-3.7.1.min.js" asp-append-version="true"></script>
+</head>
+<div class="login-bg"></div>
+
+<div class="container lcon">
+    <div class="login-container">
+        <div class="login-left" id="consentBox" style="width: 100%;">
+            <img src="~/assets/img/logotop.png" alt="Company logo" style="height: 48px; margin-bottom: 15px;" />
+
+            @if (Model.Valid)
+            {
+                <h5 class="login-welcome">Employee Consent</h5>
+                <p class="login-subtext">Hello @Model.Employeename,</p>
+                <p class="login-subtext" id="consentStatement">
+                    @Model.Companyname has requested your consent as part of their verification process.
+                    Please review the statement below and submit your response.
+                </p>
+
+                <form id="consentForm" autocomplete="off">
+                    <input type="hidden" id="Token" value="@Model.Token" />
+                    <div class="inputContainer" style="margin-top: 20px;">
+                        <input class="input-container" type="text" value="@Model.Employeename" readonly="readonly" />
+                        <label class="usernameLabel">Employee name</label>
+                        <i class="ri-user-6-line userIcon"></i>
+                    </div>
+                    <div class="inputContainer" style="margin-top: 20px;">
+                        <input class="input-container" type="text" value="@Model.Employeeemail" readonly="readonly" />
+                        <label class="usernameLabel">Employee email</label>
+                        <i class="ri-mail-line userIcon"></i>
+                    </div>
+                    <div class="inputContainer" style="margin-top: 20px;">
+                        <input id="Optionalemail" class="input-container" type="text" placeholder="Alternate email (optional)" autocomplete="off" />
+                        <label class="usernameLabel">Alternate email (optional)</label>
+                        <i class="ri-mail-line userIcon"></i>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="cbxconsent">
+                                    <label for="cbxconsent"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+                                <span>I have read and understood the consent statement and voluntarily agree.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="consentValidationMessage" style="display:none; color: red; font-size: 13px; margin-top: 5px;">
+                        *Please accept the consent statement before submitting
+                    </p>
+                    <div class="text-center mt-4">
+                        <button type="button" id="btnsubmitconsent" class="btn btn-primary login-btn">Submit</button>
+                    </div>
+                </form>
+
+                <div id="consentSuccessBox" style="display:none; text-align:center; margin-top: 20px;">
+                    <i class="ri-checkbox-circle-line" style="font-size: 48px; color: green;"></i>
+                    <h5 class="login-welcome mt-3">Thank you.</h5>
+                    <p class="login-subtext">Your consent has been successfully recorded. No additional action is required.</p>
+                </div>
+            }
+            else if (Model.Consumed)
+            {
+                <div style="text-align:center; margin-top: 20px;">
+                    <i class="ri-checkbox-circle-line" style="font-size: 48px; color: green;"></i>
+                    <h5 class="login-welcome mt-3">Thank you.</h5>
+                    <p class="login-subtext">Your consent has already been recorded. No additional action is required.</p>
+                </div>
+            }
+            else if (Model.Expired)
+            {
+                <div style="text-align:center; margin-top: 20px;">
+                    <i class="ri-time-line" style="font-size: 48px; color: var(--purple-color);"></i>
+                    <h5 class="login-welcome mt-3">Link expired</h5>
+                    <p class="login-subtext">This consent request has expired. Please contact your HR representative.</p>
+                </div>
+            }
+            else
+            {
+                <div style="text-align:center; margin-top: 20px;">
+                    <i class="ri-error-warning-line" style="font-size: 48px; color: var(--purple-color);"></i>
+                    <h5 class="login-welcome mt-3">Invalid request</h5>
+                    <p class="login-subtext">Invalid or unavailable consent request.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div id="error" class="toast-modal">
+    <div class="modal-content model-toast error">
+        <div class="modal-header border-0">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="icon"><i class="ri-close-line"></i></div>
+        <p id="errormessage"></p>
+    </div>
+</div>
+<div id="success" class="toast-modal">
+    <div class="modal-content model-toast success px-0 pb-0 p-0 m-0">
+        <div class="icon"><i class="ri-check-line"></i></div>
+        <p id="successmessage"></p>
+        <div class="toast-progress progress" style="border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+            <div class="toast-progress-bar" id="errorProgress"></div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/popper.min.js"></script>
+<script src="~/assets/js/pages/consentsubmit.js?ver=1" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    var csrfToken = '@Antiforgery.GetAndStoreTokens(Context).RequestToken';
+    var submitConsentUrl = '@Url.Action("Submit", "Consent")';
+    document.getElementById("error").addEventListener("click", function () { closeModal(this); });
+    var btn = document.getElementById("btnsubmitconsent");
+    if (btn) {
+        btn.addEventListener("click", function () { SubmitConsent(submitConsentUrl); });
+    }
+</script>

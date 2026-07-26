@@ -1,0 +1,53 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
+}
+<link rel="stylesheet" href="~/assets/css/dash.css">
+<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/new-request.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/Index">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i>
+    <span style="color: var(--purple-color);font-size: 14px;">Ex-Zone</span> 
+    <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Ex-employee approval</span>
+</div>
+<div class="content">
+    <h5 class=" bulk-table-heading mb-4">Ex-employee approval</h5>
+    <div class="card p-0 mt-3 mb-4 border-0">
+        <table>
+            <thead style="background: #f8ece2">
+                <tr>
+                    <th class="sortable">
+                        S.no <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Employee code <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Employee name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Date <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Designation <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Action <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="tbody-tr tbodyTr" id="tableIdx">
+        </table>
+    </div>    
+</div>
+<script src="~/vendor/jquery-3.2.1.min.js" asp-append-version="true"></script>
+<script src="~/assets/js/sort.js" asp-append-version="true"></script>
+<script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>

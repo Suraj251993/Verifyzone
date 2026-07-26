@@ -1,0 +1,241 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
+}
+<link rel="stylesheet" href="/assets/css/help.css">
+<link rel="stylesheet" href="/assets/css/roadmap.css">
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="dashboardxzone.html">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i> 
+            <span style="color: var(--purple-color);font-size: 14px;">Ex-Zone</span>
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Road map</span>
+</div>
+@if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+
+        <h1 class="bulk-table-heading fs-5">Road Map</h1>
+
+        <div class="roadmap">
+
+            <div class="roadmap__line"></div>
+
+            <div class="roadmap__item roadmap__item--left">
+                <span class="roadmap__year">Add employee exit</span>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">01</h6>
+                    <div class="side-multi-data">
+                        <h5>Add an exit</h5>
+                        <h6 class="card-count-roadmap">01</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to add and maintain employee exit details such as employment details, few basic BGV questionaries
+                        for future verifications.
+                    </p>
+                    <a href="/Customer/EmployeeForm" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">02</h6>
+                    <div class="side-multi-data">
+                        <h5>Bulk upload</h5>
+                        <h6 class="card-count-roadmap">02</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to upload multiple records at once, reducing manual data
+                        entry. Template for the bulk upload is available in the same page. 
+                    </p>
+                    <a href="/Customer/EmployeeUpload" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__icon"> <i class="ri-user-add-line"></i></div>
+            </div>
+
+            <div class="roadmap__item roadmap__item--right">
+                <span class="roadmap__year">Approve requests</span>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">01</h6>
+                    <div class="side-multi-data">
+                        <h5>Re-verification</h5>
+                        <h6 class="card-count-roadmap">01</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to review and approve re-verification requests submitted by users to ensure data
+                        accuracy and compliance.
+                    </p>
+                    <a href="/Customer/EmployeeApproval" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">02</h6>
+                    <div class="side-multi-data">
+                        <h5>New requests</h5>
+                        <h6 class="card-count-roadmap">02</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Allows authorized users to review and approve newly submitted requests before they are
+                        processed further.
+                    </p>
+                    <a href="/Customer/EmployeeRequest" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__icon"><i class="ri-notification-2-line"></i></div>
+            </div>
+
+            <div class="roadmap__item roadmap__item--left">
+                <span class="roadmap__year">Search Exit Records</span>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">01</h6>
+                    <div class="side-multi-data">
+                        <h5>View records</h5>
+                        <h6 class="card-count-roadmap">01</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Provides detailed information of all the ex-employees including exit details, approval status, and
+                        the BGV questions.                        
+                    </p>
+                    <a href="/Customer/ViewEmployee" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+               
+            @* @if (ViewBag.Category == 2)
+            { *@
+                
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">02</h6>
+                    <div class="side-multi-data">
+                        <h5>Search a record</h5>
+                        <h6 class="card-count-roadmap">02</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to search for ex-employee records using Employee code.
+                    </p>
+                    <a href="/Customer/SearchEmployee" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__icon"> <i class="ri-user-settings-line"></i></div>
+            </div>
+           @*  } *@
+            <div class="roadmap__item roadmap__item--right">
+                <span class="roadmap__year">Autopilot Approval</span>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">01</h6>
+                    <div class="side-multi-data">
+                        <h5>Setup autopilot</h5>
+                        <h6 class="card-count-roadmap">01</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to setup a range of date during which any re-certification requests received will be approved automatically,
+                        reducing manual intervention and delay in reply.
+                    </p>
+                    <a href="/Customer/AutoApprovalConfig" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">02</h6>
+                    <div class="side-multi-data">
+                        <h5>Setup exclusions</h5>
+                        <h6 class="card-count-roadmap">02</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to remove the ex-employee records from the exclusion on auto approval.
+                    </p>
+                    <a href="/Customer/AutoApprovalExclude" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__icon"> <i class="ri-upload-cloud-line"></i></div>
+            </div>      
+            
+            <div class="roadmap__item roadmap__item--left">
+                <span class="roadmap__year">Reports</span>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">01</h6>
+                    <div class="side-multi-data">
+                        <h5>Attrition report</h5>
+                        <h6 class="card-count-roadmap">01</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Provides insights into employee attrition trends, helping administrators analyze exit
+                        patterns and make informed decisions.
+                    </p>
+                    <a href="/Customer/AttritionReport" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">02</h6>
+                    <div class="side-multi-data">
+                        <h5>Re-verification history</h5>
+                        <h6 class="card-count-roadmap">02</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Displays the history of re-verification activities, including status, dates, and actions
+                        taken for reference and audit purposes.
+                    </p>
+                    <a href="/Customer/ApprovalHistory" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__icon"> <i class="ri-user-voice-line"></i></div>
+            </div>
+
+        </div>
+    </div>
+    <script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+        const items = document.querySelectorAll('.item');
+
+        window.addEventListener('scroll', () => {
+        items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+        item.style.opacity = 1;
+        item.style.transform = 'translateY(0)';
+        }
+        });
+        });
+
+        items.forEach(item => {
+        item.style.opacity = 0;
+        item.style.transform = 'translateY(40px)';
+        item.style.transition = '0.6s ease';
+        });
+
+    </script>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}

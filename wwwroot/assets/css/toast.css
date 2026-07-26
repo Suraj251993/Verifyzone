@@ -1,0 +1,275 @@
+.toast-buttons button {
+  margin: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background: #6c63ff;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+ 
+.toast-buttons button:hover {
+  background: #5750e0;
+}
+ 
+/* Modal Background */
+.toast-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+}
+ 
+/* Modal Content */
+.model-toast {
+  background: white !important;
+  padding: 10px !important;
+  border-radius: 12px !important;
+      width: 35% !important;
+    height: 35% !important;
+  text-align: center !important;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2) !important;
+  animation: popup 0.4s ease !important;
+}
+ 
+/* Animation */
+@keyframes popup {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+ 
+/* Icon animation */
+.toast-modal .icon {
+  position: relative !important;
+    top: 10px;
+  font-size: 48px;
+  animation: bounce 0.6s ease;
+}
+ 
+@keyframes bounce {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+ 
+ 
+ 
+/* Smooth pop/bounce entry */
+@keyframes popIn {
+  0% {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) rotate(10deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+ 
+/* Gentle spinning effect */
+@keyframes rotateIn {
+  0% {
+    transform: rotate(-180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+ 
+ 
+.success .icon i {
+  color: #4bad12;
+      height: 80px;
+    width: 80px;
+    font-size: 50px;
+    border-radius: 50px;
+  border: 3px solid #ceffb3;
+  font-size: 50px;
+  animation: spinIn 1s ease, iconPop 0.6s ease;
+}
+ 
+.error .icon i {
+    color: #f27474;
+          height: 80px;
+    width: 80px;
+    font-size: 50px;
+    border-radius: 50px;
+  border: 3px solid #f7a0a0;
+  font-size: 50px;
+  animation: errorXMark 0.5s ease;
+}
+.warning .icon p {
+  color: #f8bb86;
+  height: 80px;
+    width: 80px;
+    font-size: 50px;
+    border-radius: 50px;
+  border: 3px solid #fdd8b8;
+  font-size: 50px;
+  animation: warning 0.5s ease;
+ 
+}
+.info .icon p {
+  color: #17a2b8;
+    height: 80px;
+    width: 80px;
+    font-size: 50px;
+    border-radius: 50px;
+  border: 3px solid #b8daff;
+  font-size: 50px;
+  animation: info 0.5s ease;
+}
+.question .icon p {
+    color: #87adbd;
+    height: 80px;
+    width: 80px;
+    font-size: 50px;
+    border-radius: 50px;
+  border: 3px solid #87adbd;
+  font-size: 50px;
+  animation: question 0.5s ease;
+}
+ 
+@keyframes glow {
+  0%, 100% { text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
+  50% { text-shadow: 0 0 15px currentColor, 0 0 30px currentColor; }
+}
+ 
+/* Icon pop/bounce animation */
+@keyframes iconPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+ 
+/* Icon rotation animation */
+@keyframes spinIn {
+  0% { transform: rotate(-180deg) scale(0.5); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+ 
+ 
+ 
+@keyframes warning {
+0% {
+    transform: rotateZ(45deg);
+    opacity: 0;
+}
+ 
+25% {
+    transform: rotateZ(-25deg);
+    opacity: .4;
+}
+ 
+50% {
+    transform: rotateZ(15deg);
+    opacity: .8;
+}
+ 
+75% {
+    transform: rotateZ(-5deg);
+    opacity: 1;
+}
+ 
+100% {
+    transform: rotateX(0);
+    opacity: 1;
+}
+}
+ 
+ 
+ 
+@keyframes errorXMark {
+0% {
+    margin-top: 1.625em;
+    transform: scale(0.4);
+    opacity: 0;
+}
+ 
+50% {
+    margin-top: 1.625em;
+    transform: scale(0.4);
+    opacity: 0;
+}
+ 
+80% {
+    margin-top: -0.375em;
+    transform: scale(1.15);
+}
+ 
+100% {
+    margin-top: 0;
+    transform: scale(1);
+    opacity: 1;
+}
+}
+ 
+ 
+@keyframes info {
+0% {
+    transform: rotateZ(45deg);
+    opacity: 0;
+}
+ 
+25% {
+    transform: rotateZ(-25deg);
+    opacity: .4;
+}
+ 
+50% {
+    transform: rotateZ(15deg);
+    opacity: .8;
+}
+ 
+75% {
+    transform: rotateZ(-5deg);
+    opacity: 1;
+}
+ 
+100% {
+    transform: rotateX(0);
+    opacity: 1;
+}
+}
+ 
+@keyframes question {
+0% {
+    transform: rotateY(-360deg);
+}
+ 
+100% {
+    transform: rotateY(0);
+}
+}
+
+.toast-progress {
+  height: 4px !important;
+  width: 96%;
+  margin-left: 8px;
+  background: white !important;
+  margin-top: 10px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+ 
+.toast-progress-bar {
+  height: 4px;
+  width: 0%;
+  background: rgb(20, 173, 20);
+  transition: width linear;
+}

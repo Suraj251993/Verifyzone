@@ -1,0 +1,743 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
+}
+@model List<OrgCheck.ViewModels.EmployeeRequestViewModel>;
+<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/new-request.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="~/assets/css/bulk.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/Index">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i>
+    <span style="color: var(--purple-color);font-size: 14px;">Ex-Zone</span>
+    <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Approve New Request</span>
+</div>
+@if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
+{
+<div class="content" style="box-shadow: none;">
+    <div class="mb-4">
+        <h5 class="bulk-table-heading">Approve New Request</h5>
+    </div>
+    <main>
+        <div class="roweee">
+            @if (Model.Count > 0)
+            {
+                @foreach (var mod in Model)
+                {
+                    <div class="verify-note-card verify-note-card22" id='div_@mod.Id' style="border: 1px solid lightgray; box-shadow: none;">
+                        <div class="verify-note-tab"></div>
+
+                        <div class="verify-accept-icon">
+                            <i class="ri-shield-user-line"></i> @mod.Empcode
+                        </div>
+                        <p class="verify-accept-heading">@mod.Name</p>
+                        <h6 class="verify-accept-content" style="font-size: 15px;">@mod.Raiseddate</h6>
+                        <p class="verify-accept-content">
+                            @mod.RaisedByName
+                        </p>
+                        <div class="verify-accept-content">
+                            <span data-bs-toggle="modal" data-bs-target="#empViewModal" id="loadid" data-id='@mod.Empcode' data-val='@mod.Customerid'>
+                                <button class="new-request-table-delete-btn ms-1" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" data-bs-custom-class="tooltip-delete" title="View details"
+                                        style="color: green;">
+                                    <i class="ri-verified-badge-line"></i>
+                                </button>
+                            </span>
+                            <button class="new-request-table-delete-btn ms-1" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" data-bs-custom-class="tooltip-delete" title="Download consent letter" style="color: blue;">
+                                <i class="ri-download-cloud-2-line"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center mt-5">
+                    <img src="~/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+                    <h6 class="no-data-found-text">No record found</h6>
+                </div>
+            }
+        </div>
+    </main>
+</div>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}
+<div class="modal fade" id="empViewModal" tabindex="-1" data-bs-backdrop="static"
+     data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="background-color: rgb(246, 244, 244) !important;">
+            <div class="modal-header verify-popup-header border-0">
+                <div>
+                    <h1 class="modal-title bulk-table-heading fs-5" id="exampleModalLabel">
+                        New Verification request received
+                    </h1>
+                </div>
+                <div>
+                    <button class="verify-button-approve" id="btnapprove">
+                        <i class="ri-check-line"></i>
+                        Approve
+                    </button>
+                    <button class="verify-button-reject" id="btnreject">
+                        <i class="ri-close-line"></i>
+                        Reject
+                    </button>
+                    <button class="verify-button-modify" id="btnmodify">
+                        <i class="ri-edit-2-line"></i>
+                        Modify
+                    </button>
+                    <button class="close-btn-popup" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="cardz px-0 pt-4 pb-0 mt-3 mb-3" id="divForm">
+                            <!-- Progressbar -->
+                            <ul id="progressbar">
+                                <li class="active" id="account">
+                                    <i class="ri-user-2-fill"></i>
+                                    <strong>Basic Details</strong>
+                                </li>
+                                <li id="personal">
+                                    <i class="ri-question-answer-line"></i>
+                                    <strong>Add Attributes</strong>
+                                </li>
+                                <li id="payment">
+                                    <i class="ri-add-box-line"></i>
+                                    <strong>Alert the employers about this candidate</strong>
+                                </li>
+                            </ul>
+                            <br>
+
+                            <!-- Step 1 -->
+                            <fieldset>
+                                <div class="form-card">
+                                    <div class="row">
+                                        <div class="col-7">
+                                        </div>
+                                        <div class="col-5">
+                                            <h2 class="steps">Step 1 - 2</h2>
+                                        </div>
+                                        @Html.Hidden("Mode")
+                                        @Html.Hidden("Id")
+                                        @Html.Hidden("IsEdit")
+                                        <input type="hidden" id="SearchId" />
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Name", null, new { @class = "input-details input-container", @type = "text", @placeholder = "Employee name", @autocomplete = "off", required = "required" })
+                                                <label class="usernameLabel">
+                                                    Employee
+                                                    name <span>*</span>
+                                                </label>
+                                                <i class="ri-user-6-line userIcon"></i>
+                                                <span class="validationMessage"
+                                                      style="display:none;">
+                                                    *Please
+                                                    enter employee
+                                                    name
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Employeecode", null, new { @class = "input-details input-container", @type = "text", @placeholder = "Employee code", @autocomplete = "off", required = "required" })
+                                                <label class="usernameLabel">Employee code</label>
+                                                <i class="ri-user-settings-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Designation", null, new { @class = "input-details input-container", @type = "text", @placeholder = "Designation", @autocomplete = "off", required = "required" })
+                                                <label class="usernameLabel">Designation</label>
+                                                <i class="ri-bar-chart-grouped-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="dateInputContainer">
+                                                @Html.TextBox("Fromdate", null, new { @class = "fromDate", @type = "text", @placeholder = "From date", @autocomplete = "off", required = "required" })
+                                                <div class="label-container">
+                                                    <i class="ri-calendar-line label-icon"></i>
+                                                    <label class="dateLabel" for="fromDate">
+                                                        From
+                                                        date
+                                                    </label>
+                                                </div>
+                                                <i class="ri-calendar-line dateIcon"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="dateInputContainer">
+                                                @Html.TextBox("Todate", null, new { @class = "toDate", @type = "text", @placeholder = "To date", @autocomplete = "off", required = "required" })
+                                                <div class="label-container">
+                                                    <i class="ri-calendar-2-line label-icon"></i>
+                                                    <label class="dateLabel" for="toDate">
+                                                        To
+                                                        date
+                                                    </label>
+                                                </div>
+                                                <i class="ri-calendar-2-line dateIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer reasonContainer"
+                                                 id="inputContainer" style="position: relative;">
+                                                <input class="input-container" required="required" autocomplete="off"
+                                                       placeholder="Type of exit"
+                                                       type="text" readonly>
+                                                <label class="usernameLabel">
+                                                    Type
+                                                    of exit
+                                                </label>
+                                                <i class="ri-run-line userIcon"></i>
+                                                <!-- Chevron Icon -->
+                                                <svg viewBox="0 0 320 512" class="chevronIcon"
+                                                     id="chevronIcon">
+                                                    <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                            24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                            24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                            9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                            9.4-33.9 0z" />
+                                                </svg>
+                                                <!-- Dropdown Menu -->
+                                                @Html.Hidden("ExitType")
+                                                <div id="dropdownExitType"
+                                                     class="newinput-dropdown-menu">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Location", null, new { @class = "input-container", @type = "text", @placeholder = "Work location", @autocomplete = "off" })
+                                                <label class="usernameLabel">Work location</label>
+                                                <i class="ri-map-pin-user-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Jobtype", null, new { @class = "input-container", @type = "text", @placeholder = "Job type (Permanent/Contract/Others)", @autocomplete = "off", required = "required" })
+                                                <label class="usernameLabel">
+                                                    Job
+                                                    type
+                                                    (Permanent/Contract/Other)
+                                                </label>
+                                                <i class="ri-user-settings-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Lastdrawnsalary", null, new { @class = "input-container", @type = "text", @placeholder = "Last drawn salary", @autocomplete = "off" })
+                                                <label class="usernameLabel">
+                                                    Last
+                                                    drawn
+                                                    salary
+                                                </label>
+                                                <i class="ri-wallet-3-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Reportingto", null, new { @class = "input-container", @type = "text", @placeholder = "Reporting to", @autocomplete = "off", required = "required" })
+                                                <label class="usernameLabel">Reporting to</label>
+                                                <i class="ri-folder-chart-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Managerdesignation", null, new { @class = "input-container", @type = "text", @placeholder = "Manager designation", @autocomplete = "off" })
+                                                <label class="usernameLabel">
+                                                    Manager
+                                                    designation
+                                                </label>
+                                                <i class="ri-contacts-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Comments", null, new { @class = "input-container", @type = "text", @placeholder = "Comments", @autocomplete = "off" })
+                                                <label class="usernameLabel">Comments</label>
+                                                <i class="ri-folder-chart-line userIcon"></i>
+                                                <span class="validationMessage"
+                                                      style="display:none;">
+                                                    *Please
+                                                    enter comments
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("AuthorizedBy", null, new { @class = "input-container", @type = "text", @placeholder = "Last approved by", @autocomplete = "off", @readonly = "readonly" })
+                                                <label class="usernameLabel">
+                                                    Last approved
+                                                    by
+                                                </label>
+                                                <i class="ri-contacts-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("AuthorizedDate", null, new { @class = "input-container", @type = "text", @placeholder = "Last approved date", @autocomplete = "off", @readonly = "readonly" })
+                                                <label class="usernameLabel">
+                                                    Last approved
+                                                    date
+                                                </label>
+                                                <i class="ri-contacts-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Replace "Next" with a Submit button -->
+                                <div class="col-md-12 text-end d-flex justify-content-end gap-2 p-2">
+                                    <button class="btn-submit-save-draft button-submit-validate"
+                                            type="button" id="btndraft">
+                                        <div class="original">Save Draft</div>
+                                        <div class="letters">
+                                            <span>S</span>
+                                            <span>a</span>
+                                            <span>v</span>
+                                            <span>e</span>
+                                            <span class="ms-1"></span>
+                                            <span>D</span>
+                                            <span>r</span>
+                                            <span>a</span>
+                                            <span>f</span>
+                                            <span>t</span>
+                                        </div>
+                                    </button>
+                                    <button class="btn-submit submitbutton" type="button" id="next" name="next"
+                                            value="Next">
+                                        <div class="original">Next</div>
+                                        <div class="letters">
+                                            <span>N</span>
+                                            <span>e</span>
+                                            <span>x</span>
+                                            <span>t</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </fieldset>
+
+                            <!-- Step 2 -->
+                            <fieldset>
+                                <div class="form-card">
+                                    <div class="row" id="divQuestions">
+                                        <div class="col-7">
+                                        </div>
+                                        <div class="col-5">
+                                            <h2 id="step2-label" class="steps">Step 2 - 2</h2>
+                                        </div>
+                                        @* @foreach (var qn in Model.EmployeeQuestions)
+                                            {
+                                                <div class="col-md-6">
+                                                    <div class="inputContainer">
+                                                        <input id='qns_@qn.QuestionId' class="input-container" required="required" autocomplete="off"
+                                                               placeholder='@qn.Questionname' value="@qn.Answer"
+                                                               type="text">
+                                                        <label class="usernameLabel">
+                                                            @qn.Questionname
+                                                        </label>
+                                                        <i class="ri-creative-commons-by-line userIcon"></i>
+                                                    </div>
+                                                </div>
+                                            } *@
+
+                                        <div class="col-md-6">
+                                            <div id="divalert">
+                                                <div class="checkbox-wrapper-12 d-flex gap-3">
+                                                    <div class="cbx">
+                                                        <input type="checkbox" id="cbx-12">
+                                                        <label for="cbx-12"></label>
+                                                        <svg fill="none" viewBox="0 0 15 14"
+                                                             height="14" width="15">
+                                                            <path d="M2 8.36364L6.23077 12L13 2">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+
+                                                    <svg version="1.1"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <defs>
+                                                            <filter id="goo-12">
+                                                                <feGaussianBlur result="blur"
+                                                                                stdDeviation="4"
+                                                                                in="SourceGraphic">
+                                                                </feGaussianBlur>
+                                                                <feColorMatrix result="goo-12"
+                                                                               values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                                               mode="matrix" in="blur">
+                                                                </feColorMatrix>
+                                                                <feBlend in2="goo-12"
+                                                                         in="SourceGraphic"></feBlend>
+                                                            </filter>
+                                                        </defs>
+                                                    </svg> Alert the employers about this candidate
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Replace "Next" with a Submit button -->
+                                <div class="col-md-12 text-end d-flex justify-content-end p-2">
+                                    <button class="btn-closes">
+                                        <div class="original">Previous</div>
+                                        <div class="letters">
+                                            <span>P</span>
+                                            <span>r</span>
+                                            <span>e</span>
+                                            <span>v</span>
+                                            <span>i</span>
+                                            <span>o</span>
+                                            <span>u</span>
+                                            <span>s</span>
+                                        </div>
+                                    </button>&nbsp;&nbsp;
+                                    <button class="btn-submit-save-draft button-submit-validate"
+                                            type="button" id="btndraft2">
+                                        <div class="original">Save Draft</div>
+                                        <div class="letters">
+                                            <span>S</span>
+                                            <span>a</span>
+                                            <span>v</span>
+                                            <span>e</span>
+                                            <span class="ms-1"></span>
+                                            <span>D</span>
+                                            <span>r</span>
+                                            <span>a</span>
+                                            <span>f</span>
+                                            <span>t</span>
+                                        </div>
+                                    </button>&nbsp;&nbsp;
+                                    <button class="btn-submit submitbutton" id="btnnexts2" type="button"
+                                            name="next" style="display: none;">
+                                        <div class="original">Next</div>
+                                        <div class="letters">
+                                            <span>N</span>
+                                            <span>e</span>
+                                            <span>x</span>
+                                            <span>t</span>
+                                        </div>
+                                    </button>
+                                    <button class="btn-submit" id="btnsubmits2" type="button"
+                                            name="submit">
+                                        <div class="original">Submit</div>
+                                        <div class="letters">
+                                            <span>S</span>
+                                            <span>u</span>
+                                            <span>b</span>
+                                            <span>m</span>
+                                            <span>i</span>
+                                            <span>t</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </fieldset>
+
+                            <!-- Step 3 (Final) -->
+                            <fieldset>
+                                <div class="form-card">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <!-- <h2 class="fs-title">Image Upload:</h2> -->
+                                        </div>
+                                        <div class="col-5">
+                                            <h2 class="steps">Step 3 - 3</h2>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Emailid", null, new { @class = "input-container", @type = "text", @placeholder = "Email ID", @autocomplete = "off" })
+                                                <label class="usernameLabel">Email ID</label>
+                                                <i class="ri-mail-unread-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Mobileno", null, new { @class = "input-container", @type = "text", @placeholder = "Mobile number", @autocomplete = "off" })
+                                                <label class="usernameLabel">Mobile number</label>
+                                                <i class="ri-smartphone-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Fathername", null, new { @class = "input-container", @type = "text", @placeholder = "Father name", @autocomplete = "off" })
+                                                <label class="usernameLabel">Father name</label>
+                                                <i class="ri-group-2-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Uannumber", null, new { @class = "input-container", @type = "text", @placeholder = "UAN number", @autocomplete = "off" })
+                                                <label class="usernameLabel">UAN number</label>
+                                                <i class="ri-numbers-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer reasonContainer"
+                                                 id="inputContainer" style="position: relative;">
+                                                <input class="input-container" required="required" autocomplete="off"
+                                                       placeholder="Please highlight"
+                                                       type="text" readonly>
+                                                <label class="usernameLabel">
+                                                    Please
+                                                    highlight
+                                                </label>
+                                                <i class="ri-checkbox-circle-line userIcon"></i>
+                                                <!-- Chevron Icon -->
+                                                <svg viewBox="0 0 320 512" class="chevronIcon"
+                                                     id="chevronIcon">
+                                                    <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                            24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                            24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                            9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                            9.4-33.9 0z" />
+                                                </svg>
+                                                @Html.Hidden("Highlight")
+                                                <!-- Dropdown Menu -->
+                                                <div id="dropdownHighlight" class="newinput-dropdown-menu">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="inputContainer">
+                                                @Html.TextBox("Linkedinurl", null, new { @class = "input-container", @type = "text", @placeholder = "Linked-in URL", @autocomplete = "off" })
+                                                <label class="usernameLabel">Linked-in URL</label>
+                                                <i class="ri-linkedin-box-line userIcon"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6 class="upload-resume-header-exitdetails">
+                                                <i class="ri-upload-cloud-line"></i> <strong>
+                                                    Upload
+                                                    resume
+                                                </strong>
+                                            </h6>
+
+                                            <div class="inputContainer">
+                                                <input type="file" id="bulkFileUpload"
+                                                       accept=".csv,.xlsx" hidden />
+
+                                                <label for="bulkFileUpload" id="fileDropZone"
+                                                       class="exit-resume-upload-field d-flex flex-column justify-content-center align-items-center">
+                                                    <p class="file-prompt mb-1 pt-4">
+                                                        <i class="ri-upload-cloud-2-line fs-2"></i>
+                                                    </p>
+                                                    <p class="text-muted mb-1">
+                                                        Drag & Drop your file
+                                                        here
+                                                    </p>
+                                                    <p class="text-muted mb-1">
+                                                        or Click to Browse
+                                                    </p>
+                                                    <!-- Progress Bar -->
+                                                    <div class="custom-upload-progress w-75 progress mt-0"
+                                                         style="height: 15px; display: none; margin: 10px;">
+                                                        <div class="custom-progress-bar progress-bar progress-bar-striped"
+                                                             style="width: 100%;
+                                                                    height: 15px;
+                                                                    /* border-radius: 5px; */
+                                                                    background-color: rgb(92, 36, 154);
+                                                                    transition: width 0.3s;">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- File Name Display inside drag & drop at bottom -->
+                                                    <div id="uploadedFileName"
+                                                         class="text-center text-muted mb-1">
+                                                    </div>
+
+                                                </label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-6 mt-3">
+                                            <div>
+                                                <div class="checkbox-wrapper-12 d-flex gap-3">
+                                                    <div class="cbx">
+                                                        <input type="checkbox" id="cbx-approve">
+                                                        <label for="cbx-approve"></label>
+                                                        <svg fill="none" viewBox="0 0 15 14"
+                                                             height="14" width="15">
+                                                            <path d="M2 8.36364L6.23077 12L13 2">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+
+                                                    <svg version="1.1"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <defs>
+                                                            <filter id="goo-12">
+                                                                <feGaussianBlur result="blur"
+                                                                                stdDeviation="4"
+                                                                                in="SourceGraphic">
+                                                                </feGaussianBlur>
+                                                                <feColorMatrix result="goo-12"
+                                                                               values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                                               mode="matrix" in="blur">
+                                                                </feColorMatrix>
+                                                                <feBlend in2="goo-12"
+                                                                         in="SourceGraphic"></feBlend>
+                                                            </filter>
+                                                        </defs>
+                                                    </svg> Approve manager
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <!-- Replace "Next" with a Submit button -->
+                                <div class="col-md-12 text-end d-flex justify-content-end p-2">
+                                    <button class="btn-closes">
+                                        <div class="original">Previous</div>
+                                        <div class="letters">
+                                            <span>P</span>
+                                            <span>r</span>
+                                            <span>e</span>
+                                            <span>v</span>
+                                            <span>i</span>
+                                            <span>o</span>
+                                            <span>u</span>
+                                            <span>s</span>
+                                        </div>
+                                    </button>&nbsp;&nbsp;
+                                    <button class="btn-submit-save-draft button-submit-validate"
+                                            type="button" id="btndraft3">
+                                        <div class="original">Save Draft</div>
+                                        <div class="letters">
+                                            <span>S</span>
+                                            <span>a</span>
+                                            <span>v</span>
+                                            <span>e</span>
+                                            <span class="ms-1"></span>
+                                            <span>D</span>
+                                            <span>r</span>
+                                            <span>a</span>
+                                            <span>f</span>
+                                            <span>t</span>
+                                        </div>
+                                    </button>&nbsp;&nbsp;
+                                    <button class="btn-submit" id="btnsubmit">
+                                        <div class="original">Submit</div>
+                                        <div class="letters">
+                                            <span>S</span>
+                                            <span>u</span>
+                                            <span>b</span>
+                                            <span>m</span>
+                                            <span>i</span>
+                                            <span>t</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/pages/employeerequest.js?ver=2" asp-append-version="true"></script>
+<script src="~/assets/js/exit-details.js?ver=2" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    var approveurl = '@Url.Action("ApproveEmployeeRequest", "Customer")';
+    var rejecturl = '@Url.Action("RejectEmployee", "Customer")';
+    var geturl = '@Url.Action("GetTempEmployee", "Customer")';
+    document.getElementById("btnapprove").addEventListener("click", function() { approve($('#Id').val(), approveurl); }, false);
+    document.getElementById("btnreject").addEventListener("click", function() 
+    {
+        if($('#Comments').val() == "") {
+            const inputField = document.querySelector("#Comments");
+            const validationMessage = inputField.parentElement.querySelector(".validationMessage");
+            const dateIcon = inputField.parentElement.querySelector(".dateIcon");
+            validateField(inputField, validationMessage, dateIcon);
+            $("#Comments").focus();
+        } else {
+            reject($('#Id').val(), rejecturl, $('#Comments').val());
+        }
+        
+    }, false);
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+    document.addEventListener("click", function (e) {
+        if (e.target.closest(".new-request-table-delete-btn")) {
+            const row = e.target.closest("#loadid");
+            loademployee(row.dataset.id, row.dataset.val, geturl);
+        }
+    });
+    function validateField(inputField, validationMessage, dateIcon) {
+        //console.log(inputField);
+        if (inputField.value.length === 0) {
+            inputField.style.border = "1px solid red";
+            if (validationMessage != null)
+                validationMessage.style.display = "block";
+            if (dateIcon) dateIcon.style.top = "30%";
+            return false;
+        } else {
+            inputField.style.border = "";
+            if (validationMessage != null)
+                validationMessage.style.display = "none";
+            if (dateIcon) dateIcon.style.top = "";
+            return true;
+        }
+    }
+    $(function() {
+        const fromPicker = flatpickr("#Fromdate", {
+        dateFormat: "d-m-Y",
+        onChange: function (selectedDates) {
+            if (selectedDates.length === 0) return;
+
+            let nextDay = new Date(selectedDates[0]);
+            nextDay.setDate(nextDay.getDate() + 1);
+
+            toPicker.set("minDate", nextDay);
+
+            if (toPicker.selectedDates.length > 0 && toPicker.selectedDates[0] < nextDay) {
+                toPicker.clear();
+            }
+        }
+        });
+
+        const toPicker = flatpickr("#Todate", {
+            dateFormat: "d-m-Y"
+            });
+
+    });
+</script>

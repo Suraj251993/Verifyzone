@@ -1,0 +1,394 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model OrgCheck.ViewModels.CustomerViewModel
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="/assets/css/active-autopilot.css">
+<script src="~/assets/js/exit-details.js?ver=2" asp-append-version="true"></script>
+<style type="text/css" nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    @@media (min-width: 768px) {
+        .modal-xl {
+        width: 90%;
+        max-width: 1200px;
+        }
+    }
+</style>
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Admin/Index"><i
+    class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+style="color: var(--purple-color)"></i> <span
+style="color: var(--purple-color);font-size: 14px;">Admin</span> <i class="ri-arrow-right-s-line"
+style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Customers</span>
+</div>
+
+<div class="content">
+    <h5 class="bulk-table-heading mb-2">Customers</h5>
+    <div class="row">
+        <div class="col-md-6">
+            
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex gap-2 justify-content-end pt-4">
+                
+                <div class="pt-1">
+                    <button class="btn-submit border-0" data-bs-toggle="modal" data-bs-target="#adduser" id="btnadduserpopup"
+                            style="background-color: rgb(16, 114, 16); width: 150px;">
+                        <div class="original" style="background-color: rgb(16, 114, 16);"> Add Customer</div>
+                        <div class="letters" style="background-color: rgb(16, 114, 16);">
+                            <span>A</span>
+                            <span>d</span>
+                            <span>d</span>
+                            <span class="ms-1"></span>
+                            <span>C</span>
+                            <span>u</span>
+                            <span>s</span>
+                            <span>t</span>
+                            <span>o</span>
+                            <span>m</span>
+                            <span>e</span>
+                            <span>r</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card p-0 mt-3 mb-4 border-0">
+        <table>
+            <thead style="background: #f8ece2">
+                <tr>
+                    <th class="sortable">
+                        Name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Address <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Contact name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Contact no <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Email <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                    <th class="sortable">
+                        Actions <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody class="tbody-tr tbodyTr" id="tableIdx">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="adduser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h1 class="bulk-table-heading modal-title fs-5" id="staticBackdropLabel">Add customer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmCustomer">
+                    <div class="row">
+                    
+                        <div class="col-md-12">
+                            <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
+                                <input required="required" autocomplete="off" placeholder="-- Choose industry --" type="text" readonly class="input-container" readonly id="exitInput">
+                                <label class="usernameLabel">Choose industry</label>
+                                <i class="ri-building-2-line userIcon"></i>
+                                <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                                    <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                            24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                            24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                            9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                            9.4-33.9 0z" />
+                                </svg>
+                                <div id="dropdownIndustryMenu" class="newinput-dropdown-menu"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="inputContainer">
+                                @Html.HiddenFor(model => model.Id)
+                                @Html.TextBoxFor(model => model.Name, new { @class = "input-container", @type = "text", @placeholder = "Customer name", @autocomplete = "off", required = "required" })
+                                <label class="usernameLabel">Customer name</label>
+                                <i class="ri-user-3-line userIcon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="inputContainer">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "input-container", @type = "text", @placeholder = "Email Id", @autocomplete = "off", required = "required" })
+                                <label class="usernameLabel">Email id</label>
+                                <i class="ri-mail-line userIcon"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="inputContainer">
+                                @Html.TextBoxFor(model => model.Contactname, new { @class = "input-container", @type = "text", @placeholder = "Contact name", @autocomplete = "off", required = "required" })
+                                <label class="usernameLabel">Contact name</label>
+                                <i class="ri-user-star-line userIcon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="inputContainer">
+                                @Html.TextBoxFor(model => model.Contactnumber, new { @class = "input-container", @type = "text", @placeholder = "Contact number", @autocomplete = "off", required = "required" })
+                                <label class="usernameLabel">Contact number</label>
+                                <i class="ri-phone-line userIcon"></i>
+                            </div>
+                        </div>
+
+                        @* <div class="col-md-6">
+                            <div class="dateInputContainer">
+                                @Html.TextBoxFor(model => model.CommencementDate, new { @class = "fromDate", @type = "text", @placeholder = "Commencement date", @autocomplete = "off" })
+                                <div class="label-container">
+                                    <i class="ri-calendar-line label-icon"></i>
+                                    <label class="dateLabel" for="CommencementDate">Commencement date</label>
+                                </div>
+                                <i class="ri-calendar-line dateIcon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dateInputContainer">
+                                @Html.TextBoxFor(model => model.Closeddate, new { @class = "toDate", @type = "text", @placeholder = "Closed date", @autocomplete = "off" })
+                                <div class="label-container">
+                                    <i class="ri-calendar-line label-icon"></i>
+                                    <label class="dateLabel" for="ClosedDate">Closed date</label>
+                                </div>
+                                <i class="ri-calendar-line dateIcon"></i>
+                            </div>
+                        </div> *@
+
+                        <div class="col-md-6">
+                            <div class="inputContainer">
+                                @Html.TextBoxFor(model => model.Address, new { @class = "input-container", @type = "text", @placeholder = "Address", @autocomplete = "off" })
+                                <label class="usernameLabel">Address</label>
+                                <i class="ri-map-pin-line userIcon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="inputContainer">
+                                @Html.TextBoxFor(model => model.GstNumber, new { @class = "input-container", @type = "text", @placeholder = "GST number", @autocomplete = "off" })
+                                <label class="usernameLabel">GST number</label>
+                                <i class="ri-id-card-line userIcon"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="inputContainer">
+                                @Html.TextBoxFor(model => model.PanNumber, new { @class = "input-container", @type = "text", @placeholder = "PAN number", @autocomplete = "off" })
+                                <label class="usernameLabel">PAN number</label>
+                                <i class="ri-id-card-line userIcon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="inputContainer">
+                                @Html.TextBoxFor(model => model.TanNumber, new { @class = "input-container", @type = "text", @placeholder = "TAN number", @autocomplete = "off" })
+                                <label class="usernameLabel">TAN number</label>
+                                <i class="ri-id-card-line userIcon"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-edu" class="filter-check"
+                                           data-column="designation" data-label="Designation">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Is Education Institution
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-emp" class="filter-check"
+                                           data-column="designation" data-label="Designation">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Is Employer
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox-wrapper-12 d-flex gap-3">
+                                <div class="cbx">
+                                    <input type="checkbox" id="check-box-bgv" class="filter-check"
+                                           data-column="designation" data-label="Designation">
+                                    <label for="cbx-12"></label>
+                                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                    </svg>
+                                </div>
+
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <filter id="goo-12">
+                                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                                            </feGaussianBlur>
+                                            <feColorMatrix result="goo-12"
+                                                           values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                                           mode="matrix" in="blur"></feColorMatrix>
+                                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
+                                Is BGV company
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button class="btn-closes border-0" data-bs-dismiss="modal" style="background-color: gray;">
+                    <div class="original" style="background-color: gray;">Close</div>
+                    <div class="letters" style="background-color: gray;">
+                        <span>C</span>
+                        <span>l</span>
+                        <span>o</span>
+                        <span>s</span>
+                        <span>e</span>
+                    </div>
+                </button>&nbsp;&nbsp;
+                <button class="btn-submit" type="button" name="save" value="Save" id="Save">
+                    <div class="original">Save</div>
+                    <div class="letters">
+                        <span>S</span>
+                        <span>a</span>
+                        <span>v</span>
+                        <span>e</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteuser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <h5 class="logout-popup-dahx-icon"><i class="ri-delete-bin-7-line"></i></h5>
+                <h6 class="logout-popup-dahx">
+                    Are you sure <br>
+                    you want to delete the Customer ?
+                </h6>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button class="btn-closes" data-bs-dismiss="modal">
+                    <div class="original">No</div>
+                    <div class="letters">
+                        <span>N</span>
+                        <span>o</span>
+                    </div>
+                </button>&nbsp;&nbsp;
+                <button class="btn-submit" type="button" name="next">
+                    <div class="original">Yes</div>
+                    <div class="letters">
+                        <span>Y</span>
+                        <span>e</span>
+                        <span>s</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/sort.js" asp-append-version="true"></script>
+<script src="~/assets/js/pages/admincustomer.js?ver=2" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropmenus = document.querySelectorAll(".newinput-dropdown-menu");
+        dropmenus.forEach(dropmenu => {
+            dropmenu.addEventListener("click", () => {
+                dropmenu.classList.toggle("show");
+            });
+        });
+    });
+</script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    $(function () {
+        var bindurl = '@Url.Action("GetCustomers", "Admin")';
+        var editurl = '@Url.Action("GetCustomer", "Admin")';
+        document.getElementById("Save").addEventListener("click", function(e) {
+            e.preventDefault();
+            var customerid = $('#Id').val();
+            
+            var url = '@Url.Action("AddCustomer", "Admin")';
+            if (customerid != '0' && customerid != '') {
+                url = '@Url.Action("UpdateCustomer", "Admin")';
+            }
+            SaveCustomer(url);
+        });
+
+        document.getElementById("btnadduserpopup").addEventListener("click", clearFields);
+        
+        BindCustomers(bindurl);
+        BindIndustry();
+        // Show loader overlay
+        const overlay = document.getElementById("formLoaderOverlay");
+        overlay.style.display = "none";
+
+        document.addEventListener("click", function (e) {
+            if (e.target.closest(".manage-hr-pencil-edit")) {
+                const row = e.target.closest("#delid");
+                EditCustomer(row.dataset.id, editurl);
+            }
+        });
+
+        document.addEventListener("click", function (e) {
+            const link = e.target.closest(".page-link-custom");
+            if (!link) return;
+
+            e.preventDefault();
+
+            const page = parseInt(link.dataset.page);
+            if (!isNaN(page)) {
+                changePage(page);
+            }
+        });
+    });
+</script>

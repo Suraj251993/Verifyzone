@@ -1,0 +1,497 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@model OrgCheck.ViewModels.UserViewModel
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.dist.js"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
+    <script src="~/js/common.js"></script>
+}
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Users</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-3 col-md-3">
+                        @Html.DropDownList("searchusertype", (IEnumerable<SelectListItem>)ViewBag.SearchUserTypes, "Please choose Usertype", new { @class = "form-select" })
+                    </div>
+                    <div class="form-floating form-floating-outline mb-3 col-md">
+                        <button type="button" class="btn btn-primary" id="getusers">Get Users</button>
+                        <button type="button" class="btn btn-primary" id="btnadd">Add</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-12 col-md">
+                        <table id="tablelist" class="datatables-ajax table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Login name</th>
+                                    <th>Designation</th>
+                                    <th>Email</th>
+                                    <th>Contact #</th>                                    
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row gy-6" id="userform" style="display: none;">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0" id="userlabel">Users</h5>
+            </div>
+            <div class="card-body">
+                <form id="frmCustomer">
+                    <div class="row">
+                        @Html.HiddenFor(model => model.Id, new { @id = "mdid" })
+                        <input id="estayId" type="hidden" value="">
+
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.DisplayName, new { @class = "form-control", @type = "text", @placeholder = "Please enter here", autofocus = "autofocus" })
+                            <label for='@Model.DisplayName'>User name</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.LoginName, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.LoginName'>Login name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Emailid, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Emailid'>Email Id</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Contactnumber, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Contactnumber'>Contact number</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Designation, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Designation'>Designation</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.DropDownList("usertype", (IEnumerable<SelectListItem>)ViewBag.UserTypes, "Please choose Usertype", new { @class = "form-select", @id="mddusertype" })
+                        </div>
+                        <div id="divcustomer" class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.DropDownListFor(model => model.CustomerId, (IEnumerable<SelectListItem>)ViewBag.Customers, "Please choose Customer", new { @class = "form-select", @id = "mddcustomer" })
+                        </div>
+                        <div id="divcustomertype" class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.DropDownListFor(model => model.CustomerType, (IEnumerable<SelectListItem>)ViewBag.CustomerTypes, "Please choose Customer type", new { @class = "form-select", @id = "mddcustomertype" })
+                        </div>
+                        <div id="divcompany" class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.DropDownListFor(model => model.CompanyId, (IEnumerable<SelectListItem>)ViewBag.Companies, "Please choose Company", new { @class = "form-select", @id = "mddcompany" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-check mb-4 col-md-4">
+                            <input class="form-check-input" type="checkbox" value="" id="eduverify" name="eduverify" />
+                            <label class="form-check-label" for="eduverify">
+                                Education verification
+                            </label>
+                        </div>
+                        <div class="form-check mb-4 col-md-4">
+                            <input class="form-check-input" type="checkbox" value="" id="empverify" name="empverify" />
+                            <label class="form-check-label" for="empverify">
+                                Employment verification
+                            </label>
+                        </div>
+                        <div class="form-check mb-4 col-md-4">
+                            <input class="form-check-input" type="checkbox" value="" id="exempverify" name="exempverify" />
+                            <label class="form-check-label" for="exempverify">
+                                Ex-employment verification
+                            </label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-2 col-md-1">
+                            <button type="button" class="btn btn-primary" id="Save">Save</button>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-2 col-md-1">
+                            <button type="button" class="btn btn-secondary" id="Close">Close</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/vendor/jquery-3.2.1.min.js"></script>
+<script>
+    $(function () {
+        //$('#userlist').show();
+        $('#userform').hide();
+        $('#loading').hide();
+    })
+
+    $('#btnadd').click(function () {
+        $('#divcustomer').hide();
+        $('#divcompany').hide();
+        $('#divcustomertype').hide();
+        //$('#userlist').hide();
+        $('#userform').show();
+        clearFields();
+        $('#estayId').val('');
+        $('#mdid').val('');
+        $('#userlabel').html('New User');
+    });
+    $('#Save').click(function () {
+         
+        if ($.trim($('#DisplayName').val()) == "" || $.trim($('#LoginName').val()) == "" || $.trim($('#Emailid').val()) == ""
+            || $.trim($('#Contactnumber').val()) == "" || $.trim($('#Designation').val()) == ""
+            || (parseInt($('#mddusertype option:selected').val()) == 2 && ($('#mddcustomer option:selected').val() == "" || $('#mddcustomertype option:selected').val() == ""))
+            || (parseInt($('#mddusertype option:selected').val()) == 3 && $('#mddcompany option:selected').val() == ""))
+            {
+            showErrorMessage("All fields are mandatory");
+            return;
+        }
+        //if (!$('#frmUser').valid()) return;
+        $('#loading').show();
+        $('#estayId').val();
+        var userid = $('#mdid').val();
+        var url = '@Url.Action("AddUser", "Admin")';
+        var type = 'POST';
+        var requestData = $('#frmUser').serialize();
+        var companyId = $('#mddcompany option:selected').val();
+        if (companyId == '' || companyId == null)
+            companyId = "0";
+        var customerId = $('#mddcustomer option:selected').val();            
+        if (customerId == '' || customerId == null)
+            customerId = "0";
+        var customertypeId = $('#mddcustomertype option:selected').val();
+        if (customertypeId == '' || customertypeId == null)
+            customertypeId = "0";
+        requestData = requestData.replace('mdid', 'id');
+
+        if (userid != '') {
+            url = '@Url.Action("UpdateUser", "Admin")';
+            type = 'PUT';
+            requestData = {
+                id: parseInt($('#mdid').val()),
+                loginname: $.trim($('#LoginName').val()),
+                displayname: $.trim($('#DisplayName').val()),
+                usertype: parseInt($('#mddusertype option:selected').val()),
+                customertypeid: parseInt(customertypeId),
+                companyid: parseInt(companyId),
+                customerid: parseInt(customerId),
+                emailid: $.trim($('#Emailid').val()),
+                contactnumber: $.trim($('#Contactnumber').val()),
+                designation: $.trim($('#Designation').val()),
+                empverification: document.getElementById("empverify").checked,
+                exempverification: document.getElementById("exempverify").checked,
+                stuverification: document.getElementById("eduverify").checked,
+            }
+        }
+        else {
+            requestData = {
+                id: 0,
+                loginname: $.trim($('#LoginName').val()),
+                displayname: $.trim($('#DisplayName').val()),
+                usertype: parseInt($('#mddusertype option:selected').val()),
+                customertypeid: parseInt(customertypeId),
+                companyid: parseInt(companyId),
+                customerid: parseInt(customerId),
+                emailid: $.trim($('#Emailid').val()),
+                contactnumber: $.trim($('#Contactnumber').val()),
+                designation: $.trim($('#Designation').val()),
+                empverification: document.getElementById("empverify").checked,
+                exempverification: document.getElementById("exempverify").checked,
+                stuverification: document.getElementById("eduverify").checked,
+            }
+        }
+        //console.log(requestData);
+        $.ajax({
+            url: url,
+            type: type,
+            data: JSON.stringify(requestData),
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            error: function (xhr) {
+                alert('Error: ' + xhr.statusText);
+            },
+            success: function (result) {
+                if (result == "true") {
+                    $('#divcustomer').hide();
+                    $('#divcompany').hide();
+                    $('#divcustomertype').hide();
+                    //$('#userlist').show();
+                    $('#userform').hide();
+                    clearFields();
+                    $('#estayId').val('');
+                    $('#mdid').val('');
+                    // Show success toast message
+                    if (type == 'PUT')
+                        showSuccessMessage('User updated');
+                    else
+                        showSuccessMessage('User created');
+                    var usertypeId = $('#searchusertype option:selected').val();
+                    if (usertypeId != 0)
+                        BindUsers();
+                }
+                else if (result == "exists") {
+                    $('#loading').hide();
+                    showWarningMessage('Email Id already exists');
+                }
+                else {
+                    $('#loading').hide();
+                    showErrorMessage('Error occurred while saving the record');
+                }
+            },
+            async: true,
+            processData: false
+        });
+        $('#loading').hide();
+    });
+    $('#Close').click(function () {
+        $('#divcustomer').hide();
+        $('#divcompany').hide();
+        $('#divcustomertype').hide();
+        //$('#userlist').show();
+        $('#userform').hide();
+        clearFields();
+        $('#estayId').val('');
+        $('#mdid').val('');
+        BindUsers();
+    });
+    $('#mddusertype').change(function () {
+        showUserTypeFields();
+    });
+    $('#searchusertype').change(function () {
+        var id = $('#searchusertype option:selected').val();
+        $("#getusers").prop("disabled", id == 'Please choose UserType');
+    });
+    $('#getusers').click(function (e) {
+        $('#loading').show();
+        BindUsers();
+        $('#loading').hide();
+    });
+
+    function showUserTypeFields() {
+        var usertypeId = $('#mddusertype option:selected').val();
+        $('#mddcompany').val('');
+        $('#mddcustomer').val('');
+        if (usertypeId == 2) {
+            $('#divcustomer').show();
+            $('#divcustomertype').show();
+            $('#divcompany').hide();
+        }
+        else if (usertypeId == 3) {
+            $('#divcustomer').hide();
+            $('#divcustomertype').hide();
+            $('#divcompany').show();
+        }
+        else {
+            $('#divcustomer').hide();
+            $('#divcustomertype').hide();
+            $('#divcompany').hide();
+        }
+    }
+    function clearFields() {
+        $('#id').val('');
+        $('#DisplayName').val('');
+        $('#LoginName').val('');
+        $('#usertype').val('');
+        $('#mddcustomertype').val('');
+        $('#mddcustomer').val('');
+        $('#mddcompany').val('');
+        $('#divcustomer').hide();
+        $('#divcustomertype').hide();
+        $('#divcompany').hide();
+        $('#Emailid').val('');
+        $('#Contactnumber').val('');
+        $('#Designation').val('');
+    }
+        function BindUsers() {
+            var usertypeId = $('#searchusertype option:selected').val();
+            if (usertypeId == 0)
+                showErrorMessage('Select Usertype ');
+            else {
+                $.ajax(
+                    {
+                        type: 'GET',
+                        dataType: 'JSON',
+                        url: '@Url.Action("GetUsers", "Admin")',
+                        data: { usertypeId: usertypeId },
+                        success:
+                            function (response) {
+                                // Generate HTML table.
+                                setUserToTable(response);
+                                //convertJsonToHtmlTable(JSON.parse(response), $("#cityMaster"));
+                            },
+                        error:
+                            function (response) {
+                                alert("Error: " + response);
+                            }
+                    }
+                );
+            }
+        }
+        function setUserToTable(jsonData) {
+            //console.log(jsonData);
+        var data = [];
+        for (let i = 0; i < jsonData.length; i++) {
+            data.push({
+                "id": jsonData[i].id,
+                "name": jsonData[i].displayname,
+                "loginname": jsonData[i].loginname,
+                "designation": jsonData[i].designation,
+                "email": jsonData[i].emailid,
+                "contactnumber": jsonData[i].contactnumber,
+                "action": ''
+            });
+            //arraydata.push(data);
+        }
+        var ajaxdata = {
+            "data": data
+        };
+
+        var dt_ajax = $('#tablelist').dataTable({
+            destroy: true,
+            processing: true,
+            data: ajaxdata.data,
+            columns: [
+                { data: 'id' },
+                { data: 'name' },
+                { data: 'loginname' },
+                { data: 'designation' },
+                { data: 'email' },
+                { data: 'contactnumber' },                
+                { data: '' }
+            ],
+            columnDefs: [
+                {
+                    targets: 0,
+                    searchable: false,
+                    visible: false
+                },
+                {
+                    // Label
+                    targets: 6,
+                    title: 'Action',
+                    searchable: false,
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            '<div class="d-inline-block">' +
+                            '<a href="javascript:;" class="btn btn-sm btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ri-more-2-line ri-22px"></i></a>' +
+                            '<ul class="dropdown-menu dropdown-menu-end m-0">' +
+                            '<li><a href="javascript:;" class="dropdown-item" onclick="EditUser(' + full.id + ')">Edit</a></li>' +
+                            '<li><a href="javascript:;" class="dropdown-item" onclick="ResetUser(' + full.id + ')">Questions</a></li>' +
+                            '<div class="dropdown-divider"></div>' +
+                            '<li><a href="javascript:;" class="dropdown-item text-danger delete-record">Delete</a></li>' +
+                            '</ul>' +
+                            '</div>'
+                            //+ '<a href="javascript:;" class="btn btn-sm btn-text-secondary rounded-pill btn-icon item-edit"><i class="ri-edit-box-line ri-22px"></i></a>'
+                        );
+                    }
+                },
+            ],
+            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+            language: {
+                paginate: {
+                    next: '<i class="ri-arrow-right-s-line"></i>',
+                    previous: '<i class="ri-arrow-left-s-line"></i>'
+                }
+            }
+        });
+        }
+        function EditUser(userId) {
+            $('#loading').show();
+            $('#userlist').hide();
+            $('#userform').show();
+            clearFields();
+            $('#estayId').val('');
+            $('#mdid').val('');
+            $('#userlabel').html('Edit User');
+            $.ajax({
+                type: 'GET',
+                dataType: 'JSON',
+                url: '@Url.Action("GetUser", "Admin")',
+                data: { id: userId },
+                success:
+                    function (response) {
+                        console.log(response);
+                        $('#mdid').val(response.id);
+                        $('#DisplayName').val(response.displayname);
+                        $('#LoginName').val(response.loginname);
+                        $('#Emailid').val(response.emailid);
+                        $('#Contactnumber').val(response.contactnumber);
+                        $('#Designation').val(response.designation);
+                        $('#mddusertype').val(response.usertype);
+                        
+                        if (response.companyid != 0) {
+                            $('#divcompany').show();
+                            $('#divcustomer').hide();
+                            $('#mddcompany').val(response.companyid);
+                        }
+                        if (response.customerid != 0) {
+                            $('#divcompany').hide();
+                            $('#divcustomer').show();
+                            $('#mddcustomer').val(response.customerid);
+                        }
+                        if (response.customertypeid != 0) {
+                            $('#divcustomertype').show();
+                            $('#mddcustomertype').val(parseInt(response.customertypeid));
+                        }
+                        document.getElementById('empverify').checked = response.empverification;
+                        document.getElementById('exempverify').checked = response.exempverification;
+                        document.getElementById('eduverify').checked = response.stuverification;                       
+                        $('#loading').hide();
+                    },
+                error:
+                    function (response) {
+                        $('#loading').hide();
+                        alert("Error: " + response);
+                    }
+            });
+        };
+    function ResetUser(userId) {
+        var result = confirm("Are you sure want to reset?");
+        if (result) {
+            $('#loading').show();
+            $.ajax({
+                type: 'GET',
+                dataType: 'JSON',
+                url: '@Url.Action("ResetUser", "Admin")',
+                data: { id: userId.toString() },
+                success:
+                    function (response) {
+                        $('#loading').hide();
+                        if (response == true) {
+                            showSuccessMessage("The password was reset and sent to the respective user");
+                        }
+                        else {
+                            showErrorMessage("Error occurred while reset the password. Please contact support");
+                        }
+                    },
+                error:
+                    function (response) {
+                        console.log(response);
+                        $('#loading').hide();
+                        alert("Error: " + response);
+                    }
+            });
+        }
+    }
+</script>
+

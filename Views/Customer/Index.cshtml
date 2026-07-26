@@ -1,0 +1,178 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
+}
+@model OrgCheck.ViewModels.CustomerDashboardCount;
+@{
+    var accesslevel = ViewBag.CustomerType;
+}
+
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/Index">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i> 
+    <span style="color: var(--purple-color);font-size: 14px;">Ex-Zone</span> 
+    <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Dashboard</span>
+</div>
+
+@if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
+{
+    <script src="~/assets/js/echarts.min.js"></script>
+    <div class="dashboard-content">
+    <div class="row">
+        <div class="col-md-4 mt-2">
+            <div class="dash-board-card-container4">
+                <div class="card-text">
+                    <h3 class="">Navigation</h3>
+                    <p></p>
+                    <a href="/Customer/EmployeeForm" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Add exit details"> <i class="ri-user-add-line"></i></a>
+                    <a href="/Customer/EmployeeUpload" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Bulk Upload"><i class="ri-upload-cloud-line"></i></a>
+                    <a href="/Customer/EmployeeRequest" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Approve new request">
+                        <i class="ri-notification-2-line"></i>
+                    </a>
+                    <a href="/Customer/EmployeeApproval" class="navigation-dash-card-icon"
+                       data-bs-toggle="tooltip" data-bs-placement="top" title="Approve Re-verification">
+                        <i class="ri-user-follow-line"></i>
+                    </a>
+                    
+                    <a href="/Customer/SearchEmployee" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Search ex-employee"><i class="ri-user-search-line"></i></a>
+                    @* @if (ViewBag.Category == 2)
+                    { *@
+                        <a href="/Customer/ViewEmployee" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="View ex-employee"> <i class="ri-user-settings-line"></i></a>                
+                  @*   } *@
+                 @* <a href="/Customer/ManagerApproval" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Ex-employee approval"><i class="ri-group-2-line"></i></a>
+                    @if (ViewBag.Category == 2)
+                    {
+                        <a href="#" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                           data-bs-placement="top" title="Manage user"> <i class="ri-user-voice-line"></i></a>
+                    } *@
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right4">
+                        <i class="ri-earth-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-2">
+            <div class="dash-board-card-container5">
+                <div class="card-text">
+                    <h3 class="">Configurations</h3>
+                    <p></p>
+                    <a href="/Customer/AutoApprovalConfig" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Activate autopilot"> <i class="ri-rocket-line"></i></a>
+                    <a href="/Customer/AutoApprovalExclude" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Exclude autopilot"> <i class="ri-rocket-line"></i></a>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right5">
+                        <i class="ri-settings-3-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-2">
+            <div class="dash-board-card-container6">
+                <div class="card-text">
+                    <h3 class="">Reports</h3>
+                    <p></p>
+                    <a href="/Customer/AttritionReport" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Attrition report">
+                        <i class="ri-bar-chart-2-line"></i>
+                    </a>
+                    <a href="/Customer/ApprovalHistory" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Re-verification history">
+                        <i class="ri-history-line"></i>
+                    </a>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right6">
+                        <i class="ri-bar-chart-2-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-4">
+            <div class="dash-board-card-container1">
+                <div class="card-text">
+                    <h2><strong>@Model.CompletedCount</strong></h2>
+                    <h3 style="color: rgb(75, 74, 74);">Re-verification completed</h3>
+                    <p style="color: rgb(119, 119, 119);">On @Model.Month,@Model.Year</p>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right1">
+                        <i class="ri-checkbox-circle-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-4">
+            <div class="dash-board-card-container2">
+                <div class="card-text">
+                    <h2><strong>@Model.ApprovalCount</strong></h2>
+                    <h3 style="color: rgb(75, 74, 74);">Verification request received</h3>
+                    <p style="color: rgb(119, 119, 119);">As of now</p>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right2">
+                        <i class="ri-file-list-3-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-4">
+            <div class="dash-board-card-container3">
+                <div class="card-text">
+                    <h2><strong>@Model.RequestCount</strong></h2>
+                    <h3 style="color: rgb(75, 74, 74);">New request received</h3>
+                    <p style="color: rgb(119, 119, 119);">As of now</p>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right3">
+                        <i class="ri-notification-3-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>    
+    <div class="layoutchart mt-4">
+        <main class="contentmainchart">
+            <div id="main"></div>
+        </main>
+    </div>
+    </div>
+    <script src="~/assets/js/canvasjs.min.js"></script>
+    <script src="~/assets/js/chart.js?ver=1" asp-append-version="true"></script>
+    <script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+        $(function () {
+            var url = '@Url.Action("GetDashboardData", "Customer")';
+            drawDashboard(url);
+        });
+    </script>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}

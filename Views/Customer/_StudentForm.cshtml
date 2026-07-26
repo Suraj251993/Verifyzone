@@ -1,0 +1,197 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model OrgCheck.ViewModels.StudentViewModel
+<div class="container-fluid">
+    <div class="row clearfix" id="userform">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                @* <div class="header">
+                <h2 id="userlabel"> View Added Ex-Employee Details </h2>
+                </div> *@
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <input id="estayId" type="hidden" value="">
+                            <div class="form-group form-float">
+                                <div id="divlblstudentid" class="form-line">
+                                    @Html.TextBoxFor(model => model.Studentid, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Student Id/Reg. no.</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblstudentname" class="form-line">
+                                    @Html.TextBoxFor(model => model.Studentname, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Student Name</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlbluniversity" class="form-line">
+                                    @Html.TextBoxFor(model => model.University, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">University</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlbldegreetype" class="form-line">
+                                    @Html.TextBoxFor(model => model.Degreetype, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Degree type</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblmajorsubject" class="form-line">
+                                    @Html.TextBoxFor(model => model.Majorsubject, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Major subject</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblperiodfrom" class="form-line">
+                                    @Html.TextBoxFor(model => model.Periodfrom, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Period from</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblperiodto" class="form-line">
+                                    @Html.TextBoxFor(model => model.Periodto, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Period to</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblpassyear" class="form-line">
+                                    @Html.TextBoxFor(model => model.Passyear, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Pass out year</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblmarksobtained" class="form-line">
+                                    @Html.TextBoxFor(model => model.Marksobtained, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Marks obtained</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblstudymode" class="form-line">
+                                    @Html.TextBoxFor(model => model.StudyMode, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Study mode</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlbleligibledegree" class="form-line">
+                                    @Html.TextBoxFor(model => model.EligibleAttainDegree, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Eligible Attain Degree</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblcomments" class="form-line">
+                                    @Html.TextBoxFor(model => model.Comments, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Additional comments</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblauthorizedby" class="form-line">
+                                    @Html.TextBoxFor(model => model.AuthorizedBy, new { @class = "form-control", @style = "font-weight: bold", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label" style="font-weight: bold;">Last authorized by</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblauthorizeddate" class="form-line">
+                                    @Html.TextBoxFor(model => model.AuthorizedDate, new { @class = "form-control", @style = "font-weight: bold", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label" style="font-weight: bold;">Last authorized date</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if ($('#studentid').val() != "")
+            $('#divlblstudentid').addClass('focused');
+        else
+            $('#divlblstudentid').removeClass('focused');
+        if ($('#studentname').val() != "")
+            $('#divlblstudentname').addClass('focused');
+        else
+            $('#divlblstudentname').removeClass('focused');
+        if ($('#university').val() != "")
+            $('#divlbluniversity').addClass('focused');
+        else
+            $('#divlbluniversity').removeClass('focused');
+        if ($('#degreetype').val() != "")
+            $('#divlbldegreetype').addClass('focused');
+        else
+            $('#divlbldegreetype').removeClass('focused');
+        if ($('#majorsubject').val() != "")
+            $('#divlblmajorsubject').addClass('focused');
+        else
+            $('#divlblmajorsubject').removeClass('focused');
+        if ($('#periodfrom').val() != "")
+            $('#divlblperiodfrom').addClass('focused');
+        else
+            $('#divlblperiodfrom').removeClass('focused');
+        if ($('#periodto').val() != "")
+            $('#divlblperiodto').addClass('focused');
+        else
+            $('#divlblperiodto').removeClass('focused');
+        if ($('#passyear').val() != "")
+            $('#divlblpassyear').addClass('focused');
+        else
+            $('#divlblpassyear').removeClass('focused');
+        if ($('#marksobtained').val() != "")
+            $('#divlblmarksobtained').addClass('focused');
+        else
+            $('#divlblmarksobtained').removeClass('focused');
+        if ($('#studymode').val() != "")
+            $('#divlblstudymode').addClass('focused');
+        else
+            $('#divlblstudymode').removeClass('focused');
+        if ($('#eligibleattaindegree').val() != "")
+            $('#divlbleligibledegree').addClass('focused');
+        else
+            $('#divlbleligibledegree').removeClass('focused');
+        if ($('#Comments').val() != "")
+            $('#divlblcomments').addClass('focused');
+        else
+            $('#divlblcomments').removeClass('focused');
+        if ($('#authorizedby').val() != "")
+            $('#divlblauthorizedby').addClass('focused');
+        else
+            $('#divlblauthorizedby').removeClass('focused');
+        if ($('#authorizeddate').val() != "")
+            $('#divlblauthorizeddate').addClass('focused');
+        else
+            $('#divlblauthorizeddate').removeClass('focused');
+    });
+</script>

@@ -1,0 +1,304 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model OrgCheck.ViewModels.UploadViewModel
+@{
+    Layout = "~/Views/Shared/_SupportLayout.cshtml";
+}
+<style>
+    .RGraph_tooltip li {
+        text-align: left;
+        margin: 3px;
+    }
+
+    .RGraph_tooltip h2 {
+        color: white;
+        margin: 5px;
+        font-style: italic;
+    }
+</style>
+<script src="~/js/RGraph.common.core.js"></script>
+<script src="~/js/RGraph.common.dynamic.js"></script>
+<script src="~/js/RGraph.common.key.js"></script>
+<script src="~/js/RGraph.drawing.rect.js"></script>
+<script src="~/js/RGraph.pie.js"></script>
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Employee bulk upload</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- [Main Content] start -->
+                                        <form enctype="multipart/form-data" id="frm" name="frm">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                @Html.DropDownListFor(model => model.user, (IEnumerable<SelectListItem>)ViewBag.Users, "Please choose HR user", new { @class = "form-control", @id = "mddusertype" })
+                                                                @* @Html.DropDownList("users", (IEnumerable<SelectListItem>)ViewBag.Users, "Please choose HR user", new { @class = "form-control" }) *@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-10 mt-3">
+                                                            <div class="form-group">
+                                                                <p>Choose file:</p>
+                                                                @Html.TextBoxFor(model => model.file, new { type = "file", name = "file"})
+                                                                @* <input type="file" name="file" id="file" /> *@
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 mt-3">
+                                                            <input type="button" class="btn btn-primary float-right" id="btnupload" name="btnupload" value="Upload" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @* <div id="dialog" style="display: none">
+                    </div>*@
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-md-10 mt-3">
+
+                                            </div>
+                                            <div class="col-md-2 mt-3">
+                                                <a href="#" id="downloadtemplate" name="downloadtemplate">Download template</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- DATA TABLE -->
+                                        <div class="table-responsive">
+                                            <table id="latestupload" class="display table nowrap table-striped table-hover" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Filename</th>
+                                                        <th>Uploaded date</th>
+                                                        <th>Status</th>
+                                                        <th>Valid records</th>
+                                                        <th>Invalid records</th>
+                                                        <th>Total records
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- END DATA TABLE -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="partialModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Summary</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="au-card m-b-30">
+                            <div class="au-card-inner">
+                                @*<h3 class="title-2 m-b-40">Upload Summary</h3>*@
+                                <input type="hidden" id="flid" name="flid" />
+                                <input type="hidden" id="svtotal" name="svtotal" />
+                                <canvas id="cvs" width="650" height="400">[No canvas support]</canvas>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-lg-6">
+                            <div class="au-card m-b-30">
+                                <div class="au-card-inner">
+                                    <h5 class="title-2 m-b-40">Total records: <span id="stotal"></span></h5>
+                                    <h5 class="title-2 m-b-40">Valid records: <span id="svtotal"></span></h5>
+                                    <h5 class="title-2 m-b-40">Invalid records: <span id="sivtotal"></span></h5>
+                                </div>
+                            </div>
+                        </div>*@
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <button id="Approve" type="button" class="btn btn-primary" data-dismiss="modal" onclick="ApprovedorRejectedFile(this.id)">Approve</button>
+                <button id="Reject" type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ApprovedorRejectedFile(this.id)">Reject</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+
+
+    @await Html.PartialAsync("/Views/Shared/_ValidationScriptsPartial.cshtml")
+    <script src="~/vendor/chartjs/Chart.bundle.min.js"></script>
+    <script>
+        $(function () {
+            $("#latestupload").dataTable();
+            $('#loading').hide();
+        })
+    $(document).ready(function () {
+        //BindFileUploads();
+    });
+        $('#btnupload').click(function () {
+            $('#loading').show();
+            var userId = $('#mddusertype option:selected').val();
+            
+            if (userId == '' || userId == null)
+                userId = "0";
+            if (userId == "0") {
+                $('#loading').hide();
+                showErrorMessage("Please choose HR user before upload");
+                return;
+            }
+            var files = $('#file').prop("files");
+            if (files[0] == null || files[0] == '') {
+                $('#loading').hide();
+                showErrorMessage("Please choose file before upload");
+                return;
+            }
+
+            var url = '@Url.Action("EmployeeUpload", "Support")';
+            var type = 'POST';
+            var formData = new FormData();            
+            formData.append("file", files[0]);
+            formData.append("user", userId.toString());
+            console.log(formData);
+            $.ajax({
+                url: url,
+                type: type,
+                data: formData,
+                dataType: "json",
+                enctype: "multipart/form-data",
+                processData: false,
+                contentType: false,
+                error: function (xhr) {
+                    console.log(xhr);
+                    alert('Error: ' + xhr.statusText);
+                },
+                success: function (response) {
+                    $('#loading').hide();
+                    if (response != null || response != "") {
+                        //$('#partialModal').html(response);
+                        //$('#stotal').text(response.totalrecords);
+                        $('#svtotal').val(response.validrecords);
+                        //$('#sivtotal').text(response.invalidrecords);
+                        $('#flid').val(response.fileid);
+
+                        new RGraph.Pie({
+                            id: 'cvs',
+                            data: [response.totalrecords, response.validrecords, response.invalidrecords],
+                            options: {
+                                key: ['Total Records : ' + response.totalrecords + '', 'Valid Records : ' + response.validrecords + '', 'Invalid Records : ' + response.invalidrecords + ''],
+                                keyInteractive: true,
+                                colors: ["#3498eb", "#a8eb34", "#eb5334"],
+                                radius: 150
+                            }
+                        }).draw();
+                        $("#partialModal").modal('show');
+                    }
+                    else {
+                        showErrorMessage('Error occurred while uploading the file');
+                    }
+
+                },
+                async: false,
+                processData: false
+            });
+        });
+        $('#downloadtemplate').click(function () {
+            window.open("/Support/DownloadTemplate", '_blank');
+        });
+        function BindFileUploads() {
+            $('#loading').show();
+            var userId = $('#users option:selected').val();
+            if (userId == '' || userId == null)
+                userId = 0;
+            $.ajax(
+                {
+                    type: 'GET',
+                    dataType: 'JSON',
+                    data: { user: userId },
+                    url: '@Url.Action("GetLatestUploads", "Support")',
+                    success:
+                        function (jsonData) {
+                            $('#latestupload').DataTable({
+                                pagination: "bootstrap",
+                                filter: true,
+                                data: jsonData,
+                                destroy: true,
+                                lengthMenu: [5, 10, 25],
+                                pageLength: 10,
+                                "columns": [
+                                    { "data": "filename", "filename": "Filename", "autoWidth": true },
+                                    { "data": "uploadeddate", "uploadeddate": "Uploaded date", "autoWidth": true },
+                                    { "data": "uploadedstatus", "name": "uploadedstatus", "Uploaded status": true },
+                                    { "data": "validrecords", "validrecords": "Valid records", "autoWidth": true },
+                                    { "data": "invalidrecords", "invalidrecords": "Invalid records", "autoWidth": true },
+                                    { "data": "totalrecords", "totalrecords": "Total records", "autoWidth": true },
+                                ]
+                            });
+                        },
+                    error:
+                        function (response) {
+                            alert("Error: " + response);
+                        }
+                }
+            );
+            $('#loading').hide();
+        }
+
+        function ApprovedorRejectedFile(mode) {
+            var model = { "Mode": mode, "FileId": $('#flid').val() };
+            if (mode == "Approve" && $('#svtotal').val() == 0) {
+                showErrorMessage("No valid records to approve. Please reject the file.");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ApproveorRejectFile", "Support")',
+                data: JSON.stringify(model),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.log(result); // = 'test'
+                    if (result == true) {
+                        if (mode == "Approve")
+                            showSuccessMessage('File uploaded successfully.');
+                        else
+                            showSuccessMessage('File rejected successfully.');
+                        BindFileUploads();
+                    }
+                    else {
+                        showErrorMessage('Error while uploading the file');
+                    }
+                }
+            });
+        }
+    </script>
+}

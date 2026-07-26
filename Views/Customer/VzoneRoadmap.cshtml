@@ -1,0 +1,248 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_VZoneLayout.cshtml";
+}
+<link rel="stylesheet" href="/assets/css/help.css">
+<link rel="stylesheet" href="/assets/css/roadmap.css">
+<link rel="stylesheet" href="/assets/css/access-denied.css">
+@if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
+{
+    <div class="content">
+
+        <h1 class="bulk-table-heading fs-5">Road Map</h1>
+
+        <div class="roadmap">
+
+            <div class="roadmap__line"></div>
+
+            <div class="roadmap__item roadmap__item--left">
+                <span class="roadmap__year">Employment verification</span>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">01</h6>
+                    <div class="side-multi-data">
+                        <h5>Search a candidate</h5>
+                        <h6 class="card-count-roadmap">01</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to search and verify candidate employment details based on provided information.
+                    </p>
+                    <a href="/Customer/CandidateSearch" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+               @*   *@
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">02</h6>
+                    <div class="side-multi-data">
+                        <h5>Initiate new request</h5>
+                        <h6 class="card-count-roadmap">02</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Allows users to raise employment verification requests for candidates who are not available in the portal.
+                    </p>
+                    <a href="/Customer/EmployeeNewRequest" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">03</h6>
+                    <div class="side-multi-data">
+                        <h5>Search for alerts</h5>
+                        <h6 class="card-count-roadmap">03</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to search classified records securely based on available criteria.
+                    </p>
+                    <a href="/Customer/SearchRecord" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                @*  *@
+                <div class="roadmap__icon"><i class="ri-team-line"></i></div>
+            </div>
+
+            @* <div class="roadmap__item roadmap__item--right">
+                <span class="roadmap__year">Education verification</span>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">01</h6>
+                    <div class="side-multi-data">
+                        <h5>Student search</h5>
+                        <h6 class="card-count-roadmap">01</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to search and verify student education details.
+                    </p>
+                    <a href="vzonestudentsearch.html" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">02</h6>
+                    <div class="side-multi-data">
+                        <h5>Past searches</h5>
+                        <h6 class="card-count-roadmap">02</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Displays previously searched education verification records.
+                    </p>
+                    <a href="vzoneeducationpastsearches.html" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">03</h6>
+                    <div class="side-multi-data">
+                        <h5>Student request</h5>
+                        <h6 class="card-count-roadmap">03</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Allows users to submit education verification requests for students.
+                    </p>
+                    <a href="vzonestudentmyrequest.html" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">04</h6>
+                    <div class="side-multi-data">
+                        <h5>Student request status</h5>
+                        <h6 class="card-count-roadmap">04</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Shows the status and progress of education verification requests.
+                    </p>
+                    <a href="vzonestudentrequest.html" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__icon"><i class="ri-graduation-cap-line"></i></div>
+            </div> *@          
+
+            <div class="roadmap__item roadmap__item--right">
+                <span class="roadmap__year">Email settings</span>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">01</h6>
+                    <div class="side-multi-data">
+                        <h5>Email settings</h5>
+                        <h6 class="card-count-roadmap">01</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Used to configure the email content to be sent to the employers for new candidate requisition and their reminder or follow ups.
+                    </p>
+                    <a href="/Customer/EmailSetting" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__icon"> <i class="ri-list-settings-line"></i></div>
+            </div>
+
+            <div class="roadmap__item roadmap__item--left">
+                <span class="roadmap__year">Reports</span>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">01</h6>
+                    <div class="side-multi-data">
+                        <h5>Search history</h5>
+                        <h6 class="card-count-roadmap">01</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Displays previously searched employment verification records for quick reference.
+                    </p>
+                    <a href="/Customer/PastSearches" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">02</h6>
+                    <div class="side-multi-data">
+                        <h5>Verification reports</h5>
+                        <h6 class="card-count-roadmap">02</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Provides reports related to employment verification activities and outcomes.
+                    </p>
+                    <a href="/Customer/EmpReports" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">03</h6>
+                    <div class="side-multi-data">
+                        <h5>Initiated verification status</h5>
+                        <h6 class="card-count-roadmap">03</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Shows the current status of employment verification requests raised on new candidates who are not available in the portal.
+                    </p>
+                    <a href="/Customer/ExRequestStatus" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div>
+                @* <div class="roadmap__content">
+                    <h6 class="card-count-roadmap-small">02</h6>
+                    <div class="side-multi-data">
+                        <h5>Education reports</h5>
+                        <h6 class="card-count-roadmap">02</h6>
+                    </div>
+                    <h6>Overview :</h6>
+                    <p>
+                        Provides reports related to education verification activities and results.
+                    </p>
+                    <a href="vzoneeducationreport.html" class="go-view">
+                        Go to view <i class="ri-arrow-right-line arrow-icon"></i>
+                    </a>
+                </div> *@
+
+                <div class="roadmap__icon"> <i class="ri-bar-chart-2-line"></i></div>
+            </div>
+
+        </div>
+    </div>
+    <script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+        const items = document.querySelectorAll('.item');
+
+        window.addEventListener('scroll', () => {
+        items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+        item.style.opacity = 1;
+        item.style.transform = 'translateY(0)';
+        }
+        });
+        });
+
+        items.forEach(item => {
+        item.style.opacity = 0;
+        item.style.transform = 'translateY(40px)';
+        item.style.transition = '0.6s ease';
+        });
+
+    </script>
+}
+else
+{
+    <div class="container">
+        <div class="container-access">
+            <img src="/assets/img/403 Access Denied.png" alt="">
+            <h5 class="access-header-first-403">Oops !!!</h5>
+            <h6 class="access-header-403">Access denied</h6>
+            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <a href="/Home/Landing">
+                <button class="access-back-btn">Go back</button>
+            </a>
+        </div>
+    </div>
+}

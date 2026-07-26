@@ -1,0 +1,151 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@model OrgCheck.ViewModels.EmployeeViewModel
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.js"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
+    <script src="~/js/common.js"></script>
+}
+<style>
+    div.myClass {
+        color: red;
+        font-size: 10pt;
+    }
+</style>
+
+<div class="row gy-6">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Send a request</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        <input type="text" id="Customername" name="Customername" class="form-control" placeholder="Please enter here" autofocus="autofocus" />
+                        <label for="Customername">Employer name</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        <input type="text" id="Hrname" name="Hrname" class="form-control" placeholder="Please enter here" />
+                        <label for="Hrname">HR name</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        <input type="text" id="Hremail" name="Hremail" class="form-control" placeholder="Please enter here" />
+                        <label for="Hremail">HR email</label>
+                    </div>
+                </div>
+                <form id="frmEmpForm" name="frmEmpForm">
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Name'>Employee name</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Employeecode, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Employeecode'>Employee code</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Designation, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Designation'>Designation</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Fromdate, new { @class = "form-control", @type = "text", @placeholder = "DD/MM/YYYY" })
+                            @* <input type="date" class="form-control" id="basic-default-fromdate" /> *@
+                            <label for="Fromdate">From date</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Todate, new { @class = "form-control", @type = "text", @placeholder = "DD/MM/YYYY" })
+                            @* <input type="date" class="form-control" id="basic-default-todate" /> *@
+                            <label for="Todate">To date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Reasonforleaving, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Reasonforleaving'>Reason for leaving</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Location, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Location'>Location</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Jobtype, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Jobtype'>Job type (Permanent/Contract/Other)</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Lastdrawnsalary, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Lastdrawnsalary'>Last drawn salary</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Reportingto, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Reportingto'>Reporting to</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Managerdesignation, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Managerdesignation'>Manager designation</label>
+                        </div>
+                    </div>
+                    @* <div id="divQuestions">
+                        @foreach (var qn in Model.EmployeeQuestions)
+                        {
+                            <div class="row">
+                                <div class="form-floating form-floating-outline mb-6">
+                                    <input type="text" class="form-control" id='qns_@qn.QuestionId' placeholder="Please enter your comments here" />
+                                    <label for='qns_@qn.QuestionId'>@qn.Questionname</label>
+                                </div>
+                            </div>
+                        }
+                    </div> *@
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md-9">
+                            @Html.TextBoxFor(model => model.Comments, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='@Model.Comments'>Comments</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md-2">
+                            <button type="button" class="btn btn-primary" id="SendRequest">Send request</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/vendor/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#loading').hide();
+        var bsDatepickerFromdate = $('#Fromdate'),
+            bsDatepickerTodate = $('#Todate');
+        bsDatepickerFromdate.datepicker({
+            todayHighlight: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            orientation: isRtl ? 'auto right' : 'auto left'
+        });
+        bsDatepickerTodate.datepicker({
+            todayHighlight: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            orientation: isRtl ? 'auto right' : 'auto left'
+        });
+    });
+</script>

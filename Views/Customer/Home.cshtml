@@ -1,0 +1,70 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
+    <script src="~/js/common.js"></script>
+}
+
+@section PageStyles {
+    <link rel="stylesheet" href="~/vendor/css/pages/app-logistics-dashboard.dist.css" />
+}
+
+<section class="section-py">
+    <div class="container">
+        <div class="row gy-4 gy-md-0"></div>
+        <h4 class="text-center mb-6">Features</h4>
+        <div class="row gy-4 gy-md-0">
+            <div class="col-md-6">
+                <div class="card border">
+                    <div class="card-body text-center">
+                        @if (ViewBag.ExZone == true)
+                        {
+                            <img src="~/images/xzone.png" style="height: 220px; cursor: pointer;" id="imgExzone" />
+                        }
+                        else
+                        {
+                            <img src="~/images/xzone-no.png" style="height: 220px;" />
+                        }                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border">
+                    <div class="card-body text-center">
+                        @if (ViewBag.VZone == true)
+                        {
+                            <img src="~/images/vzone.png" style="height: 220px; cursor: pointer;" id="imgVzone" />
+                        }
+                        else
+                        {
+                            <img src="~/images/vzone-no.png" style="height: 220px;" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    $(document).ready(function () {
+        document.getElementById("imgExzone").addEventListener("click", gotoExzone);
+        document.getElementById("imgVzone").addEventListener("click", gotoVzone);
+    });
+    function gotoExzone() {
+        window.location = '@Url.Action("Index", "Customer")'; //"/Customer/Index";
+    }
+    function gotoVzone() {
+        window.location = '@Url.Action("CandidateSearch", "Customer")'; //"/Customer/CandidateSearch";
+    }
+</script>

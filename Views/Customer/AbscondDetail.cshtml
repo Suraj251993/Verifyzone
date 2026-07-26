@@ -1,0 +1,174 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@model OrgCheck.ViewModels.AbscondDetailViewModel
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/toastr/toastr.dist.css" />
+    <link rel="stylesheet" href="~/vendor/libs/animate-css/animate.dist.css">
+}
+@section VendorScripts {
+    <script src="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.js"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
+    <script src="~/js/common.js?ver=1"></script>
+}
+<div class="row gy-6">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Add additional details</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-4 col-md">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @type = "text", @placeholder = "Please enter here", autofocus = "autofocus" })
+                            <label for='Name'>Employee name</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-4 col-md">
+                            @Html.TextBoxFor(model => model.Employeecode, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for='Name'>Employee code</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-4 col-md">
+                            @Html.TextBoxFor(model => model.Joindate, new { @class = "form-control", @type = "text", @placeholder = "DD/MM/YYYY" })
+                            <label for="Joindate">Join date</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-4 col-md">
+                            @Html.TextBoxFor(model => model.Lastworkingdate, new { @class = "form-control", @type = "text", @placeholder = "DD/MM/YYYY" })
+                            <label for="Lastworkingdate">Last working date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Mobileno, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for="Mobileno">Mobile no.</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Uannumber, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for="Uannumber">UAN number</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            @Html.TextBoxFor(model => model.Fathername, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for="Fathername">Father name</label>
+                        </div>
+                    </div>
+                    <div class="row">                        
+                        <div class="form-floating form-floating-outline mb-4 col-md-4">
+                            @Html.TextBoxFor(model => model.Emailid, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                                <label for="Emailid">Email id</label>
+                        </div>
+                        <div class="form-floating form-floating-outline mb-4 col-md">
+                            @Html.DropDownList("discrepancytype", (IEnumerable<SelectListItem>)ViewBag.DiscrepancyTypes, "Please highlight", new { @class = "form-select", @id = "mdddiscrepancytype" })
+                        </div>
+                        <div class="form-floating form-floating-outline mb-4 col-md-4">
+                            @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for="Remarks">Remarks</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md-8">
+                            @Html.TextBoxFor(model => model.Linkedinurl, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
+                            <label for="Linkedinurl">Linked-in URL</label>
+                        </div>
+                    </div>
+                    <div class="row">                        
+                        <div class="form-floating form-floating-outline mb-6 col-md">
+                            <div class="dz-message needsclick">
+                                Drop files here or click to upload
+                                <span class="note needsclick">(This is just a demo dropzone. Selected files are <span class="fw-medium">not</span> actually uploaded.)</span>
+                            </div>
+                            <div class="fallback">
+                                <input name="resume" type="file" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6 col-md-2">
+                            <button type="button" class="btn btn-primary" id="SaveDetail">Submit </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
+        ShowBalance(balanceurl);
+        var bsjoindate = $('#Joindate'),
+            bslastworkingdate = $('#Lastworkingdate');
+        bsjoindate.datepicker({
+            todayHighlight: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            orientation: isRtl ? 'auto right' : 'auto left'
+        });
+        bslastworkingdate.datepicker({
+            todayHighlight: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            orientation: isRtl ? 'auto right' : 'auto left'
+        });
+        $('#loading').hide();
+        $('#SaveDetail').click(function () {
+            var requestData = {
+                name: $.trim($('#Name').val()),
+                employeecode: $.trim($('#Employeecode').val()),
+                joindate: $.trim($('#Joindate').val()),
+                lastworkingdate: $.trim($('#Lastworkingdate').val()),
+                mobileno: $.trim($('#Mobileno').val()),
+                uannumber: $.trim($('#Uannumber').val()),
+                fathername: $.trim($('#Fathername').val()),
+                emailid: $.trim($('#Emailid').val()),
+                discrepancytype: parseInt($('#mdddiscrepancytype option:selected').val()),
+                remarks: $.trim($('#Remarks').val()),
+                linkedinurl: $.trim($('#Linkedinurl').val())                
+            };
+            $.ajax({
+                url: '@Url.Action("AddAbscondDetail", "Customer")',
+                type: 'POST',
+                data: JSON.stringify(requestData),
+                dataType: 'json',
+                contentType: 'application/json;',
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                },
+                success: function (result) {
+                    if (result == true) {
+                        $('#loading').hide();
+                        clearFields();
+                        // Show success toast message
+                        showSuccessMessage('Data saved');
+                    }
+                    else {
+                        $('#loading').hide();
+                        showErrorMessage('Error occured while saving the data');
+                    }
+                },
+                async: true,
+                processData: false
+            });
+        });
+    });
+    function clearFields() {
+        $('#Name').val('');
+        $('#Employeecode').val('');
+        $('#Joindate').val('');
+        $('#Lastworkingdate').val('');
+        $('#Mobileno').val('');
+        $('#Uannumber').val('');
+        $('#Fathername').val('');
+        $('#Emailid').val('');
+        $('#Linkedinurl').val('');
+        $('#Remarks').val('');
+        $('#mdddiscrepancytype').prop('selectedIndex', 0);
+    }
+</script>
+

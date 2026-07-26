@@ -1,0 +1,32 @@
+.container-access {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    font-family: "IBM Plex Sans", Arial, sans-serif !important;
+}
+
+.access-back-btn {
+    border: 0;
+    background-color: #5c249a;
+    color: white;
+    padding: 3px 25px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.access-header-403 {
+    font-size: 23px;
+    font-weight: 900;
+}
+.access-header-first-403 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #5c249a;
+}
+.access-para-403 {
+    font-size: 18px;
+    color: rgb(92, 91, 91);
+}

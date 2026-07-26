@@ -1,0 +1,211 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model OrgCheck.ViewModels.EmployeeViewModel
+<div class="container-fluid">
+    <div class="row clearfix" id="userform">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                @* <div class="header">
+                <h2 id="userlabel"> View Added Ex-Employee Details </h2>
+                </div> *@
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <input id="estayId" type="hidden" value="">
+                            <div class="form-group form-float">
+                                <div id="divlblemplcode" class="form-line">
+                                    @Html.TextBoxFor(model => model.Employeecode, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Employee Code</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblempname" class="form-line">
+                                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Employee Name</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlbldesignation" class="form-line">
+                                    @Html.TextBoxFor(model => model.Designation, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Designation</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblfromdate" class="form-line">
+                                    @Html.TextBoxFor(model => model.Fromdate, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Join date</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlbltodate" class="form-line">
+                                    @Html.TextBoxFor(model => model.Todate, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Relieved date</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblreasonforleaving" class="form-line">
+                                    @Html.TextBoxFor(model => model.Reasonforleaving, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Reason for leaving</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlbllocation" class="form-line">
+                                    @Html.TextBoxFor(model => model.Location, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Location</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlbljobtype" class="form-line">
+                                    @Html.TextBoxFor(model => model.Jobtype, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Job type (Permanent/Contract...)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblsalary" class="form-line">
+                                    @Html.TextBoxFor(model => model.Lastdrawnsalary, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Last drawn salary</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblreportingto" class="form-line">
+                                    @Html.TextBoxFor(model => model.Reportingto, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Reporting to whom</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblmanagerdesignation" class="form-line">
+                                    @Html.TextBoxFor(model => model.Managerdesignation, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Manager Designation</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="divQuestions" class="row clearfix">
+                        @for (int i = 0; i < Model.EmployeeQuestions.Count; i++)
+                        {
+                            <div class="col-lg-12 col-md-9 col-sm-6">
+                                <div class="form-group form-float">
+                                    <div class="form-line focused">
+                                        <input class="form-control" id='@Model.EmployeeQuestions[i].QuestionId' value='@Model.EmployeeQuestions[i].Answer' type="text" maxlength="200" autocomplete="off" readonly />
+                                        <label class="form-label">@Model.EmployeeQuestions[i].Questionname</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-lg-12 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblcomments" class="form-line">
+                                    @Html.TextBoxFor(model => model.Comments, new { @class = "form-control", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label">Additional comments</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblauthorizedby" class="form-line">
+                                    @Html.TextBoxFor(model => model.AuthorizedBy, new { @class = "form-control", @style = "font-weight: bold", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label" style="font-weight: bold;">Last authorized by</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-9 col-sm-6">
+                            <div class="form-group form-float">
+                                <div id="divlblauthorizeddate" class="form-line">
+                                    @Html.TextBoxFor(model => model.AuthorizedDate, new { @class = "form-control", @style = "font-weight: bold", @type = "text", autocomplete = "off", @readonly = true })
+                                    <label class="form-label" style="font-weight: bold;">Last authorized date</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        if ($('#employeecode').val() != "")
+            $('#divlblemplcode').addClass('focused');
+        else
+            $('#divlblemplcode').removeClass('focused');
+        if ($('#name').val() != "")
+            $('#divlblempname').addClass('focused');
+        else
+            $('#divlblempname').removeClass('focused');
+        if ($('#designation').val() != "")
+            $('#divlbldesignation').addClass('focused');
+        else
+            $('#divlbldesignation').removeClass('focused');
+        if ($('#fromdate').val() != "")
+            $('#divlblfromdate').addClass('focused');
+        else
+            $('#divlblfromdate').removeClass('focused');
+        if ($('#todate').val() != "")
+            $('#divlbltodate').addClass('focused');
+        else
+            $('#divlbltodate').removeClass('focused');
+        if ($('#reasonforleaving').val() != "")
+            $('#divlblreasonforleaving').addClass('focused');
+        else
+            $('#divlblreasonforleaving').removeClass('focused');
+        if ($('#location').val() != "")
+            $('#divlbllocation').addClass('focused');
+        else
+            $('#divlbllocation').removeClass('focused');
+        if ($('#jobtype').val() != "")
+            $('#divlbljobtype').addClass('focused');
+        else
+            $('#divlbljobtype').removeClass('focused');
+        if ($('#lastdrawnsalary').val() != "")
+            $('#divlblsalary').addClass('focused');
+        else
+            $('#divlblsalary').removeClass('focused');
+        if ($('#reportingto').val() != "")
+            $('#divlblreportingto').addClass('focused');
+        else
+            $('#divlblreportingto').removeClass('focused');
+        if ($('#managerdesignation').val() != "")
+            $('#divlblmanagerdesignation').addClass('focused');
+        else
+            $('#divlblmanagerdesignation').removeClass('focused');
+        if ($('#Comments').val() != "")
+            $('#divlblcomments').addClass('focused');
+        else
+            $('#divlblcomments').removeClass('focused');
+        if ($('#authorizedby').val() != "")
+            $('#divlblauthorizedby').addClass('focused');
+        else
+            $('#divlblauthorizedby').removeClass('focused');
+        if ($('#authorizeddate').val() != "")
+            $('#divlblauthorizeddate').addClass('focused');
+        else
+            $('#divlblauthorizeddate').removeClass('focused');
+    });
+</script>

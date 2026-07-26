@@ -1,0 +1,106 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Admin/Index"><i
+        class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+    style="color: var(--purple-color)"></i> <span
+    style="color: var(--purple-color);font-size: 14px;">Admin</span> <i class="ri-arrow-right-s-line"
+    style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Dashboard</span>
+</div>
+
+<div class="dashboard-content">
+    <div class="row">
+        <div class="col-md-4 mt-2">
+            <div class="dash-board-card-container4">
+                <div class="card-text">
+                    <h3 class="">Customers</h3>
+                    <p>As of now</p>
+                    <a href="/Admin/Customers" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Customers">
+                        <i class="ri-contacts-line"></i>
+                    </a>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right4">
+                        <i class="ri-contacts-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-2">
+            <div class="dash-board-card-container5">
+                <div class="card-text">
+                    <h3 class="">Questions</h3>
+                    <p>As of now</p>
+                    <a href="/Admin/Questions" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Questions"> <i class="ri-question-line"></i></a>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right5">
+                        <i class="ri-question-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-2">
+            <div class="dash-board-card-container6">
+                <div class="card-text">
+                    <h3 class="">Users</h3>
+                    <p>As of now</p>
+                    <a href="/Admin/Users" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Users">
+                        <i class="ri-group-line"></i>
+                    </a>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right6">
+                        <i class="ri-group-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mt-4">
+            <div class="dash-board-card-container1">
+                <div class="card-text">
+                    <h3 class="">Customer credit</h3>
+                    <p>As of now</p>
+                    <a href="/Admin/CustomerCredit" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Customer credit">
+                        <i class="ri-mastercard-line"></i>
+                    </a>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right1">
+                        <i class="ri-mastercard-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <div class="col-md-4 mt-4">
+            <div class="dash-board-card-container3">
+                <div class="card-text">
+                    <h4 id="reportslabel"></h4>
+                    <h3 class="">Report generated</h3>
+                    <p>As of now</p>
+                </div>
+                <div class="m-4">
+                    <div class="dash-board-icon-right3">
+                        <i class="ri-notification-3-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/pages/adminhome.js?ver=1" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    var dataurl = '@Url.Action("GetDashboardData", "Customer")';
+    document.ready(function() { 
+        GetDashboardData(dataurl);
+    });
+</script>

@@ -1,0 +1,144 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@model OrgCheck.ViewModels.RequestViewModel
+<link rel="stylesheet" href="/assets/css/vzone-dash.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/bulk.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/new-request.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/active-autopilot.css" asp-append-version="true">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+    <a href="/Customer/VIndex">
+        <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+    </a> <i class="ri-arrow-right-s-line"
+            style="color: var(--purple-color)"></i> 
+            <span style="color: var(--purple-color);font-size: 14px;">V-Zone</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i> 
+            <span style="color: var(--purple-color);font-size: 14px;">Employment verification</span> 
+            <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i><span style="font-size: 14px;">
+        Candidate
+        request
+    </span>
+</div>
+
+<div class="content">
+    <h5 class="bulk-table-heading mb-2">Candidate request</h5>
+
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
+                <input required="required" autocomplete="off" class="input-container"
+                       placeholder="-- Choose employer --" type="text" readonly>
+                <label class="usernameLabel">Choose employer</label>
+                <i class="ri-group-2-line userIcon"></i>
+                <svg viewBox="0 0 320 512" class="chevronIcon" id="chevronIcon">
+                    <path d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4
+                                                        24.6-9.4 33.9 0L160 239.4l96.5-96.5c9.4-9.4
+                                                        24.6-9.4 33.9 0l22.6 22.6c9.4 9.4
+                                                        9.4 24.6 0 33.9l-136 136c-9.4 9.4-24.6
+                                                        9.4-33.9 0z" />
+                </svg>
+                <div id="dropdownMenu" class="newinput-dropdown-menu"></div>
+            </div>
+        </div>
+        <div class="col-md-4 pt-4">
+            <div class="checkbox-wrapper-12 d-flex gap-3">
+                <div class="cbx">
+                    <input type="checkbox" id="check-box-add">
+                    <label for="cbx-12"></label>
+                    <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
+                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                    </svg>
+                </div>
+
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <filter id="goo-12">
+                            <feGaussianBlur result="blur" stdDeviation="4" in="SourceGraphic">
+                            </feGaussianBlur>
+                            <feColorMatrix result="goo-12" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7"
+                                           mode="matrix" in="blur"></feColorMatrix>
+                            <feBlend in2="goo-12" in="SourceGraphic"></feBlend>
+                        </filter>
+                    </defs>
+                </svg>
+                Add new company details
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-6 extraInputs" style="display: none;">
+            <div class="inputContainer">
+                <input id="txtnewcompanyname" required="required" autocomplete="off" class="input-container"
+                       placeholder="Enter your company name" type="text">
+                <label class="usernameLabel">Company Name </label>
+                <i class="ri-organization-chart userIcon"></i>
+            </div>
+        </div>
+        <div class="col-md-6 extraInputs" style="display: none;">
+            <div class="inputContainer">
+                <input id="txtnewcompanyaddress" required="required" autocomplete="off" class="input-container" placeholder="Enter your address"
+                       type="email">
+                <label class="usernameLabel">Company Address </label>
+                <i class="ri-mail-send-line userIcon"></i>
+            </div>
+        </div>
+        <div class="col-md-6 extraInputs" style="display: none;">
+            <div class="inputContainer">
+                <input id="txtnewhrname" required="required" autocomplete="off" class="input-container" placeholder="Enter HR name"
+                       type="text">
+                <label class="usernameLabel">HR name </label>
+                <i class="ri-user-6-line userIcon"></i>
+            </div>
+        </div>
+        <div class="col-md-6 extraInputs" style="display: none;">
+            <div class="inputContainer">
+                <input id="txtnewhremail" required="required" autocomplete="off" class="input-container" placeholder="Enter HR email"
+                       type="email">
+                <label class="usernameLabel">HR email </label>
+                <i class="ri-mail-send-line userIcon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="cardz px-0 pb-0" id="divForm"></div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/assets/js/exit-details.js?ver=2" asp-append-version="true"></script>
+<script src="/assets/js/upload.js" asp-append-version="true"></script>
+<script src="~/assets/js/pages/exrequest.js" asp-append-version="true"></script>
+<script>
+    const dropmenus = document.querySelectorAll(".newinput-dropdown-menu");
+    dropmenus.forEach(dropmenu => {
+        dropmenu.addEventListener("click", () => {
+            dropmenu.classList.toggle("show");
+        });
+    });
+
+</script>
+
+<script>
+    const extraInputs = document.querySelectorAll('.extraInputs');
+    const checkbox = document.querySelector('#check-box-add');
+
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            extraInputs.forEach(el => el.style.display = 'block');
+        } else {
+            extraInputs.forEach(el => el.style.display = 'none');
+        }
+    });
+</script>

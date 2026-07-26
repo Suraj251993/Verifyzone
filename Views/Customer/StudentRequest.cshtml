@@ -1,0 +1,140 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.dist.js"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/js/common.js?ver=1"></script>
+}
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Student request status</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-floating form-floating-outline col-md">
+                        <select class="form-select" id="mddsearchfilter" aria-label="Default select example">
+                            <option value="">-- Choose option--</option>
+                            <option value="openOnly">Open request only</option>
+                            <option value="replyOnly">Reply received only</option>
+                        </select>
+                        <label for="mddsearchfilter">Search by status</label>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-3 col-md">
+                        <button type="button" class="btn btn-primary" id="Search">Search</button>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-3 col-md">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-12">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Search results</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="mb-12 col-md">
+                        <table class="datatables-ajax table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Reg. No.</th>
+                                    <th>Request comments</th>
+                                    <th>Raised by</th>
+                                    <th>Raised date</th>
+                                    <th>Reply comments</th>
+                                    <th>Replied by</th>
+                                    <th>Replied date</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/vendor/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        ShowBalance();
+        $('#loading').hide();
+        // $("select#mddsearchfilter").prop('selectedIndex', 0);
+        // refreshGrid($('#mddsearchfilter option:selected').val());
+    });
+
+    function refreshGrid(filter) {
+        $('#loading').show();
+        //alert(filter);
+        const filtervalue = filter;
+        console.log('err', { filtervalue: filtervalue })
+        $.ajax({
+            url: 'GetStudentRequestsByCustomer?filtervalue=' + filtervalue,
+
+            type: 'GET',
+            dataType: 'json', // changing data type to json
+            error: function (xhr) {
+                alert('Error: ' + xhr.statusText);
+                $('#loading').hide();
+            },
+            success: function (result) {
+                //console.log('ds', result);
+                setToTable(result);
+                $('#loading').hide();
+            },
+            async: true,
+            processData: false
+        });
+    }
+    function setToTable(jsonData) {
+        //console.log(jsonData);
+        var rowcontent = "";
+        $('.js-basic-example').find("tr:gt(0)").remove();
+        if (jsonData.length == 0)
+            rowcontent = "<tr></tr>";
+        for (let i = 0; i < jsonData.length; i++) {
+            //console.log(jsonData[i]);
+            rowcontent += "<tr>";
+            rowcontent += "<td>" + jsonData[i].regno + "</td>";
+            rowcontent += "<td>" + jsonData[i].requestcomments + "</td>";
+            rowcontent += "<td>" + jsonData[i].raisedbyname + "</td>";
+            rowcontent += "<td>" + getDisplayDate(jsonData[i].raiseddate) + "</td>";
+            rowcontent += "<td>" + jsonData[i].replycomments + "</td>";
+            rowcontent += "<td>" + jsonData[i].repliername + "</td>";
+            rowcontent += "<td>" + getDisplayDate(jsonData[i].replieddate) + "</td>";
+            rowcontent += "</tr>";
+        }
+        //console.log(rowcontent);
+        $('#tbody').append(rowcontent);
+        $('.js-basic-example').DataTable();
+        $('#loading').hide();
+    }
+    function getDisplayDate(data) {
+        if (data != null) {
+            var date = new Date(data);
+            var month = date.getMonth() + 1;
+            return (date.getDate().toString().length > 1 ? date.getDate() : "0" + date.getDate()) + "/" + (month.toString().length > 1 ? month : "0" + month) + "/" + date.getFullYear();
+        }
+        else
+            return "";
+    }
+    $('#Search').click(function () {
+        refreshGrid($('#mddsearchfilter option:selected').val());
+    });
+</script>

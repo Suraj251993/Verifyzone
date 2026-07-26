@@ -1,0 +1,410 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "";
+}
+
+@section VendorStyles {
+    <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css">
+        @* <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css"> *@
+    <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
+    <link rel="stylesheet" href="~/vendor/libs/apex-charts/apex-charts.dist.css" />
+}
+
+@section VendorScripts {
+    <script src="~/vendor/libs/datatables-bs5/datatables-bootstrap5.dist.js"></script>
+    <script src="~/vendor/libs/apex-charts/apexcharts.dist.js"></script>
+    <script src="~/vendor/libs/moment/moment.dist.js"></script>
+    <script src="~/js/common.js"></script>
+}
+
+<div class="row gy-4">
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Upload your student details in bulk</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-floating form-floating-outline mb-6 col-md-9">
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="inputfile" name="inputfile">
+                            <label class="input-group-text" for="file" id="btnupload">Upload</label>
+                        </div>
+                    </div>
+                    <div class="form-floating form-floating-outline mb-6 col-md">
+                        <button type="button" class="btn btn-primary" id="downloadtemplate">Download template</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <h5 class="card-header">Upload history</h5>
+    <div class="card-datatable text-nowrap">
+        <table id="tablelist" class="datatables-ajax table table-bordered">
+            <thead>
+                <tr>
+                    <th>Filename</th>
+                    <th>Uploaded date</th>
+                    <th>Status</th>
+                    <th>Valid records</th>
+                    <th>Invalid records</th>
+                    <th>Total records</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-l" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel4">Upload results</h5>
+                @* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col mb-6 mt-2">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <div>
+                                    @* <h5 class="card-title mb-0">Upload results</h5> *@
+                                    <p class="text-body mb-0">Results based on the file uploaded</p>
+                                    <input type="hidden" id="flid" name="flid" />
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="donutChart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="ApprovedorRejectedFile('Approve')">Reject file</button>
+                <button type="button" class="btn btn-primary" onclick="ApprovedorRejectedFile('Reject')">Approve file</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/vendor/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js">
+</script>
+<script>
+
+    $(document).ready(function () {
+        ShowBalance();        
+        BindFileUploads();
+        $('#loading').hide();
+    });
+    $('#btnupload').click(function () {
+        $('#loading').show();
+        var url = '@Url.Action("StudentUpload")';
+        var type = 'POST';
+        var formData = new FormData();
+        var files = $('#file').prop("files");
+        if (files[0] == null || files[0] == '') {
+            $('#loading').hide();
+            showErrorMessage("Please choose file before upload");
+            return;
+        }
+        formData.append("file", files[0]);
+        $.ajax({
+            url: url,
+            type: type,
+            data: formData,
+            processData: false,
+            contentType: false,
+            error: function (xhr) {
+                console.log(xhr);
+                alert('Error: ' + xhr.statusText);
+            },
+            success: function (response) {
+                $('#loading').hide();
+                if (response != null) {
+                    //$('#svtotal').val(response.validrecords);
+                    $('#flid').val(response.fileid);
+
+                    $('#exLargeModal').modal('show');
+                    DrawChart(response);
+                }
+                else {
+                    showErrorMessage('Error occurred while uploading the file');
+                }
+
+            },
+            async: false,
+            processData: false
+        });
+    });
+    $('#downloadtemplate').click(function () {
+        window.open("/Customer/DownloadStudentTemplate", '_blank');
+    });
+    
+    function DrawChart(response) {
+        let cardColor, headingColor, labelColor, borderColor, legendColor;
+        cardColor = config.colors.cardColor;
+        headingColor = config.colors.headingColor;
+        labelColor = config.colors.textMuted;
+        legendColor = config.colors.bodyColor;
+        borderColor = config.colors.borderColor;
+
+        // Color constant
+        const chartColors = {
+            column: {
+                series1: '#826af9',
+                series2: '#d2b0ff',
+                bg: '#f8d3ff'
+            },
+            donut: {
+                series1: '#fdd835',
+                series2: '#32baff',
+                series3: '#ffa1a1',
+                series4: '#7367f0',
+                series5: '#29dac7'
+            },
+            area: {
+                series1: '#ab7efd',
+                series2: '#b992fe',
+                series3: '#e0cffe'
+            }
+        };
+
+        // Donut Chart
+        // --------------------------------------------------------------------
+        const donutChartEl = document.querySelector('#donutChart'),
+            donutChartConfig = {
+                chart: {
+                    height: 390,
+                    fontFamily: 'Inter',
+                    type: 'donut'
+                },
+                labels: ['Invalid', 'Total', 'Valid'],
+                series: [response.invalidrecords, response.totalrecords, response.validrecords],
+                colors: [
+                    chartColors.donut.series3,
+                    chartColors.donut.series4,
+                    chartColors.donut.series5
+                ],
+                stroke: {
+                    show: false,
+                    curve: 'straight'
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function (val, opt) {
+                        return parseInt(val, 10);
+                    },
+                    style: {
+                        fontSize: '15px',
+                        fontWeight: 'normal'
+                    },
+                    dropShadow: {
+                        enabled: false
+                    }
+                },
+                legend: {
+                    show: true,
+                    position: 'bottom',
+                    fontSize: '13px',
+                    markers: { offsetX: -3, width: 10, height: 10 },
+                    itemMargin: {
+                        vertical: 3,
+                        horizontal: 10
+                    },
+                    labels: {
+                        colors: legendColor,
+                        useSeriesColors: false
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                name: {
+                                    fontSize: '2rem'
+                                },
+                                value: {
+                                    fontSize: '0.9375rem',
+                                    fontWeight: 500,
+                                    color: legendColor,
+                                    formatter: function (val) {
+                                        return parseInt(val, 10);
+                                    }
+                                },
+                                total: {
+                                    show: true,
+                                    fontSize: '0.9375rem',
+                                    fontWeight: 500,
+                                    color: headingColor,
+                                    label: 'Valid records',
+                                    formatter: function (w) {
+                                        return response.validrecords
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                responsive: [
+                    {
+                        breakpoint: 992,
+                        options: {
+                            chart: {
+                                height: 380
+                            },
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    colors: legendColor,
+                                    useSeriesColors: false
+                                }
+                            }
+                        }
+                    },
+                    {
+                        breakpoint: 576,
+                        options: {
+                            chart: {
+                                height: 320
+                            },
+                            plotOptions: {
+                                pie: {
+                                    donut: {
+                                        labels: {
+                                            show: true,
+                                            name: {
+                                                fontSize: '1.5rem'
+                                            },
+                                            value: {
+                                                fontSize: '1rem'
+                                            },
+                                            total: {
+                                                fontSize: '1.5rem'
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    colors: legendColor,
+                                    useSeriesColors: false
+                                }
+                            }
+                        }
+                    },
+                    {
+                        breakpoint: 420,
+                        options: {
+                            chart: {
+                                height: 280
+                            },
+                            legend: {
+                                show: false
+                            }
+                        }
+                    },
+                    {
+                        breakpoint: 360,
+                        options: {
+                            chart: {
+                                height: 250
+                            },
+                            legend: {
+                                show: false
+                            }
+                        }
+                    }
+                ]
+            };
+        if (typeof donutChartEl !== undefined && donutChartEl !== null) {
+            const donutChart = new ApexCharts(donutChartEl, donutChartConfig);
+            donutChart.render();
+        }
+    }
+    
+    function BindFileUploads() {
+        var arraydata = [];
+        $.ajax(
+            {
+                type: 'GET',
+                dataType: 'JSON',
+                async: false,
+                url: '@Url.Action("GetLatestUploads", "Customer")',
+                success:
+                    function (jsonData) {
+                        for (let i = 0; i < jsonData.length; i++) {
+                            var data = [];
+                            data.push(jsonData[i].filename);
+                            data.push(jsonData[i].uploadeddate);
+                            data.push(jsonData[i].uploadedstatus);
+                            data.push(jsonData[i].validrecords.toString());
+                            data.push(jsonData[i].invalidrecords.toString());
+                            data.push(jsonData[i].totalrecords.toString());
+                            arraydata.push(data);
+                        }
+                        var ajaxdata = {
+                            "draw": 1,
+                            "recordsTotal": jsonData.length,
+                            "recordsFiltered": jsonData.length,
+                            "data": arraydata
+                        };
+                        //console.log(tabledata);
+                        var dt_ajax = $('#tablelist').dataTable({
+                            processing: true,
+                            //ajax: assetsPath + 'json/ajax.json',
+                            data: ajaxdata.data,
+                            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>><"table-responsive"t><"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                            language: {
+                                paginate: {
+                                    next: '<i class="ri-arrow-right-s-line"></i>',
+                                    previous: '<i class="ri-arrow-left-s-line"></i>'
+                                }
+                            }
+                        });
+                    },
+                error:
+                    function (response) {
+                        alert("Error: " + response);
+                    }
+            }
+        );
+    }
+
+    function ApprovedorRejectedStuFile(mode) {
+        var model = { "Mode": mode, "FileId": $('#flid').val() };
+        if (mode == "Approve" && $('#svtotal').val() == 0) {
+            showErrorMessage("No valid records to approve. Please reject the file.");
+            return;
+        }
+        $('#loading').show();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ApproveorRejectStudentFile")',
+            data: JSON.stringify(model),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {                
+                if (result == true) {
+                    if (mode == "Approve")
+                        showSuccessMessage('File uploaded successfully.');
+                    else
+                        showSuccessMessage('File rejected successfully.');
+                    BindFileUploads();
+                    $('#loading').hide();
+                }
+                else {
+                    $('#loading').hide();
+                    showErrorMessage('Error while uploading the file');
+                }
+            }
+        });
+    }
+</script>

@@ -1,0 +1,125 @@
+.activate-autopil-switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 18px;
+}
+
+.activate-autopil-switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.activate-autopil-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.activate-autopil-slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 1px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .activate-autopil-slider {
+  background-color: var(--purple-color);
+}
+
+input:focus + .activate-autopil-slider {
+  box-shadow: 0 0 1px var(--purple-color);
+}
+
+input:checked + .activate-autopil-slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.activate-autopil-slider.activate-autopil-round {
+  border-radius: 34px;
+}
+
+.activate-autopil-slider.activate-autopil-round:before {
+  border-radius: 50%;
+}
+
+
+.activate-popup-toggle-icon{
+  font-size: 50px;
+  color: orange;
+}
+.activate-popup-toggle-icon1{
+  font-size: 50px;
+  color: green;
+}
+
+.activate-popup-toggle-content{
+  font-size: 18px;
+}
+
+.btn-close:focus{
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+#show-input:focus {
+    background-color: none !important;
+}
+#show-input:focus::placeholder {
+    color: transparent !important;
+}
+#show-input::placeholder {
+    color: transparent;
+}
+.show-input:focus {
+    border: 1px solid var(--purple-color)!important;
+}
+.show-input{
+    border: 1px solid lightgray;
+        padding: 5px 5px;
+        border-radius: 5px;
+}
+
+.vzone-candi-alert-msg{
+  font-size: 15px;
+  color: red;
+}
+
+.manage-hr-pencil-edit{
+  font-size: 20px;
+  color: darkorange;
+  border: 0;
+  background-color: transparent;
+}
+.manage-hr-pencil-question {
+    font-size: 20px;
+    color: darkorange;
+    border: 0;
+    background-color: transparent;
+}
+.manage-hr-pencil-delete{
+  font-size: 20px;
+  color: red;
+    border: 0;
+  background-color: transparent;
+}
+.manage-hr-pencil-reset {
+    font-size: 20px;
+    color: red;
+    border: 0;
+    background-color: transparent;
+}

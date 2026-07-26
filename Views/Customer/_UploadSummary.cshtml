@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model OrgCheck.ViewModels.UploadSummaryViewModel
+@{
+    Layout = null;
+}
+
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="au-card m-b-30">
+                        <div class="au-card-inner">
+                            <h3 class="title-2 m-b-40">Upload Summary</h3>
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="au-card m-b-30">
+                        <div class="au-card-inner">
+                            <h5 class="title-2 m-b-40">Total records: @Model.totalrecords</h5>
+                            <h5 class="title-2 m-b-40">Valid records: @Model.validrecords</h5>
+                            <h5 class="title-2 m-b-40">Invalid records: @Model.invalidrecords</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="au-card m-b-30">
+                        <div class="au-card-inner">
+                            <h3 class="title-2 m-b-40">Upload Details</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
