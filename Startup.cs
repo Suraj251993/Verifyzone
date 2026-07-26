@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -66,6 +68,11 @@ namespace OrgCheck
             });
             string conn = BuildConnectionString(Configuration);
             services.AddDbContext<Models.PostgresContext>(options => options.UseNpgsql(conn));
+            // Persisted to the database (not the container's local disk) so tokens/cookies minted before a
+            // redeploy still decrypt afterward - containers like Render's get a fresh ephemeral filesystem
+            // (and therefore a fresh, incompatible key ring) on every deploy otherwise.
+            services.AddDbContext<Models.DataProtectionKeyContext>(options => options.UseNpgsql(conn));
+            services.AddDataProtection().PersistKeysToDbContext<Models.DataProtectionKeyContext>();
             var constants = Configuration.GetSection("ApplicationSettings").Get<OrgCheck.Services.Constants>();
             services.AddSingleton(constants);
             services.AddCors(options =>

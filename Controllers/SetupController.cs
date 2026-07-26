@@ -38,6 +38,21 @@ namespace OrgCheck.Controllers
             return Json(results);
         }
 
+        [HttpPost("run-dataprotection-migration")]
+        public async Task<IActionResult> RunDataProtectionMigration(string secret)
+        {
+            string expectedSecret = Environment.GetEnvironmentVariable("SETUP_SECRET");
+            if (string.IsNullOrEmpty(expectedSecret) || secret != expectedSecret)
+                return Unauthorized();
+
+            string databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            if (string.IsNullOrEmpty(databaseUrl))
+                return BadRequest("DATABASE_URL not set");
+
+            var result = await RunCommandAsync("psql", new[] { databaseUrl, "-f", "/app/dbscripts/dataprotectionkeys.sql" });
+            return Json(result);
+        }
+
         [HttpPost("test-smtp")]
         public async Task<IActionResult> TestSmtp(string secret)
         {
