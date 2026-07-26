@@ -19,5 +19,8 @@ namespace OrgCheck.Services
         public string AWSSecretKey { get; set; }
         public string AWSBucketName { get; set; }
         public int CreditQuestionThreshold { get; set; }
+        // Optional. "SendGrid" sends via the SendGrid HTTPS API; anything else (default, unset) uses SMTP.
+        // Only needed on hosts that block outbound SMTP ports (e.g. Render); leave unset for local dev.
+        public string EmailProvider { get; set; }
     }
 }

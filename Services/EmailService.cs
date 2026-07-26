@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace OrgCheck.Services
 {
     public class EmailService
     {
+        private static readonly HttpClient _httpClient = new HttpClient();
         private readonly Constants _constants;
         private readonly LogService _logService;
         public EmailService(Constants constants, LogService logService)
@@ -17,6 +21,17 @@ namespace OrgCheck.Services
             _logService = logService;
         }
         public void SendEmail(string toEmail, string ccEmail, string bccEmail, string subject, string body)
+        {
+            // Some hosts (e.g. Render) block outbound SMTP ports entirely, so email there must go over
+            // HTTPS via the SendGrid API instead. Local/default behavior (plain SMTP) is unchanged unless
+            // ApplicationSettings:EmailProvider is explicitly set to "SendGrid".
+            if (string.Equals(_constants.EmailProvider, "SendGrid", StringComparison.OrdinalIgnoreCase))
+                SendViaSendGrid(toEmail, ccEmail, bccEmail, subject, body);
+            else
+                SendViaSmtp(toEmail, ccEmail, bccEmail, subject, body);
+        }
+
+        private void SendViaSmtp(string toEmail, string ccEmail, string bccEmail, string subject, string body)
         {
             MailMessage mailMessage = new MailMessage();
             mailMessage.From = new MailAddress(_constants.EmailFromId, _constants.EmailFromUsername);
@@ -43,6 +58,44 @@ namespace OrgCheck.Services
             {
                 _logService.Log(ex);
             }
+        }
+
+        private void SendViaSendGrid(string toEmail, string ccEmail, string bccEmail, string subject, string body)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var personalization = new Dictionary<string, object> { ["to"] = new[] { new { email = toEmail } } };
+                    if (!string.IsNullOrEmpty(ccEmail))
+                        personalization["cc"] = new[] { new { email = ccEmail } };
+                    if (!string.IsNullOrEmpty(bccEmail))
+                        personalization["bcc"] = new[] { new { email = bccEmail } };
+
+                    var payload = new
+                    {
+                        personalizations = new[] { personalization },
+                        from = new { email = _constants.EmailFromId, name = _constants.EmailFromUsername },
+                        subject,
+                        content = new[] { new { type = "text/html", value = body } }
+                    };
+
+                    using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.sendgrid.com/v3/mail/send");
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _constants.EmailAPIKey);
+                    request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+
+                    var response = await _httpClient.SendAsync(request);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        _logService.Log(new Exception($"SendGrid send failed ({(int)response.StatusCode}): {responseBody}"));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logService.Log(ex);
+                }
+            });
         }
 
         public void SendConsentRequestEmail(string toEmail, string employeeName, string companyName, string consentLink, string expiryDate, string hrContact, string baseUrl)
