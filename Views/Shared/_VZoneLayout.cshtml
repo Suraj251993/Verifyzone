@@ -2,17 +2,23 @@
 <html lang="en">
 @{
     string? currentPage = Convert.ToString(@ViewData["page"]);
+    string displayName = User.Identity?.Name ?? "?";
+    string[] nameParts = displayName.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+    string initials = nameParts.Length >= 2
+        ? $"{nameParts[0][0]}{nameParts[1][0]}".ToUpper()
+        : displayName.Length >= 2 ? displayName.Substring(0, 2).ToUpper() : displayName.ToUpper();
 }
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>V-Zone | Verifyzone</title>
     <link rel="icon" href="~/assets/img/logotop.png" />
+    <script src="~/assets/js/theme-toggle.js" asp-append-version="true"></script>
     <link href="/assets/remix/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/assets/css/sidebar.css">
-    <link rel="stylesheet" href="~/assets/css/dash.css">
-    <link rel="stylesheet" href="~/assets/css/exit-details.css">
-    <link rel="stylesheet" href="/assets/css/vzone-dash.css">
+    <link rel="stylesheet" href="~/assets/css/sidebar.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/dash.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
+    <link rel="stylesheet" href="/assets/css/vzone-dash.css" asp-append-version="true">
     <link rel="stylesheet" href="~/assets/css/toast.css" asp-append-version="true">
     <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -202,6 +208,20 @@
             </div>
             <div class="navbar-right">
                 @* <img src="~/assets/img/Zoho_Corporation-Logo.wine.png" alt="" class="navbar-client-logo"> *@
+                <a href="/Customer/CandidateSearch" class="navbar-search-box">
+                    <i class="ri-search-line"></i> Search a candidate&hellip;
+                </a>
+                <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Toggle light/dark theme">
+                    <i class="ri-moon-line"></i>
+                    <i class="ri-sun-line"></i>
+                </button>
+                <script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+                    document.getElementById("themeToggleBtn").addEventListener("click", toggleVzTheme);
+                </script>
+                <a href="/Customer/EmployeeNewRequest" class="navbar-bell" id="navbarBell" title="Pending approvals and requests">
+                    <i class="ri-notification-3-line"></i>
+                    <span class="navbar-bell-dot" id="navbarBellDot" style="display:none;"></span>
+                </a>
                 <div class="navbar-help-section">
                     <div class="dropdown">
                         <button class=" profile-wrapper active help-text">
@@ -221,13 +241,13 @@
                 <div class="profile">
                     <div class="dropdown">
                         <button class="dropdown-btn profile-wrapper">
-                            <img src="/assets/img/profile-nav.jpg" alt="Profile" class="profile-img">
+                            <div class="profile-initials">@initials</div>
                             <span class="active-indicator"></span>
                         </button>
                         <div class="dropdown-menu border-0" style="margin-top: -3px;">
                             <div class="border-bottom d-flex gap-1 px-2">
                                 <div class="profile-wrapper1">
-                                    <img src="~/assets/img/profile-nav.jpg" alt="Profile" class="profile-img-sub">
+                                    <div class="profile-initials profile-initials-sub">@initials</div>
                                     <span class="active-indicator1"></span>
                                 </div>
                                 <p class="pt-1">@User.Identity.Name</p>
@@ -481,7 +501,7 @@
                                 <div class="modal-body">
                                     <div class="card p-0 mt-3 mb-4 border-0">
                                         <table>
-                                            <thead style="background: #f8ece2">
+                                            <thead style="background: #f4f1f8">
                                                 <tr>
                                                     <th class="sortable">
                                                         Description 
@@ -877,10 +897,25 @@
                     }
                 });
                 //}
-            }               
+            }
     </script>
-    
-    
+
+    <script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+        $(function () {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetPendingCount", "Customer")',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.pendingCount > 0) {
+                        document.getElementById("navbarBellDot").style.display = "block";
+                    }
+                },
+                error: function (err) { console.log(err); }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

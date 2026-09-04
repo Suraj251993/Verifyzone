@@ -21,51 +21,41 @@ function drawDashboard(_url) {
                     if (parseInt(response.reportcount[i]) > reportmaxcount)
                         reportmaxcount = parseInt(response.reportcount[i]);
                 }
+                var approvals = [];
+                if (response.approvalcount) {
+                    for (let i = 0; i < response.approvalcount.length; i++) {
+                        approvals.push(parseInt(response.approvalcount[i]));
+                        if (parseInt(response.approvalcount[i]) > reportmaxcount)
+                            reportmaxcount = parseInt(response.approvalcount[i]);
+                    }
+                }
+
+                var isDark = window.isVzThemeDark ? window.isVzThemeDark() : false;
+                var textColor = isDark ? '#f1ecf7' : '#211a2b';
+                var subColor = isDark ? '#b3a5c4' : '#7a7186';
+                var lineColor = isDark ? '#382a4c' : '#ece4f7';
 
                 var option = {
-                    title: [
-                        {
-                            text: 'Dashboard statistics',
-                            left: 'left',
-                            top: 10,
-                            textStyle: {
-                                fontSize: 18,
-                                fontFamily: 'IBM Plex Sans, Arial, sans-serif',
-                                fontWeight: 600,
-                                color: '#333'
-                            }
-                        },
-                        {
-                            text: 'Month-wise count of reports generated for the year - ' + yr,
-                            left: 'left',
-                            top: 40,
-                            textStyle: {
-                                fontSize: 13,
-                                fontFamily: 'IBM Plex Sans, Arial, sans-serif',
-                                fontWeight: 400,
-                                color: '#777',
-                                width: 500,
-                                align: 'center',
-                                lineHeight: 18
-                            }
-                        }
-                    ],
                     tooltip: {
                         trigger: 'axis'
+                    },
+                    legend: {
+                        top: 0,
+                        right: '5%',
+                        textStyle: { fontSize: 12, fontFamily: 'IBM Plex Sans, Arial, sans-serif', color: subColor }
                     },
                     grid: {
                         left: '5%',
                         right: '5%',
                         bottom: '5%',
-                        top: 100,
+                        top: 35,
                         containLabel: true
                     },
                     xAxis: {
                         type: 'category',
                         data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                        axisLabel: {
-                            fontSize: 12
-                        }
+                        axisLabel: { fontSize: 12, color: subColor },
+                        axisLine: { lineStyle: { color: lineColor } }
                     },
                     yAxis: {
                         type: 'value',
@@ -74,22 +64,54 @@ function drawDashboard(_url) {
                         //interval: 0.5,
                         axisLabel: {
                             fontSize: 12,
+                            color: subColor,
                             formatter: function (value) {
                                 return value.toFixed(1);
                             }
-                        }
+                        },
+                        splitLine: { lineStyle: { color: lineColor } }
                     },
                     series: [
                         {
-                            name: 'reports',
-                            type: 'bar',
-                            //data: [0.5, 1.0, 0.8, 0.4, 0.3, 0.6, 0.7, 1.2, 1.4, 1.8, 2.1, 2.4],
+                            name: 'Reports generated',
+                            type: 'line',
                             data: reports,
-                            itemStyle: {
-                                color: '#5c249a',
-                                borderRadius: [6, 6, 0, 0]
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 6,
+                            lineStyle: { color: '#5c249a', width: 2.5 },
+                            itemStyle: { color: '#5c249a' },
+                            areaStyle: {
+                                color: {
+                                    type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+                                    colorStops: [
+                                        { offset: 0, color: 'rgba(92, 36, 154, 0.28)' },
+                                        { offset: 1, color: 'rgba(92, 36, 154, 0)' }
+                                    ]
+                                }
                             },
-                            barWidth: '50%',
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        },
+                        {
+                            name: 'Approvals',
+                            type: 'line',
+                            data: approvals,
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 6,
+                            lineStyle: { color: '#8546cd', width: 2.5 },
+                            itemStyle: { color: '#8546cd' },
+                            areaStyle: {
+                                color: {
+                                    type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+                                    colorStops: [
+                                        { offset: 0, color: 'rgba(133, 70, 205, 0.18)' },
+                                        { offset: 1, color: 'rgba(133, 70, 205, 0)' }
+                                    ]
+                                }
+                            },
                             emphasis: {
                                 focus: 'series'
                             }

@@ -103,6 +103,16 @@ namespace OrgCheck.Controllers
             return Json(data);
         }
 
+        // Lightweight endpoint for the shared layout's notification bell - reuses the same
+        // dashboard counts already computed for the Ex-Zone/V-Zone landing pages.
+        [Authorize]
+        [HttpGet]
+        public IActionResult GetPendingCount()
+        {
+            var counts = _serviceProvider.GetRequiredService<IEmployeeService>().GetDashboardCount(DateTime.Now.Month, DateTime.Now.Year, _executionContext.UserId);
+            return Json(new { pendingCount = counts.ApprovalCount + counts.RequestCount });
+        }
+
         [Authorize]
         [HttpGet]
         public IActionResult Profile()

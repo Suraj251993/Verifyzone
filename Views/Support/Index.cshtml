@@ -4,26 +4,24 @@
 @{
     Layout = "~/Views/Shared/_SupportLayout.cshtml";
 }
-<div class="main-content">
-    <div class="section__content section__content--p30">
-        <div class="container-fluid">
-            <div class="main-body">
-                <div class="page-wrapper">
-                    <!-- [ Main Content ] start -->
-                    <div class="row">
+<link rel="stylesheet" href="~/assets/css/dash.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Support/Index"><i
+        class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+    style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Dashboard</span>
+</div>
 
-                        <div class="col-sm-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Welcome Support Team !</h3>
-                                </div>
-                                <div class="card-body" style="height: 450px;">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="content">
+    <div class="exz-page-head">
+        <h1>Support dashboard</h1>
+        <p>Welcome back — manage user resets and employee bulk uploads from here.</p>
+    </div>
+    <div class="exz-actions-row">
+        <div class="exz-action-card">
+            <h3>Navigation</h3>
+            <div class="exz-action-grid">
+                <a href="/Support/Users" class="exz-action-btn"><i class="ri-group-line"></i> User management</a>
+                <a href="/Support/EmployeeUpload" class="exz-action-btn"><i class="ri-upload-cloud-line"></i> Employee bulk upload</a>
             </div>
         </div>
     </div>

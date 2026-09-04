@@ -18,13 +18,16 @@
     <script src="~/vendor/libs/toastr/toastr.dist.js" asp-append-version="true"></script>
     <script src="~/js/common.js" asp-append-version="true"></script>
 }
+<link rel="stylesheet" href="~/assets/css/dash.css" asp-append-version="true">
 <div class="row gy-6">
     <div class="col-xl-12">
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Profile details</h5>
-            </div>
-            <div class="card-body">
+        <div class="exz-page-head">
+            <h1>Profile details</h1>
+            <p>Keep your contact and reporting information up to date.</p>
+        </div>
+        <div class="exz-action-card">
+            <h3>Personal information</h3>
+            <div class="card-body p-0">
                 <div class="row">
                     <div class="form-floating form-floating-outline mb-6 col-md">
                         @Html.Hidden("mdid", @Model.Id)

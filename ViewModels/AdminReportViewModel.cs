@@ -11,6 +11,10 @@ namespace OrgCheck.ViewModels
         public List<ReportCountViewModel> rcviewmodels { get; set; }
         public List<CompanyCountViewModel> cmpviewmodels { get; set; }
         public List<ReportCountViewModel> yearwisecount { get; set; }
+        [JsonPropertyName("reportstrend")]
+        public double? ReportsTrend { get; set; }
+        [JsonPropertyName("customerstrend")]
+        public double? CustomersTrend { get; set; }
     }
 
     public class ReportCountViewModel

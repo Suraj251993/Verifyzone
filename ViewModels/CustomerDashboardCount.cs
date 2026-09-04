@@ -18,5 +18,9 @@ namespace OrgCheck.ViewModels
         public string Month { get; set; }
         [JsonPropertyName("year")]
         public int Year { get; set; }
+        [JsonPropertyName("completedcounttrend")]
+        public double? CompletedCountTrend { get; set; }
+        [JsonPropertyName("downloadcounttrend")]
+        public double? DownloadCountTrend { get; set; }
     }
 }

@@ -5,8 +5,8 @@
     Layout = "";
 }
 <link rel="stylesheet" href="/assets/css/bulk.css">
-<link rel="stylesheet" href="/assets/css/exit-details.css">
-<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/new-request.css">
 <link rel="stylesheet" href="/assets/css/active-autopilot.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -28,59 +28,55 @@
 </div>
 
 
-<div class="row gy-4">
-    <div class="col-xl-12">
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Candidate request status</h5>
+<div class="content">
+    <div class="exz-page-head">
+        <h1>Candidate request status</h1>
+        <p>Search verification requests raised for candidates and review the HR replies received.</p>
+    </div>
+
+    <div class="exz-filter-card">
+        <div class="row justify-content-center align-items-end">
+            <div class="col-md-5">
+                <label class="usernameLabel d-block mb-1" for="mddsearchfilter">Search by status</label>
+                <select class="form-select input-container" id="mddsearchfilter" aria-label="Search by status">
+                    @* <option value="">-- Choose option--</option> *@
+                    <option value="openOnly">Open request only</option>
+                    <option value="replyOnly">Reply received only</option>
+                </select>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="form-floating form-floating-outline col-md">
-                        <select class="form-select" id="mddsearchfilter" aria-label="Default select example">
-                            @* <option value="">-- Choose option--</option> *@
-                            <option value="openOnly">Open request only</option>
-                            <option value="replyOnly">Reply received only</option>
-                        </select>
-                        <label for="mddsearchfilter">Search by status</label>
+            <div class="col-md-3 mt-3 mt-md-0 d-flex justify-content-center">
+                <button type="button" class="btn-submit" id="Search">
+                    <div class="original">Search</div>
+                    <div class="letters">
+                        <span>S</span>
+                        <span>e</span>
+                        <span>a</span>
+                        <span>r</span>
+                        <span>c</span>
+                        <span>h</span>
                     </div>
-                    <div class="form-floating form-floating-outline mb-3 col-md">
-                        <button type="button" class="btn btn-primary" id="Search">Search</button>
-                    </div>
-                    <div class="form-floating form-floating-outline mb-3 col-md">
-                    </div>
-                </div>
+                </button>
             </div>
         </div>
     </div>
-</div>
-<div class="row gy-4">
-    <div class="col-xl-12">
-        <div class="card mb-12">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Search results</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="mb-12 col-md">
-                        <table id="tablelist" class="datatables-ajax table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Employee code</th>
-                                    <th>Customer name</th>
-                                    <th>Request comments</th>
-                                    <th>Raised by</th>
-                                    <th>Raised date</th>
-                                    <th>HR comments</th>
-                                    <th>Replied by</th>
-                                    <th>Replied date</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
 
-                </div>
-            </div>
+    <p class="exz-section-title mt-4">Search results</p>
+    <div class="card exz-table-card p-0 mt-2 mb-4 border-0">
+        <div class="table-responsive">
+            <table id="tablelist" class="datatables-ajax table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Employee code</th>
+                        <th>Customer name</th>
+                        <th>Request comments</th>
+                        <th>Raised by</th>
+                        <th>Raised date</th>
+                        <th>HR comments</th>
+                        <th>Replied by</th>
+                        <th>Replied date</th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
 </div>

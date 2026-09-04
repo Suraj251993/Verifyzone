@@ -5,6 +5,10 @@
 @{
     Layout = "~/Views/Shared/_SupportLayout.cshtml";
 }
+<link rel="stylesheet" href="~/assets/css/dash.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/css/bulk.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
 <style>
     .RGraph_tooltip li {
         text-align: left;
@@ -22,91 +26,86 @@
 <script src="~/js/RGraph.common.key.js"></script>
 <script src="~/js/RGraph.drawing.rect.js"></script>
 <script src="~/js/RGraph.pie.js"></script>
-<div class="main-content">
-    <div class="section__content section__content--p30">
-        <div class="container-fluid">
-            <div class="main-body">
-                <div class="page-wrapper">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>Employee bulk upload</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <!-- [Main Content] start -->
-                                        <form enctype="multipart/form-data" id="frm" name="frm">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="form-group">
-                                                                @Html.DropDownListFor(model => model.user, (IEnumerable<SelectListItem>)ViewBag.Users, "Please choose HR user", new { @class = "form-control", @id = "mddusertype" })
-                                                                @* @Html.DropDownList("users", (IEnumerable<SelectListItem>)ViewBag.Users, "Please choose HR user", new { @class = "form-control" }) *@
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-10 mt-3">
-                                                            <div class="form-group">
-                                                                <p>Choose file:</p>
-                                                                @Html.TextBoxFor(model => model.file, new { type = "file", name = "file"})
-                                                                @* <input type="file" name="file" id="file" /> *@
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-2 mt-3">
-                                                            <input type="button" class="btn btn-primary float-right" id="btnupload" name="btnupload" value="Upload" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @* <div id="dialog" style="display: none">
-                    </div>*@
-                                        </form>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="row">
-                                            <div class="col-md-10 mt-3">
 
-                                            </div>
-                                            <div class="col-md-2 mt-3">
-                                                <a href="#" id="downloadtemplate" name="downloadtemplate">Download template</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <!-- DATA TABLE -->
-                                        <div class="table-responsive">
-                                            <table id="latestupload" class="display table nowrap table-striped table-hover" style="width:100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Filename</th>
-                                                        <th>Uploaded date</th>
-                                                        <th>Status</th>
-                                                        <th>Valid records</th>
-                                                        <th>Invalid records</th>
-                                                        <th>Total records
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!-- END DATA TABLE -->
-                                    </div>
-                                </div>
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Support/Index"><i
+        class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+    style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Employee bulk upload</span>
+</div>
+
+<div class="bulk-upload-card mb-3 shadow-sm">
+    <h5 class="bulk-table-heading mb-4">Employee bulk upload</h5>
+    <div class="wf-flow">
+        <div class="wf-step active" id="wfStep1"><span class="wf-step-num">1</span><span class="wf-step-label">Upload</span></div>
+        <div class="wf-connector" id="wfConnector1"></div>
+        <div class="wf-step" id="wfStep2"><span class="wf-step-num">2</span><span class="wf-step-label">Review &amp; confirm</span></div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <form enctype="multipart/form-data" id="frm" name="frm">
+                <div class="row align-items-end">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="usernameLabel d-block mb-1">Choose HR user</label>
+                            @Html.DropDownListFor(model => model.user, (IEnumerable<SelectListItem>)ViewBag.Users, "Please choose HR user", new { @class = "form-control", @id = "mddusertype" })
+                            @* @Html.DropDownList("users", (IEnumerable<SelectListItem>)ViewBag.Users, "Please choose HR user", new { @class = "form-control" }) *@
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="usernameLabel d-block mb-1">Choose file</label>
+                            <div class="drop-area d-flex flex-column justify-content-center align-items-center">
+                                <p class="file-prompt mb-1"><i class="ri-upload-cloud-2-line fs-3"></i></p>
+                                @Html.TextBoxFor(model => model.file, new { type = "file", name = "file"})
+                                @* <input type="file" name="file" id="file" /> *@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-2 mb-3">
+                        <button type="button" class="btn-submit w-100" id="btnupload" name="btnupload">
+                            <div class="original">Upload</div>
+                            <div class="letters">
+                                <span>U</span><span>p</span><span>l</span><span>o</span><span>a</span><span>d</span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
+                @* <div id="dialog" style="display: none">
+                    </div>*@
+            </form>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end mb-2">
+        <a href="#" id="downloadtemplate" name="downloadtemplate" class="btn-submit">
+            <div class="original"><i class="ri-download-2-line me-1"></i> Download template</div>
+            <div class="letters">
+                <span>D</span><span>o</span><span>w</span><span>n</span><span>l</span><span>o</span><span>a</span><span>d</span>
+                <span class="ms-1"></span>
+                <span>t</span><span>e</span><span>m</span><span>p</span><span>l</span><span>a</span><span>t</span><span>e</span>
             </div>
+        </a>
+    </div>
+</div>
+
+<div class="content pt-0">
+    <h5 class="bulk-table-heading mb-2">Upload history</h5>
+    <div class="card p-0 mt-3 mb-4 border-0 exz-table-card">
+        <div class="table-responsive">
+            <table id="latestupload" class="display table nowrap table-striped table-hover" style="width:100%">
+                <thead style="background: #f4f1f8">
+                    <tr>
+                        <th>Filename</th>
+                        <th>Uploaded date</th>
+                        <th>Status</th>
+                        <th>Valid records</th>
+                        <th>Invalid records</th>
+                        <th>Total records
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -115,8 +114,8 @@
 <div id="partialModal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Upload Summary</h5>
+            <div class="modal-header border-0">
+                <h5 class="modal-title bulk-table-heading">Upload summary</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -144,9 +143,13 @@
                         </div>*@
                 </div>                
             </div>
-            <div class="modal-footer">
-                <button id="Approve" type="button" class="btn btn-primary" data-dismiss="modal" onclick="ApprovedorRejectedFile(this.id)">Approve</button>
-                <button id="Reject" type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ApprovedorRejectedFile(this.id)">Reject</button>
+            <div class="modal-footer border-0 justify-content-center">
+                <button id="Approve" type="button" class="verify-button-approve" data-dismiss="modal" onclick="ApprovedorRejectedFile(this.id)">
+                    <i class="ri-upload-cloud-2-line"></i> Approve
+                </button>
+                <button id="Reject" type="button" class="verify-button-reject" data-dismiss="modal" onclick="ApprovedorRejectedFile(this.id)">
+                    <i class="ri-close-line"></i> Reject
+                </button>
             </div>
         </div>
     </div>
@@ -300,5 +303,18 @@
                 }
             });
         }
+    </script>
+    <script>
+        // Purely visual: reflect upload/review progress on the step indicator above the upload card.
+        $(function () {
+            $('#partialModal').on('shown.bs.modal', function () {
+                document.getElementById("wfStep2").classList.add("active");
+                document.getElementById("wfConnector1").classList.add("active");
+            });
+            $('#partialModal').on('hidden.bs.modal', function () {
+                document.getElementById("wfStep2").classList.remove("active");
+                document.getElementById("wfConnector1").classList.remove("active");
+            });
+        });
     </script>
 }

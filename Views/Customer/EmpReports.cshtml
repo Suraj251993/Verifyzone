@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_VZoneLayout.cshtml";
 }
 <link rel="stylesheet" href="/assets/css/search-candidate.css">
-<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/bulk.css">
-<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/new-request.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -26,8 +26,12 @@
 {
     <div class="content">
 
-    <h5 class="bulk-table-heading mb-4 mt-3">Employment verification reports</h5>
+    <div class="exz-page-head">
+        <h1>Employment verification reports</h1>
+        <p>Search employment verification reports generated for your organization by month and year.</p>
+    </div>
 
+    <div class="exz-filter-card">
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
@@ -49,7 +53,7 @@
                 </span>
             </div>
         </div>
-        <div class="col-md-4">            
+        <div class="col-md-4">
             <div class="inputContainer reasonContainer" id="inputContainer2" style="position: relative;">
                     <input required="required" autocomplete="off" placeholder="Choose the year" type="text" class="input-details input-container" readonly id="exitInput">
                     <label class="usernameLabel">Choose the year</label>
@@ -67,7 +71,7 @@
                     <span class="validationMessage" style="display:none;">
                         *This field is required
                     </span>
-                </div>            
+                </div>
         </div>
     </div>
     <div class="d-flex justify-content-center">
@@ -83,11 +87,12 @@
             </div>
         </button>
     </div>
+    </div>
 
-
-    <div class="card p-0 mt-4 mb-4 border-0">
+    <p class="exz-section-title mt-4">Search result</p>
+    <div class="card exz-table-card p-0 mt-2 mb-4 border-0">
         <table>
-            <thead style="background: #f8ece2">
+            <thead>
                 <tr>
                     <th class="sortable">
                         Employee code <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>

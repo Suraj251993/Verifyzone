@@ -14,15 +14,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap"
           rel="stylesheet">
     <link rel="icon" href="~/assets/img/logotop.png" />
-    <link href="~/assets/css/login.css" rel="stylesheet">
+    <link href="~/assets/css/login.css" rel="stylesheet" asp-append-version="true">
     <!-- Include Remix Icons CDN -->
     <link href="/assets/remix/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/assets/css/landing.css">
-    <link rel="stylesheet" href="~/assets/css/dash.css">
+    <link rel="stylesheet" href="~/assets/css/landing.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/dash.css" asp-append-version="true">
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap"
           rel="stylesheet">
-    <link rel="stylesheet" href="~/assets/css/sidebar.css">
-    <link rel="stylesheet" href="~/assets/css/exit-details.css">
+    <link rel="stylesheet" href="~/assets/css/sidebar.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
     <script src="~/assets/js/jquery-3.7.1.min.js" asp-append-version="true"></script>
 </head>
 <body>
@@ -110,48 +110,39 @@
             </div>
 
             <div class="dashboard-content">
-                <div class="row justify-content-center align-items-center gap-4 p-2">
-
-                    <div class="col-md-4 mt-4">
-                        <div class="landing-note-card landing-orange-card">
-                            <div class="landing-pin"></div>
-                            <img src="~/assets/img/ex-zone.png" class="landing-zone-img" alt="V-Zone">
-                            <p class="mt-2" style="text-align: justify;">
-                                Ex-Zone helps you manage employee exit processes smoothly. Track clearance
-                                stages, verify documents, update relieving details, and maintain complete
-                                exit records .
-                                 <!-- in one centralized module. -->
-                            </p>
-
-                            <a href="/Customer/Index" style="text-decoration: none;">
-                                <button class="landing-explore-btn">
-                                    Explore Now
-                                    <i class="ri-arrow-right-line"></i>
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mt-4">
-                        <div class="landing-note-card landing-blue-card">
-                            <div class="landing-pin"></div>                            
-                            <img src="~/assets/img/v-zone.png" alt="v-zone" class="landing-zone-img">
-                            <p class="mt-2">
-                                V-Zone is a unified verification module that supports employment checks,
-                                education verification, classified document reviews, and automated report
-                                generation.
-                            </p>
-
-
-                            <a href="/Customer/VIndex" style="text-decoration: none;">
-                                <button class="landing-explore-btn1">
-                                    Explore Now
-                                    <i class="ri-arrow-right-line"></i>
-                                </button>
-                            </a>
-                        </div>
+                <div class="landing-portal-wrap">
+                    <div class="landing-portal-head">
+                        <h1>Choose your workspace</h1>
+                        <p>Select the portal you'd like to work in &mdash; you can switch anytime from the menu.</p>
                     </div>
 
+                    <div class="landing-portal-grid">
+                        <a href="/Customer/Index" class="landing-portal-card portal-x">
+                            <div class="landing-portal-icon"><i class="ri-user-unfollow-line"></i></div>
+                            <img src="~/assets/img/ex-zone.png" class="landing-zone-img" alt="X-Zone">
+                            <p>
+                                Manage employee exit processes end-to-end &mdash; track clearance stages,
+                                verify documents, update relieving details, and maintain complete exit records.
+                            </p>
+                            <span class="landing-explore-btn">
+                                Explore X-Zone
+                                <i class="ri-arrow-right-line"></i>
+                            </span>
+                        </a>
 
+                        <a href="/Customer/VIndex" class="landing-portal-card portal-v">
+                            <div class="landing-portal-icon"><i class="ri-shield-check-line"></i></div>
+                            <img src="~/assets/img/v-zone.png" alt="V-Zone" class="landing-zone-img">
+                            <p>
+                                A unified verification module supporting employment checks, education
+                                verification, document reviews, and automated report generation.
+                            </p>
+                            <span class="landing-explore-btn landing-explore-btn1">
+                                Explore V-Zone
+                                <i class="ri-arrow-right-line"></i>
+                            </span>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="footer pt-3" style="font-size: 12px;">

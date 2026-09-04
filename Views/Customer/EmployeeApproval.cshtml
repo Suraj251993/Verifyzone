@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
 }
 @model OrgCheck.ViewModels.EmployeeViewModel;
-<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="~/assets/css/new-request.css">
-<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
 <link rel="stylesheet" href="~/assets/css/bulk.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -64,7 +64,7 @@
                 else
                 {
                     <div class="text-center mt-5">
-                        <img src="~/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+                        <img src="~/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;" />
                         <h6 class="no-data-found-text">No record found</h6>
                     </div>
                 }
@@ -135,7 +135,7 @@
                                         <strong>Alert the employers about this candidate</strong>
                                     </li>
                                 </ul>
-                                <br>
+                                <br />
 
                                 <!-- Step 1 -->
                                 <fieldset>
@@ -219,7 +219,7 @@
                                                      id="inputContainer" style="position: relative;">
                                                     <input class="input-container" required="required" autocomplete="off"
                                                            placeholder="Type of exit"
-                                                           type="text" readonly>
+                                                           type="text" readonly />
                                                     <label class="usernameLabel">
                                                         Type
                                                         of exit
@@ -365,7 +365,7 @@
                                                     <div class="inputContainer">
                                                         <input id='qns_@qn.QuestionId' class="input-container" required="required" autocomplete="off"
                                                                 placeholder='@qn.Questionname' value="@qn.Answer"
-                                                                type="text">
+                                                                type="text" />
                                                         <label class="usernameLabel">
                                                             @qn.Questionname
                                                         </label>
@@ -378,7 +378,7 @@
                                                 <div id="divalert">
                                                     <div class="checkbox-wrapper-12 d-flex gap-3">
                                                         <div class="cbx">
-                                                            <input type="checkbox" id="cbx-12">
+                                                            <input type="checkbox" id="cbx-12" />
                                                             <label for="cbx-12"></label>
                                                             <svg fill="none" viewBox="0 0 15 14"
                                                                  height="14" width="15">
@@ -511,7 +511,7 @@
                                                      id="inputContainer" style="position: relative;">
                                                     <input class="input-container" required="required" autocomplete="off"
                                                            placeholder="Please highlight"
-                                                           type="text" readonly>
+                                                           type="text" readonly />
                                                     <label class="usernameLabel">
                                                         Please
                                                         highlight
@@ -589,7 +589,7 @@
                                                 <div>
                                                     <div class="checkbox-wrapper-12 d-flex gap-3">
                                                         <div class="cbx">
-                                                            <input type="checkbox" id="cbx-approve">
+                                                            <input type="checkbox" id="cbx-approve" />
                                                             <label for="cbx-approve"></label>
                                                             <svg fill="none" viewBox="0 0 15 14"
                                                                  height="14" width="15">
@@ -729,10 +729,10 @@ else
 {
     <div class="container">
         <div class="container-access">
-            <img src="/assets/img/403 Access Denied.png" alt="">
+            <img src="/assets/img/403 Access Denied.png" alt="" />
             <h5 class="access-header-first-403">Oops !!!</h5>
             <h6 class="access-header-403">Access denied</h6>
-            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <p class="access-para-403">You are not authorized to view this page. <br /> Please return to the homepage or contact support.</p>
             <a href="/Home/Landing">
                 <button class="access-back-btn">Go back</button>
             </a>

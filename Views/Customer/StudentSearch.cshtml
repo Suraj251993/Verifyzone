@@ -5,8 +5,8 @@
     Layout = "~/Views/Shared/_VZoneLayout.cshtml";
 }
 <link rel="stylesheet" href="/assets/css/bulk.css">
-<link rel="stylesheet" href="/assets/css/exit-details.css">
-<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/new-request.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -71,7 +71,7 @@
     </div>
     <div class="card p-0 mt-5 mb-4 border-0">
         <table id="studentlist">
-            <thead style="background: #f8ece2">
+            <thead style="background: #f4f1f8">
                 <tr>
                     <th class="sortable">
                         ID<i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
@@ -116,6 +116,12 @@
 <script src="~/assets/js/exit-details.js?ver=2" asp-append-version="true"></script>
 <script src="~/assets/js/common.js" asp-append-version="true"></script>
 <script src="~/assets/js/pages/studentsearch.js" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    document.getElementById("GetStu").addEventListener("click", function () {
+        document.getElementById("wfStep2").classList.add("active");
+        document.getElementById("wfConnector1").classList.add("active");
+    }, false);
+</script>
 <!--
 <div id="studentform" class="row gy-4" style="display: none;">
     <div class="col-xl-12">

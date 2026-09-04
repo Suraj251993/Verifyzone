@@ -5,8 +5,8 @@
     Layout = "~/Views/Shared/_VZoneLayout.cshtml";
 }
 <link rel="stylesheet" href="/assets/css/bulk.css">
-<link rel="stylesheet" href="/assets/css/exit-details.css">
-<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/new-request.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -26,7 +26,12 @@
 {
     <div class="content">
     <h5 class="bulk-table-heading mb-4">Search a candidate</h5>
-    <div class="row justify-content-center">        
+    <div class="wf-flow">
+        <div class="wf-step active" id="wfStep1"><span class="wf-step-num">1</span><span class="wf-step-label">Search</span></div>
+        <div class="wf-connector" id="wfConnector1"></div>
+        <div class="wf-step" id="wfStep2"><span class="wf-step-num">2</span><span class="wf-step-label">Review &amp; act</span></div>
+    </div>
+    <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
                 <input required="required" autocomplete="off"
@@ -314,6 +319,10 @@ else
     var balanceurl = '@Url.Action("GetCustomerBalance", "Customer")';
     var custurl = '@Url.Action("GetCustomers", "Customer")';
     document.getElementById("GetEmp").addEventListener("click", function() { GetEmployee(getempurl); }, false);
+    document.getElementById("GetEmp").addEventListener("click", function() {
+        document.getElementById("wfStep2").classList.add("active");
+        document.getElementById("wfConnector1").classList.add("active");
+    }, false);
     document.getElementById("GetApproval").addEventListener("click", function() { SendApproval($('#id').val(), $('#hdnsearch').val(), $('#isedit').val(), approvalurl); }, false);
     @* document.getElementById("GetEditApproval").addEventListener("click", function() { SendApproval($('#id').val(), $('#hdnsearch').val(), "true", approvalurl); }, false); *@
     document.getElementById("GenerateReport").addEventListener("click", function() { OpenClientPopup(balanceurl, reporturl); }, false);

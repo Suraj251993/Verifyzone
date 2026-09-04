@@ -5,9 +5,9 @@
 
      .navbar {
          height: 60px;
-         background: var(--purple-color);
+         background: linear-gradient(135deg, #8546cd, var(--purple-color));
          border-radius: 12px;
-         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+         box-shadow: 0 4px 16px rgba(52, 12, 98, 0.18);
          display: flex;
          align-items: center;
          justify-content: space-between;
@@ -56,7 +56,7 @@
          position: absolute;
          top: 45px;
          right: 0;
-         background: #fff;
+         background: var(--vz-surface);
          border-radius: 10px;
          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.178);
          display: none;
@@ -186,7 +186,7 @@
      /* chart */
 
      .checking {
-         background-color: white;
+         background-color: var(--vz-surface);
          border-radius: 10px;
          padding: 10px;
 
@@ -346,7 +346,8 @@
 
      .footer {
          height: 50px;
-         background: white;
+         background: var(--vz-surface);
+         color: var(--vz-ink-soft);
          border-radius: 12px;
          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
          display: flex;
@@ -411,7 +412,7 @@
 
      .landing-heading {
          font-size: 15px;
-         color: #636262;
+         color: var(--vz-ink-soft);
          font-weight: 600;
      }
 
@@ -420,10 +421,10 @@
          /* justify-content: center; */
          /* align-items: center; */
          gap: 5px;
-         padding: 5px 15px;
+         padding: 8px 20px;
          border-radius: 50px;
          border: 1px solid rgba(255, 255, 255, 0.3);
-         background: var(--purple-color);
+         background: linear-gradient(135deg, #8546cd, var(--purple-color));
          color: white;
          font-size: 16px;
          font-weight: 600;
@@ -431,11 +432,12 @@
          transition: 0.3s ease;
          margin: 0 auto;
          text-decoration: none !important;
+         box-shadow: 0 8px 20px rgba(92, 36, 154, 0.28);
      }
 
 
      .landing-explore-btn:hover {
-         /* box-shadow: 0 0 18px var(--purple-color); */
+         box-shadow: 0 10px 24px rgba(92, 36, 154, 0.38);
          transform: translateY(-2px);
      }
 
@@ -452,10 +454,10 @@
          /* justify-content: center; */
          /* align-items: center; */
          gap: 5px;
-         padding: 5px 15px;
+         padding: 8px 20px;
          border-radius: 50px;
          border: 1px solid rgba(255, 255, 255, 0.3);
-         background: var(--purple-color);
+         background: linear-gradient(135deg, #8546cd, var(--purple-color));
          color: white;
          font-size: 16px;
          font-weight: 600;
@@ -463,11 +465,12 @@
          transition: 0.3s ease;
          margin: 0 auto;
          text-decoration: none !important;
+         box-shadow: 0 8px 20px rgba(92, 36, 154, 0.28);
      }
 
 
      .landing-explore-btn1:hover {
-         /* box-shadow: 0 0 18px var(--purple-color); */
+         box-shadow: 0 10px 24px rgba(92, 36, 154, 0.38);
          transform: translateY(-2px);
      }
 
@@ -479,74 +482,105 @@
          transform: translateX(6px);
      }
 
-     /* Card Holder */
-     .landing-note-card {
-         /* width: 220px; */
-         padding: 25px;
-         background: white;
-         border-radius: 16px;
-         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-         position: relative;
-         /* transform: rotate(-5deg); */
-         transition: 0.3s ease;
+     /* Portal selection (X-Zone / V-Zone) */
+     .landing-portal-wrap {
+         width: 100%;
+         max-width: 880px;
+         margin: 0 auto;
+         padding: 20px 10px;
      }
 
-     /* Hover effect */
-     .landing-note-card:hover {
-         transform: rotate(0deg) scale(1.03);
+     .landing-portal-head {
+         text-align: center;
+         margin-bottom: 32px;
      }
 
-     /* Colored top tint */
-     .landing-orange-card {
-         background: linear-gradient(180deg, #f2f7ff, #ffffff);
-     }
-
-     .landing-blue-card {
-         background: linear-gradient(180deg, #f2f7ff, #ffffff);
-         text-align: justify;
-     }
-
-     /* Pin */
-     .landing-pin {
-         width: 25px;
-         height: 25px;
-         background: var(--purple-color);
-         border-radius: 50%;
-         position: absolute;
-         top: -12px;
-         left: 50%;
-         transform: translateX(-50%);
-         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-     }
-
-     .landing-blue-card .landing-pin {
-         background: var(--purple-color);
-     }
-
-     /* Number */
-     .landing-note-number {
-         font-size: 20px;
-         font-weight: bold;
-         color: var(--purple-color);
-         display: block;
-         margin-bottom: 10px;
-     }
-
-     .landing-blue-card .landing-note-number {
-         color: var(--purple-color);
-     }
-
-     /* Title */
-     .landing-note-title {
-         font-size: 18px;
+     .landing-portal-head h1 {
+         font-family: "Source Serif 4", Georgia, serif;
          font-weight: 600;
-         margin-bottom: 8px;
-         color: #222;
+         font-size: 28px;
+         color: var(--vz-ink);
+         letter-spacing: -0.01em;
+         margin: 0 0 8px;
      }
 
-     /* Description */
-     .landing-note-card p {
-         font-size: 13px;
-         color: #555;
-         line-height: 1.5;
+     .landing-portal-head p {
+         font-size: 14px;
+         color: var(--vz-ink-soft);
+         margin: 0;
+     }
+
+     .landing-portal-grid {
+         display: grid;
+         grid-template-columns: repeat(2, 1fr);
+         gap: 24px;
+     }
+
+     .landing-portal-card {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         text-align: center;
+         padding: 36px 28px 30px;
+         background: var(--vz-surface);
+         border: 1px solid var(--vz-line);
+         border-radius: 20px;
+         box-shadow: 0 16px 36px rgba(52, 12, 98, 0.08);
+         text-decoration: none !important;
+         transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+     }
+
+     .landing-portal-card:hover {
+         transform: translateY(-6px);
+         box-shadow: 0 24px 48px rgba(52, 12, 98, 0.16);
+     }
+
+     .landing-portal-icon {
+         width: 52px;
+         height: 52px;
+         border-radius: 14px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 24px;
+         color: #fff;
+         margin-bottom: 18px;
+     }
+
+     .portal-x .landing-portal-icon {
+         background: linear-gradient(135deg, #8546cd, var(--purple-color));
+     }
+
+     .portal-v .landing-portal-icon {
+         background: linear-gradient(135deg, #2b9d8f, #1b6f64);
+     }
+
+     .portal-x:hover {
+         border-color: rgba(92, 36, 154, 0.35);
+     }
+
+     .portal-v:hover {
+         border-color: rgba(27, 111, 100, 0.35);
+     }
+
+     .landing-portal-card p {
+         font-size: 13.5px;
+         color: var(--vz-ink-soft);
+         line-height: 1.6;
+         margin: 14px 0 22px;
+     }
+
+     .portal-v .landing-explore-btn1 {
+         background: linear-gradient(135deg, #2b9d8f, #1b6f64);
+         box-shadow: 0 8px 20px rgba(27, 111, 100, 0.28);
+     }
+
+     .portal-v .landing-explore-btn1:hover {
+         box-shadow: 0 10px 24px rgba(27, 111, 100, 0.38);
+     }
+
+     @media (max-width: 700px) {
+         .landing-portal-grid {
+             grid-template-columns: 1fr;
+         }
      }

@@ -10,9 +10,9 @@
     <title>Employee Consent | Verifyzone</title>
 
     <link rel="icon" href="~/assets/img/logotop.png" />
-    <link href="~/assets/css/login.css" rel="stylesheet">
+    <link href="~/assets/css/login.css" rel="stylesheet" asp-append-version="true">
     <link rel="stylesheet" href="~/assets/css/toast.css" asp-append-version="true">
-    <link href="~/assets/css/exit-details.css" rel="stylesheet">
+    <link href="~/assets/css/exit-details.css" rel="stylesheet" asp-append-version="true">
     <link href="/assets/remix/fonts/remixicon.css" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap"
@@ -92,7 +92,9 @@
                 </form>
 
                 <div id="consentSuccessBox" style="display:none; text-align:center; margin-top: 20px;">
-                    <i class="ri-checkbox-circle-line" style="font-size: 48px; color: green;"></i>
+                    <span style="display:inline-flex; align-items:center; justify-content:center; width:76px; height:76px; border-radius:50%; background:#e4f5ea;">
+                        <i class="ri-checkbox-circle-line" style="font-size: 40px; color: #1d8a4c;"></i>
+                    </span>
                     <h5 class="login-welcome mt-3">Thank you.</h5>
                     <p class="login-subtext">Your consent has been successfully recorded. No additional action is required.</p>
                 </div>
@@ -100,7 +102,9 @@
             else if (Model.Consumed)
             {
                 <div style="text-align:center; margin-top: 20px;">
-                    <i class="ri-checkbox-circle-line" style="font-size: 48px; color: green;"></i>
+                    <span style="display:inline-flex; align-items:center; justify-content:center; width:76px; height:76px; border-radius:50%; background:#e4f5ea;">
+                        <i class="ri-checkbox-circle-line" style="font-size: 40px; color: #1d8a4c;"></i>
+                    </span>
                     <h5 class="login-welcome mt-3">Thank you.</h5>
                     <p class="login-subtext">Your consent has already been recorded. No additional action is required.</p>
                 </div>
@@ -108,7 +112,9 @@
             else if (Model.Expired)
             {
                 <div style="text-align:center; margin-top: 20px;">
-                    <i class="ri-time-line" style="font-size: 48px; color: var(--purple-color);"></i>
+                    <span style="display:inline-flex; align-items:center; justify-content:center; width:76px; height:76px; border-radius:50%; background:#fbf0dd;">
+                        <i class="ri-time-line" style="font-size: 40px; color: #b8790a;"></i>
+                    </span>
                     <h5 class="login-welcome mt-3">Link expired</h5>
                     <p class="login-subtext">This consent request has expired. Please contact your HR representative.</p>
                 </div>
@@ -116,7 +122,9 @@
             else
             {
                 <div style="text-align:center; margin-top: 20px;">
-                    <i class="ri-error-warning-line" style="font-size: 48px; color: var(--purple-color);"></i>
+                    <span style="display:inline-flex; align-items:center; justify-content:center; width:76px; height:76px; border-radius:50%; background:#fbe9e7;">
+                        <i class="ri-error-warning-line" style="font-size: 40px; color: #c9392f;"></i>
+                    </span>
                     <h5 class="login-welcome mt-3">Invalid request</h5>
                     <p class="login-subtext">Invalid or unavailable consent request.</p>
                 </div>

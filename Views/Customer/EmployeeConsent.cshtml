@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
 }
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
-<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
 <link rel="stylesheet" href="~/assets/css/bulk.css">
-<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="~/assets/css/search-candidate.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -24,10 +24,14 @@
 @if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
 {
     <div class="content">
-        <h5 class="bulk-table-heading">Send Consent Request</h5>
+        <div class="exz-page-head">
+            <h1>Employee consent</h1>
+            <p>Send consent requests to ex-employees and track their verification consent status.</p>
+        </div>
+        <p class="exz-section-title">Send consent request</p>
         <div class="container-fluid">
             <div class="row">
-                <div class="cardz px-0 pb-0 pt-4 mt-3 mb-4">
+                <div class="cardz exz-filter-card mt-3 mb-4">
                     <div class="form-card">
                         <div class="row">
                             <div class="col-md-6">
@@ -76,8 +80,9 @@
             </div>
         </div>
 
-        <h5 class="bulk-table-heading mt-2">Consent Requests</h5>
+        <p class="exz-section-title mt-4">Consent requests</p>
         <div class="container-fluid">
+            <div class="exz-filter-card">
             <div class="row justify-content-center">
                 <div class="col-md-3">
                     <div class="inputContainer">
@@ -138,10 +143,11 @@
                     </div>
                 </button>
             </div>
-            <div class="cardz px-0 pb-0 mt-4 mb-3">
-                <div class="card p-0 mt-3 mb-4 border-0">
+            </div>
+            <div class="cardz mt-4 mb-3">
+                <div class="card exz-table-card p-0 mt-3 mb-4 border-0">
                     <table>
-                        <thead style="background: #f8ece2">
+                        <thead>
                             <tr>
                                 <th>Consent ID</th>
                                 <th>Employee name</th>

@@ -22,135 +22,171 @@
 
 @if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
 {
-    <script src="~/assets/js/echarts.min.js"></script>
     <div class="dashboard-content">
-    <div class="row">
-        <div class="col-md-4 mt-2">
-            <div class="dash-board-card-container4">
-                <div class="card-text">
-                    <h3 class="">Navigation</h3>
-                    <p></p>
-                    <a href="/Customer/EmployeeForm" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Add exit details"> <i class="ri-user-add-line"></i></a>
-                    <a href="/Customer/EmployeeUpload" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                        data-bs-placement="top" title="Bulk Upload"><i class="ri-upload-cloud-line"></i></a>
-                    <a href="/Customer/EmployeeRequest" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Approve new request">
-                        <i class="ri-notification-2-line"></i>
-                    </a>
-                    <a href="/Customer/EmployeeApproval" class="navigation-dash-card-icon"
-                       data-bs-toggle="tooltip" data-bs-placement="top" title="Approve Re-verification">
-                        <i class="ri-user-follow-line"></i>
-                    </a>
-                    
-                    <a href="/Customer/SearchEmployee" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Search ex-employee"><i class="ri-user-search-line"></i></a>
-                    @* @if (ViewBag.Category == 2)
-                    { *@
-                        <a href="/Customer/ViewEmployee" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="View ex-employee"> <i class="ri-user-settings-line"></i></a>                
-                  @*   } *@
-                 @* <a href="/Customer/ManagerApproval" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Ex-employee approval"><i class="ri-group-2-line"></i></a>
-                    @if (ViewBag.Category == 2)
-                    {
-                        <a href="#" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                           data-bs-placement="top" title="Manage user"> <i class="ri-user-voice-line"></i></a>
-                    } *@
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right4">
-                        <i class="ri-earth-line"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mt-2">
-            <div class="dash-board-card-container5">
-                <div class="card-text">
-                    <h3 class="">Configurations</h3>
-                    <p></p>
-                    <a href="/Customer/AutoApprovalConfig" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Activate autopilot"> <i class="ri-rocket-line"></i></a>
-                    <a href="/Customer/AutoApprovalExclude" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Exclude autopilot"> <i class="ri-rocket-line"></i></a>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right5">
-                        <i class="ri-settings-3-line"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mt-2">
-            <div class="dash-board-card-container6">
-                <div class="card-text">
-                    <h3 class="">Reports</h3>
-                    <p></p>
-                    <a href="/Customer/AttritionReport" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Attrition report">
-                        <i class="ri-bar-chart-2-line"></i>
-                    </a>
-                    <a href="/Customer/ApprovalHistory" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Re-verification history">
-                        <i class="ri-history-line"></i>
-                    </a>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right6">
-                        <i class="ri-bar-chart-2-line"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mt-4">
-            <div class="dash-board-card-container1">
-                <div class="card-text">
-                    <h2><strong>@Model.CompletedCount</strong></h2>
-                    <h3 style="color: rgb(75, 74, 74);">Re-verification completed</h3>
-                    <p style="color: rgb(119, 119, 119);">On @Model.Month,@Model.Year</p>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right1">
-                        <i class="ri-checkbox-circle-line"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mt-4">
-            <div class="dash-board-card-container2">
-                <div class="card-text">
-                    <h2><strong>@Model.ApprovalCount</strong></h2>
-                    <h3 style="color: rgb(75, 74, 74);">Verification request received</h3>
-                    <p style="color: rgb(119, 119, 119);">As of now</p>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right2">
-                        <i class="ri-file-list-3-line"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mt-4">
-            <div class="dash-board-card-container3">
-                <div class="card-text">
-                    <h2><strong>@Model.RequestCount</strong></h2>
-                    <h3 style="color: rgb(75, 74, 74);">New request received</h3>
-                    <p style="color: rgb(119, 119, 119);">As of now</p>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right3">
-                        <i class="ri-notification-3-line"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <script src="~/assets/js/echarts.min.js"></script>
+    <div class="exz-page-head">
+        <h1>Ex-Zone dashboard</h1>
+        <p>Track exit verification activity, requests, and re-verification progress.</p>
+    </div>
 
-    </div>    
-    <div class="layoutchart mt-4">
-        <main class="contentmainchart">
-            <div id="main"></div>
-        </main>
+    <div class="exz-kpi-row">
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-top">
+                <div class="exz-kpi-icon"><i class="ri-checkbox-circle-line"></i></div>
+                @if (Model.CompletedCountTrend.HasValue)
+                {
+                    <div class="exz-trend @(Model.CompletedCountTrend >= 0 ? "up" : "down")">
+                        <i class="ri-arrow-@(Model.CompletedCountTrend >= 0 ? "right-up" : "right-down")-line"></i>@(Math.Abs(Model.CompletedCountTrend.Value))%
+                    </div>
+                }
+            </div>
+            <div class="exz-kpi-body">
+                <h2>@(Model.CompletedCount)</h2>
+                <div class="exz-kpi-label">Re-verification completed</div>
+                <div class="exz-kpi-sub">On @(Model.Month), @(Model.Year)</div>
+            </div>
+        </div>
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-icon"><i class="ri-file-list-3-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2>@(Model.ApprovalCount)</h2>
+                <div class="exz-kpi-label">Verification request received</div>
+                <div class="exz-kpi-sub">As of now</div>
+            </div>
+        </div>
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-icon"><i class="ri-notification-3-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2>@(Model.RequestCount)</h2>
+                <div class="exz-kpi-label">New request received</div>
+                <div class="exz-kpi-sub">As of now</div>
+            </div>
+        </div>
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-icon" style="background: var(--vz-surface-2); color: var(--vz-danger);"><i class="ri-error-warning-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2 id="flaggedCount">&ndash;</h2>
+                <div class="exz-kpi-label">Flagged records</div>
+                <div class="exz-kpi-sub">Invalid rows in recent uploads</div>
+            </div>
+        </div>
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-icon" style="background: var(--vz-surface-2); color: var(--vz-success);"><i class="ri-checkbox-multiple-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2 id="validCount">&ndash;</h2>
+                <div class="exz-kpi-label">Valid records uploaded</div>
+                <div class="exz-kpi-sub">Across recent uploads</div>
+            </div>
+        </div>
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-icon" style="background: var(--vz-surface-2); color: var(--purple-color);"><i class="ri-file-list-3-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2 id="totalProcessedCount">&ndash;</h2>
+                <div class="exz-kpi-label">Records processed</div>
+                <div class="exz-kpi-sub">Across recent uploads</div>
+            </div>
+        </div>
+    </div>
+
+    <p class="exz-section-title">Quick actions</p>
+    <div class="exz-actions-row">
+        <div class="exz-action-card">
+            <h3>Navigation</h3>
+            <div class="exz-action-grid">
+                <a href="/Customer/EmployeeForm" class="exz-action-btn" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Add exit details"><i class="ri-user-add-line"></i><span>Add exit</span></a>
+                <a href="/Customer/EmployeeUpload" class="exz-action-btn" data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="Bulk Upload"><i class="ri-upload-cloud-line"></i><span>Bulk upload</span></a>
+                <a href="/Customer/EmployeeRequest" class="exz-action-btn" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Approve new request"><i class="ri-notification-2-line"></i><span>New requests</span></a>
+                <a href="/Customer/EmployeeApproval" class="exz-action-btn"
+                   data-bs-toggle="tooltip" data-bs-placement="top" title="Approve Re-verification"><i class="ri-user-follow-line"></i><span>Re-verification</span></a>
+                <a href="/Customer/SearchEmployee" class="exz-action-btn" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Search ex-employee"><i class="ri-user-search-line"></i><span>Search</span></a>
+                <a href="/Customer/ViewEmployee" class="exz-action-btn" data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="View ex-employee"><i class="ri-user-settings-line"></i><span>View records</span></a>
+                @*
+                <a href="/Customer/ManagerApproval" class="exz-action-btn" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Ex-employee approval"><i class="ri-group-2-line"></i> Ex-employee approval</a>
+                @if (ViewBag.Category == 2)
+                {
+                    <a href="#" class="exz-action-btn" data-bs-toggle="tooltip"
+                       data-bs-placement="top" title="Manage user"><i class="ri-user-voice-line"></i> Manage user</a>
+                }
+                *@
+            </div>
+        </div>
+        <div class="exz-action-card">
+            <h3>Configurations</h3>
+            <div class="exz-action-grid">
+                <a href="/Customer/AutoApprovalConfig" class="exz-action-btn" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Activate autopilot"><i class="ri-rocket-line"></i><span>Setup autopilot</span></a>
+                <a href="/Customer/AutoApprovalExclude" class="exz-action-btn" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Exclude autopilot"><i class="ri-shield-star-line"></i><span>Exclusions</span></a>
+            </div>
+        </div>
+        <div class="exz-action-card">
+            <h3>Reports</h3>
+            <div class="exz-action-grid">
+                <a href="/Customer/AttritionReport" class="exz-action-btn" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Attrition report"><i class="ri-bar-chart-2-line"></i><span>Attrition report</span></a>
+                <a href="/Customer/ApprovalHistory" class="exz-action-btn" data-bs-toggle="tooltip"
+                   data-bs-placement="top" title="Re-verification history"><i class="ri-history-line"></i><span>History</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="exz-dashboard-bottom-row">
+        <div class="exz-chart-card">
+            <h3>Verification trends</h3>
+            <p class="exz-chart-sub">Monthly reports generated &amp; approvals given, this year</p>
+            <div class="layoutchart">
+                <main class="contentmainchart">
+                    <div id="main"></div>
+                </main>
+            </div>
+        </div>
+        <div class="exz-chart-card">
+            <h3>Request distribution</h3>
+            <p class="exz-chart-sub">By category, this month &middot; illustrative &mdash; VerifyZone doesn't track a request category field yet</p>
+            <div class="exz-bars">
+                <div class="exz-bar-col"><div class="exz-bar-val">184</div><div class="exz-bar" style="height:100%"></div><div class="exz-bar-label">Exit</div></div>
+                <div class="exz-bar-col"><div class="exz-bar-val">142</div><div class="exz-bar" style="height:77%"></div><div class="exz-bar-label">Employ.</div></div>
+                <div class="exz-bar-col"><div class="exz-bar-val">96</div><div class="exz-bar" style="height:52%"></div><div class="exz-bar-label">Educ.</div></div>
+                <div class="exz-bar-col"><div class="exz-bar-val">58</div><div class="exz-bar" style="height:32%"></div><div class="exz-bar-label">Address</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="exz-dashboard-bottom-row">
+        <div class="exz-activity-card">
+            <div class="exz-activity-head">
+                <h3>Recent uploads</h3>
+                <p>Your last bulk upload batches</p>
+            </div>
+            <div id="recentUploadsList"></div>
+        </div>
+        <div class="exz-activity-card">
+            <div class="exz-activity-head">
+                <h3>Top requesting companies</h3>
+                <p>By request volume, this quarter &middot; illustrative</p>
+            </div>
+            <div class="exz-activity-row">
+                <div class="exz-activity-icon">TU</div>
+                <div class="exz-activity-body"><div class="exz-activity-name">Thambhi University</div><div class="exz-activity-sub">Education verification</div></div>
+                <div class="exz-activity-meta"><div class="exz-rank-count">312</div></div>
+            </div>
+            <div class="exz-activity-row">
+                <div class="exz-activity-icon">LS</div>
+                <div class="exz-activity-body"><div class="exz-activity-name">LDF Services</div><div class="exz-activity-sub">Employment verification</div></div>
+                <div class="exz-activity-meta"><div class="exz-rank-count">248</div></div>
+            </div>
+            <div class="exz-activity-row">
+                <div class="exz-activity-icon">DC</div>
+                <div class="exz-activity-body"><div class="exz-activity-name">Demo Company</div><div class="exz-activity-sub">Exit verification</div></div>
+                <div class="exz-activity-meta"><div class="exz-rank-count">176</div></div>
+            </div>
+        </div>
     </div>
     </div>
     <script src="~/assets/js/canvasjs.min.js"></script>
@@ -159,6 +195,48 @@
         $(function () {
             var url = '@Url.Action("GetDashboardData", "Customer")';
             drawDashboard(url);
+
+            var uploadsUrl = '@Url.Action("GetLatestUploads", "Customer")';
+            $.ajax({
+                type: 'GET',
+                dataType: 'JSON',
+                url: uploadsUrl,
+                success: function (files) {
+                    var totalInvalid = files.reduce(function (sum, f) { return sum + (parseInt(f.invalidrecords) || 0); }, 0);
+                    var totalValid = files.reduce(function (sum, f) { return sum + (parseInt(f.validrecords) || 0); }, 0);
+                    var totalRecords = files.reduce(function (sum, f) { return sum + (parseInt(f.totalrecords) || 0); }, 0);
+                    document.getElementById("flaggedCount").innerHTML = totalInvalid;
+                    document.getElementById("validCount").innerHTML = totalValid;
+                    document.getElementById("totalProcessedCount").innerHTML = totalRecords;
+
+                    var top = files.slice(0, 5);
+                    var statusClass = function (s) {
+                        if (s === "Approved") return "success";
+                        if (s === "Rejected") return "danger";
+                        return "info";
+                    };
+                    var html = top.map(function (f) {
+                        return '<div class="exz-activity-row">' +
+                            '<div class="exz-activity-icon"><i class="ri-file-list-3-line"></i></div>' +
+                            '<div class="exz-activity-body">' +
+                                '<div class="exz-activity-name">' + f.filename + '</div>' +
+                                '<div class="exz-activity-sub">' + f.validrecords + ' valid &middot; ' + f.invalidrecords + ' invalid &middot; ' + f.totalrecords + ' total</div>' +
+                            '</div>' +
+                            '<div class="exz-activity-meta">' +
+                                '<span class="exz-badge ' + statusClass(f.uploadedstatus) + '">' + f.uploadedstatus + '</span>' +
+                                '<div class="exz-activity-time">' + f.uploadeddate + '</div>' +
+                            '</div>' +
+                        '</div>';
+                    }).join('');
+                    document.getElementById("recentUploadsList").innerHTML = html || '<p class="exz-activity-empty">No uploads yet.</p>';
+                },
+                error: function () {
+                    document.getElementById("recentUploadsList").innerHTML = '<p class="exz-activity-empty">Could not load recent uploads.</p>';
+                    document.getElementById("flaggedCount").innerHTML = "0";
+                    document.getElementById("validCount").innerHTML = "0";
+                    document.getElementById("totalProcessedCount").innerHTML = "0";
+                }
+            });
         });
     </script>
 }
@@ -166,10 +244,10 @@ else
 {
     <div class="container">
         <div class="container-access">
-            <img src="/assets/img/403 Access Denied.png" alt="">
+            <img src="/assets/img/403 Access Denied.png" alt="" />
             <h5 class="access-header-first-403">Oops !!!</h5>
             <h6 class="access-header-403">Access denied</h6>
-            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <p class="access-para-403">You are not authorized to view this page. <br /> Please return to the homepage or contact support.</p>
             <a href="/Home/Landing">
                 <button class="access-back-btn">Go back</button>
             </a>

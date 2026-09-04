@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
 }
 <link rel="stylesheet" href="/assets/css/search-candidate.css">
-<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/bulk.css">
-<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/new-request.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -26,9 +26,10 @@
 @if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
 {
     <div class="content">
-        <div class="d-flex justify-content-between">
+        <div class="exz-page-head d-flex justify-content-between align-items-start flex-wrap gap-2">
             <div>
-                <h5 class="bulk-table-heading mb-4">Attrition Report</h5>
+                <h1>Attrition report</h1>
+                <p>Review employee attrition activity and export a customized report.</p>
             </div>
             <div class="d-flex gap-2">
                 <div>
@@ -51,6 +52,7 @@
                 </div>
             </div>
         </div>
+    <div class="exz-filter-card">
     <div class="row justify-content-center">
 
         <div class="col-md-4">
@@ -93,12 +95,13 @@
             </div>
         </button>
     </div>
+    </div>
 
-    <h5 class="bulk-table-heading mb-4 mt-3">Search Result</h5>
+    <p class="exz-section-title mt-4">Search result</p>
 
-    <div class="card p-0 mt-3 mb-4 border-0">
+    <div class="card exz-table-card p-0 mt-2 mb-4 border-0">
         <table>
-            <thead style="background: #f8ece2">
+            <thead>
                 <tr>
                     <th class="sortable">
                         Employee code <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
@@ -122,7 +125,7 @@
             </tbody>
         </table>
         <div class="text-center border-bottom" id="divnorecord" style="display: none;">
-            <img src="~/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+            <img src="~/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;" />
             <h6 class="no-data-found-text">No record found</h6>
         </div>
         <div class="modal fade" id="Viewpage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -140,7 +143,7 @@
                                 <div class="checkbox-wrapper-12 d-flex gap-3">
                                     <div class="cbx">
                                         <input type="checkbox" id="check-box-add" class="filter-check"
-                                                data-column="designation" data-label="Designation">
+                                                data-column="designation" data-label="Designation" />
                                         <label for="cbx-12"></label>
                                         <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
                                             <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -166,7 +169,7 @@
                                 <div class="checkbox-wrapper-12 d-flex gap-3">
                                     <div class="cbx">
                                         <input type="checkbox" id="check-box-add" class="filter-check"
-                                                data-column="typeofexit" data-label="TypeOf Exit">
+                                                data-column="typeofexit" data-label="TypeOf Exit" />
                                         <label for="cbx-12"></label>
                                         <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
                                             <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -192,7 +195,7 @@
                                 <div class="checkbox-wrapper-12 d-flex gap-3">
                                     <div class="cbx">
                                         <input type="checkbox" id="check-box-add" class="filter-check"
-                                                data-column="location" data-label="Location">
+                                                data-column="location" data-label="Location" />
                                         <label for="cbx-12"></label>
                                         <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
                                             <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -218,7 +221,7 @@
                                 <div class="checkbox-wrapper-12 d-flex gap-3">
                                     <div class="cbx">
                                         <input type="checkbox" id="check-box-add" class="filter-check"
-                                                data-column="jobtype" data-label="Job Type">
+                                                data-column="jobtype" data-label="Job Type" />
                                         <label for="cbx-12"></label>
                                         <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
                                             <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -244,7 +247,7 @@
                                 <div class="checkbox-wrapper-12 d-flex gap-3">
                                     <div class="cbx">
                                         <input type="checkbox" id="check-box-add" class="filter-check"
-                                                data-column="salary" data-label="Salary">
+                                                data-column="salary" data-label="Salary" />
                                         <label for="cbx-12"></label>
                                         <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
                                             <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -270,7 +273,7 @@
                                 <div class="checkbox-wrapper-12 d-flex gap-3">
                                     <div class="cbx">
                                         <input type="checkbox" id="check-box-add" class="filter-check"
-                                                data-column="reporting" data-label="Reporting">
+                                                data-column="reporting" data-label="Reporting" />
                                         <label for="cbx-12"></label>
                                         <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
                                             <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -296,7 +299,7 @@
                                 <div class="checkbox-wrapper-12 d-flex gap-3">
                                     <div class="cbx">
                                         <input type="checkbox" id="check-box-add" class="filter-check"
-                                                data-column="managerdesignation" data-label="Manager Designation">
+                                                data-column="managerdesignation" data-label="Manager Designation" />
                                         <label for="cbx-12"></label>
                                         <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
                                             <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -322,7 +325,7 @@
                                 <div class="checkbox-wrapper-12 d-flex gap-3">
                                     <div class="cbx">
                                         <input type="checkbox" id="check-box-add" class="filter-check"
-                                                data-column="managerdesignation" data-label="Manager Designation">
+                                                data-column="managerdesignation" data-label="Manager Designation" />
                                         <label for="cbx-12"></label>
                                         <svg fill="none" viewBox="0 0 15 14" height="14" width="15">
                                             <path d="M2 8.36364L6.23077 12L13 2"></path>
@@ -413,10 +416,10 @@ else
 {
     <div class="container">
         <div class="container-access">
-            <img src="/assets/img/403 Access Denied.png" alt="">
+            <img src="/assets/img/403 Access Denied.png" alt="" />
             <h5 class="access-header-first-403">Oops !!!</h5>
             <h6 class="access-header-403">Access denied</h6>
-            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <p class="access-para-403">You are not authorized to view this page. <br /> Please return to the homepage or contact support.</p>
             <a href="/Home/Landing">
                 <button class="access-back-btn">Go back</button>
             </a>

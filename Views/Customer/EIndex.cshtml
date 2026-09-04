@@ -1,10 +1,14 @@
-﻿@*
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     Layout = "";
 }
 @model OrgCheck.ViewModels.CustomerDashboardCount;
+<style>:root{--purple-color:#5c249a;--light-purple-color:#340c62;}</style>
+<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/assets/remix/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="~/assets/css/dash.css" asp-append-version="true">
 @section VendorStyles {
     <link rel="stylesheet" href="~/vendor/libs/apex-charts/apex-charts.dist.css" />
     <link rel="stylesheet" href="~/vendor/libs/datatables-bs5/datatables.bootstrap5.dist.css" />
@@ -27,58 +31,38 @@
 }
 
 @* ************** Content ************** *@
-<!-- Card Border Shadow -->
-<div class="row">
-    <div class="col-sm-6 col-lg-4 mb-6">
-        <div class="card card-border-shadow-success h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-2">
-                    <div class="avatar me-4">
-                        <span class="avatar-initial rounded bg-label-success text-heading">
-                            <i class="ri-check-double-line ri-24px"></i>
-                        </span>
-                    </div>
-                    <h4 class="mb-0">@Model.CompletedCount</h4>
-                </div>
-                <h6 class="mb-0 fw-normal">Re-verification completed</h6>
-                <p class="mb-0">
-                    <small class="text-muted">on @Model.Month, @Model.Year</small>
-                </p>
+<div class="dashboard-content">
+    <div class="exz-page-head">
+        <h1>Education dashboard</h1>
+        <p>Track student verification requests and re-verification progress.</p>
+    </div>
+
+    <div class="exz-kpi-row">
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-icon"><i class="ri-checkbox-circle-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2>@Model.CompletedCount</h2>
+                <div class="exz-kpi-label">Re-verification completed</div>
+                <div class="exz-kpi-sub">On @Model.Month, @Model.Year</div>
+            </div>
+        </div>
+        <div class="exz-kpi-card" style="cursor: pointer;" onclick="window.location = '/Customer/StudentApproval';">
+            <div class="exz-kpi-icon"><i class="ri-user-follow-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2>@Model.ApprovalCount</h2>
+                <div class="exz-kpi-label">Student re-verify</div>
+                <div class="exz-kpi-sub">As of now</div>
+            </div>
+        </div>
+        <div class="exz-kpi-card" style="cursor: pointer;" onclick="window.location = '/Customer/StudentInfoRequest';">
+            <div class="exz-kpi-icon"><i class="ri-notification-3-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2>@Model.RequestCount</h2>
+                <div class="exz-kpi-label">Student request</div>
+                <div class="exz-kpi-sub">As of now</div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6 col-lg-4 mb-6">
-        <div class="card card-border-shadow-warning h-100">
-            <div class="card-body" onclick="window.location = '/Customer/StudentApproval';">
-                <div class="d-flex align-items-center mb-2">
-                    <div class="avatar me-4">
-                        <img src="/svg/icons/check.svg" alt="Check" class="img-fluid">
-                    </div>
-                    <h4 class="mb-0">@Model.ApprovalCount</h4>
-                </div>
-                <h6 class="mb-0 fw-normal">Student Re-vertify</h6>
-                <p class="mb-0">
-                    <small class="text-muted">as of now</small>
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-lg-4 mb-6">
-        <div class="card card-border-shadow-warning h-100">
-            <div class="card-body" onclick="window.location = '/Customer/StudentInfoRequest';">
-                <div class="d-flex align-items-center mb-2">
-                    <div class="avatar me-4">
-                        <img src="/svg/icons/check.svg" alt="Check" class="img-fluid">
-                    </div>
-                    <h4 class="mb-0">@Model.RequestCount</h4>
-                </div>
-                <h6 class="mb-0 fw-normal">Student request</h6>
-                <p class="mb-0">
-                    <small class="text-muted">as of now</small>
-                </p>
-            </div>
-        </div>
-    </div>    
 </div>
 <!--/ Card Border Shadow -->
 

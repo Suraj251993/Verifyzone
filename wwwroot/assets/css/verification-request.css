@@ -6,9 +6,9 @@
     --color-black: #41423d;
     --color-neutral-100: #f5f4f0;
     --color-neutral: #dfddd0;
-    --color-primary-100: #f0f7f5;
-    --color-primary-200: #fff;
-    --color-primary-300: #cfe5e0;
+    --color-primary-100: var(--vz-surface-2);
+    --color-primary-200: var(--vz-surface);
+    --color-primary-300: var(--vz-line);
     --color-primary: #5c249a;
     --color-primary-500: #5c249a;
     --color-white: #fbfcfa;
@@ -51,7 +51,7 @@ th i {
     font-size: 14px;
     vertical-align: middle;
     margin-left: 4px;
-    color: #b2b1b1;
+    color: var(--vz-ink-faint);
 }
 
 td,
@@ -59,6 +59,7 @@ th {
     border-bottom: 1px solid var(--color-primary-300);
     text-align: left;
     white-space: nowrap;
+    color: var(--vz-ink);
 }
 
 th {
@@ -80,7 +81,7 @@ tbody tr.selected td {
 }
 
 .tbody-tr tr:hover {
-    background: #f6f1fd;
+    background: var(--vz-surface-2);
 }
 
 tbody tr:hover:not(.selected) td,
@@ -198,8 +199,8 @@ tbody tr.hover:not(.selected) td {
 
 .verify-request-approve-btn {
     border: 0;
-    background-color: rgb(206 247 223);
-    color: rgb(36 193 89);
+    background-color: #e4f5ea;
+    color: #1d8a4c;
     padding: 2px 10px;
     border-radius: 20px;
     font-size: 14px;
@@ -218,7 +219,7 @@ tbody tr.hover:not(.selected) td {
     border: 0;
     margin-left: 10px;
     padding: 0px 10px 3px 10px;
-    background-color: rgb(37, 195, 37);
+    background-color: #1d8a4c;
     color: white;
     border-radius: 5px;
 }
@@ -227,7 +228,7 @@ tbody tr.hover:not(.selected) td {
     border: 0;
     margin-left: 10px;
     padding: 0px 10px 3px 10px;
-    background-color: rgb(210, 210, 5);
+    background-color: #b8790a;
     color: white;
     border-radius: 5px;
 }
@@ -236,7 +237,7 @@ tbody tr.hover:not(.selected) td {
     border: 0;
     margin-left: 10px;
     padding: 0px 10px 3px 10px;
-    background-color: rgb(243, 79, 79);
+    background-color: #c9392f;
     color: white;
     border-radius: 5px;
 }
@@ -283,7 +284,7 @@ tbody tr.hover:not(.selected) td {
 }
 
 .verify-accept-card {
-    background: white;
+    background: var(--vz-surface);
     border-radius: 20px !important;
     padding: 20px 30px;
     position: relative;
@@ -327,6 +328,7 @@ tbody tr.hover:not(.selected) td {
 }
 
 .verify-accept-number .text {
+    font-family: "Source Serif 4", Georgia, serif;
     font-size: 28px;
     font-weight: 600;
     color: #fff;

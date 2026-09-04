@@ -5,6 +5,11 @@
     Layout = "";
 }
 @model OrgCheck.ViewModels.EmployeeViewModel
+<link rel="stylesheet" href="~/assets/css/dash.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/css/verification-request.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/css/new-request.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/css/bulk.css">
 @section VendorStyles {
     <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
     <link rel="stylesheet" href="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.css" />
@@ -25,109 +30,183 @@
     }
 </style>
 
-<div class="row gy-6">
-    <div class="col-xl-12">
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Send a request</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="form-floating form-floating-outline mb-6 col-md">
-                        <input type="text" id="Customername" name="Customername" class="form-control" placeholder="Please enter here" autofocus="autofocus" />
-                        <label for="Customername">Employer name</label>
-                    </div>
-                    <div class="form-floating form-floating-outline mb-6 col-md">
-                        <input type="text" id="Hrname" name="Hrname" class="form-control" placeholder="Please enter here" />
-                        <label for="Hrname">HR name</label>
-                    </div>
-                    <div class="form-floating form-floating-outline mb-6 col-md">
-                        <input type="text" id="Hremail" name="Hremail" class="form-control" placeholder="Please enter here" />
-                        <label for="Hremail">HR email</label>
-                    </div>
-                </div>
-                <form id="frmEmpForm" name="frmEmpForm">
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Name'>Employee name</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Employeecode, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Employeecode'>Employee code</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Designation, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Designation'>Designation</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Fromdate, new { @class = "form-control", @type = "text", @placeholder = "DD/MM/YYYY" })
-                            @* <input type="date" class="form-control" id="basic-default-fromdate" /> *@
-                            <label for="Fromdate">From date</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Todate, new { @class = "form-control", @type = "text", @placeholder = "DD/MM/YYYY" })
-                            @* <input type="date" class="form-control" id="basic-default-todate" /> *@
-                            <label for="Todate">To date</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Reasonforleaving, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Reasonforleaving'>Reason for leaving</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Location, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Location'>Location</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Jobtype, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Jobtype'>Job type (Permanent/Contract/Other)</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Lastdrawnsalary, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Lastdrawnsalary'>Last drawn salary</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Reportingto, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Reportingto'>Reporting to</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Managerdesignation, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Managerdesignation'>Manager designation</label>
-                        </div>
-                    </div>
-                    @* <div id="divQuestions">
-                        @foreach (var qn in Model.EmployeeQuestions)
-                        {
-                            <div class="row">
-                                <div class="form-floating form-floating-outline mb-6">
-                                    <input type="text" class="form-control" id='qns_@qn.QuestionId' placeholder="Please enter your comments here" />
-                                    <label for='qns_@qn.QuestionId'>@qn.Questionname</label>
-                                </div>
-                            </div>
-                        }
-                    </div> *@
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-6 col-md-9">
-                            @Html.TextBoxFor(model => model.Comments, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='@Model.Comments'>Comments</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-6 col-md-2">
-                            <button type="button" class="btn btn-primary" id="SendRequest">Send request</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+<div class="content">
+    <div class="breadcrumbs" style="padding: 10px 0px 20px 5px">
+        <a href="/Customer/VIndex">
+            <i class="ri-home-8-line" style="color: var(--purple-color)"></i>
+        </a> <i class="ri-arrow-right-s-line"
+                style="color: var(--purple-color)"></i>
+        <span style="color: var(--purple-color);font-size: 14px;">V-Zone</span>
+        <i class="ri-arrow-right-s-line" style="color: var(--purple-color)"></i>
+        <span style="font-size: 14px;">Send a request</span>
     </div>
 
+    <div class="exz-page-head">
+        <h1>Send a request</h1>
+        <p>Send an employment verification request directly to the HR of a former employer.</p>
+    </div>
+
+    <div class="exz-filter-card">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="inputContainer">
+                    <input type="text" id="Customername" name="Customername" class="input-container" placeholder="Employer name" autocomplete="off" autofocus="autofocus" />
+                    <label class="usernameLabel">Employer name</label>
+                    <i class="ri-building-line userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="inputContainer">
+                    <input type="text" id="Hrname" name="Hrname" class="input-container" placeholder="HR name" autocomplete="off" />
+                    <label class="usernameLabel">HR name</label>
+                    <i class="ri-user-6-line userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="inputContainer">
+                    <input type="text" id="Hremail" name="Hremail" class="input-container" placeholder="HR email" autocomplete="off" />
+                    <label class="usernameLabel">HR email</label>
+                    <i class="ri-mail-send-line userIcon"></i>
+                </div>
+            </div>
+        </div>
+        <form id="frmEmpForm" name="frmEmpForm">
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "input-container", @type = "text", @placeholder = "Employee name", @autocomplete = "off" })
+                        <label class="usernameLabel">Employee name</label>
+                        <i class="ri-user-6-line userIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Employeecode, new { @class = "input-container", @type = "text", @placeholder = "Employee code", @autocomplete = "off" })
+                        <label class="usernameLabel">Employee code</label>
+                        <i class="ri-user-settings-line userIcon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Designation, new { @class = "input-container", @type = "text", @placeholder = "Designation", @autocomplete = "off" })
+                        <label class="usernameLabel">Designation</label>
+                        <i class="ri-bar-chart-grouped-line userIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dateInputContainer">
+                        @Html.TextBoxFor(model => model.Fromdate, new { @class = "input-container", @type = "text", @placeholder = "DD/MM/YYYY", @autocomplete = "off" })
+                        @* <input type="date" class="form-control" id="basic-default-fromdate" /> *@
+                        <div class="label-container">
+                            <i class="ri-calendar-line label-icon"></i>
+                            <label class="dateLabel" for="Fromdate">From date</label>
+                        </div>
+                        <i class="ri-calendar-line dateIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dateInputContainer">
+                        @Html.TextBoxFor(model => model.Todate, new { @class = "input-container", @type = "text", @placeholder = "DD/MM/YYYY", @autocomplete = "off" })
+                        @* <input type="date" class="form-control" id="basic-default-todate" /> *@
+                        <div class="label-container">
+                            <i class="ri-calendar-2-line label-icon"></i>
+                            <label class="dateLabel" for="Todate">To date</label>
+                        </div>
+                        <i class="ri-calendar-2-line dateIcon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Reasonforleaving, new { @class = "input-container", @type = "text", @placeholder = "Reason for leaving", @autocomplete = "off" })
+                        <label class="usernameLabel">Reason for leaving</label>
+                        <i class="ri-run-line userIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Location, new { @class = "input-container", @type = "text", @placeholder = "Location", @autocomplete = "off" })
+                        <label class="usernameLabel">Location</label>
+                        <i class="ri-map-pin-user-line userIcon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Jobtype, new { @class = "input-container", @type = "text", @placeholder = "Job type (Permanent/Contract/Other)", @autocomplete = "off" })
+                        <label class="usernameLabel">Job type (Permanent/Contract/Other)</label>
+                        <i class="ri-user-settings-line userIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Lastdrawnsalary, new { @class = "input-container", @type = "text", @placeholder = "Last drawn salary", @autocomplete = "off" })
+                        <label class="usernameLabel">Last drawn salary</label>
+                        <i class="ri-wallet-3-line userIcon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Reportingto, new { @class = "input-container", @type = "text", @placeholder = "Reporting to", @autocomplete = "off" })
+                        <label class="usernameLabel">Reporting to</label>
+                        <i class="ri-folder-chart-line userIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Managerdesignation, new { @class = "input-container", @type = "text", @placeholder = "Manager designation", @autocomplete = "off" })
+                        <label class="usernameLabel">Manager designation</label>
+                        <i class="ri-contacts-line userIcon"></i>
+                    </div>
+                </div>
+            </div>
+            @* <div id="divQuestions">
+                @foreach (var qn in Model.EmployeeQuestions)
+                {
+                    <div class="row">
+                        <div class="form-floating form-floating-outline mb-6">
+                            <input type="text" class="form-control" id='qns_@qn.QuestionId' placeholder="Please enter your comments here" />
+                            <label for='qns_@qn.QuestionId'>@qn.Questionname</label>
+                        </div>
+                    </div>
+                }
+            </div> *@
+            <div class="row align-items-center">
+                <div class="col-md-9">
+                    <div class="inputContainer">
+                        @Html.TextBoxFor(model => model.Comments, new { @class = "input-container", @type = "text", @placeholder = "Comments", @autocomplete = "off" })
+                        <label class="usernameLabel">Comments</label>
+                        <i class="ri-chat-3-line userIcon"></i>
+                    </div>
+                </div>
+                <div class="col-md-3 d-flex justify-content-center mt-3 mt-md-0">
+                    <button type="button" class="btn-submit" id="SendRequest">
+                        <div class="original">Send request</div>
+                        <div class="letters">
+                            <span>S</span>
+                            <span>e</span>
+                            <span>n</span>
+                            <span>d</span>
+                            <span class="ms-1"></span>
+                            <span>r</span>
+                            <span>e</span>
+                            <span>q</span>
+                            <span>u</span>
+                            <span>e</span>
+                            <span>s</span>
+                            <span>t</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <script src="~/vendor/jquery-3.2.1.min.js"></script>
 <script>

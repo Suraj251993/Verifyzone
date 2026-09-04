@@ -7,9 +7,9 @@
 @model OrgCheck.ViewModels.AutoApprovalConfigViewModel
 <link rel="stylesheet" href="~/assets/css/active-autopilot.css">
 <link rel="stylesheet" href="~/assets/css/search-candidate.css">
-<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="~/assets/css/bulk.css">
-<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="~/js/common.js" asp-append-version="true"></script>
@@ -27,8 +27,13 @@
 @if (ViewBag.AccessLevel == 1 || ViewBag.AccessLevel == 3)
 {
     <div class="content">
-    <h5 class="bulk-table-heading mb-4">Setup Exclusions</h5>
-        
+    <div class="exz-page-head">
+        <h1>Autopilot exclusions</h1>
+        <p>Ex-employees listed here are always routed through manual review and skipped by autopilot.</p>
+    </div>
+
+    <div class="exz-action-card">
+    <h3>Excluded employees</h3>
     <div class="card p-0 mt-3 mb-4 border-0">
         <table>
             <thead style="background: #f8ece2">
@@ -55,7 +60,7 @@
             </tbody>
         </table>
         <div class="text-center border-bottom" id="divnorecord" style="display: none;">
-            <img src="/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
+            <img src="/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;" />
             <h6 class="no-data-found-text">No record found</h6>
         </div>
         <!-- deactivate popup -->
@@ -73,7 +78,7 @@
                             <h5 class="activate-popup-toggle-icon"><i class="ri-error-warning-line"></i></h5>
                             <h5 class="activate-popup-toggle-content">
                                 <strong>
-                                    Are you sure <br>
+                                    Are you sure <br />
                                     You want to remove the ex-employee from autopilot exclusion?
                                 </strong>
                             </h5>
@@ -103,6 +108,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 
@@ -145,10 +151,10 @@ else
 {
     <div class="container">
         <div class="container-access">
-            <img src="/assets/img/403 Access Denied.png" alt="">
+            <img src="/assets/img/403 Access Denied.png" alt="" />
             <h5 class="access-header-first-403">Oops !!!</h5>
             <h6 class="access-header-403">Access denied</h6>
-            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <p class="access-para-403">You are not authorized to view this page. <br /> Please return to the homepage or contact support.</p>
             <a href="/Home/Landing">
                 <button class="access-back-btn">Go back</button>
             </a>

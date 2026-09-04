@@ -4,51 +4,62 @@
 @{
     Layout = "~/Views/Shared/_SupportLayout.cshtml";
 }
+<link rel="stylesheet" href="~/assets/css/dash.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
 
-<div class="main-content">
-    <div class="section__content section__content--p30">
-        <div class="container-fluid">
-            <div class="main-body">
-                <div class="page-wrapper">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>User Management Screen</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            @Html.DropDownList("searchusertype", (IEnumerable<SelectListItem>)ViewBag.SearchUserTypes, "Please choose UserType", new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-primary mb-1" id="getusers" name="getusers" disabled>Get Users</button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="table-responsive">
-                                        <table id="userMaster" class="display table nowrap table-striped table-hover" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Login name</th>
-                                                    <th>Designation</th>
-                                                    <th>Email</th>
-                                                    <th>Contact #</th>
-                                                    <th>Reset</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+<div class="breadcrumbs" style="padding: 10px 0px 20px 5px"><a href="/Support/Index"><i
+        class="ri-home-8-line" style="color: var(--purple-color)"></i></a> <i class="ri-arrow-right-s-line"
+    style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Users</span>
+</div>
+
+<div class="content">
+    <div class="exz-page-head">
+        <h1>Users</h1>
+        <p>Look up users by type and reset their password when needed.</p>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8 exz-filter-card">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        @Html.DropDownList("searchusertype", (IEnumerable<SelectListItem>)ViewBag.SearchUserTypes, "Please choose UserType", new { @class = "form-control" })
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn-submit border-0" id="getusers" name="getusers" disabled>
+                        <div class="original">Get Users</div>
+                        <div class="letters">
+                            <span>G</span>
+                            <span>e</span>
+                            <span>t</span>
+                            <span class="ms-1"></span>
+                            <span>U</span>
+                            <span>s</span>
+                            <span>e</span>
+                            <span>r</span>
+                            <span>s</span>
+                        </div>
+                    </button>
+                </div>
             </div>
+        </div>
+    </div>
+    <div class="card p-0 mt-3 mb-4 border-0 exz-table-card">
+        <div class="table-responsive">
+            <table id="userMaster" class="display table nowrap table-striped table-hover" style="width:100%">
+                <thead style="background: #f4f1f8">
+                    <tr>
+                        <th>Name</th>
+                        <th>Login name</th>
+                        <th>Designation</th>
+                        <th>Email</th>
+                        <th>Contact #</th>
+                        <th>Reset</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

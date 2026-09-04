@@ -17,40 +17,111 @@
 @if (ViewBag.AccessLevel == 2 || ViewBag.AccessLevel == 3)
 {
     <div class="dashboard-content">
-    <div class="row">
-        <div class="col-md-4 mt-4">
-            <div class="dash-board-card-container1">
-                <div class="card-text">
-                    <h2><strong>@Model.DownloadCount</strong></h2>
-                    <h3 style="color: rgb(75, 74, 74);">Report(s) downloaded</h3>
-                    <p style="color: rgb(119, 119, 119);">On @Model.Month,@Model.Year</p>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right1">
-                        <i class="ri-checkbox-circle-line"></i>
+    <div class="exz-page-head">
+        <h1>V-Zone dashboard</h1>
+        <p>Track employment verification reports and wallet activity.</p>
+    </div>
+
+    <div class="exz-kpi-row">
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-top">
+                <div class="exz-kpi-icon"><i class="ri-checkbox-circle-line"></i></div>
+                @if (Model.DownloadCountTrend.HasValue)
+                {
+                    <div class="exz-trend @(Model.DownloadCountTrend >= 0 ? "up" : "down")">
+                        <i class="ri-arrow-@(Model.DownloadCountTrend >= 0 ? "right-up" : "right-down")-line"></i>@(Math.Abs(Model.DownloadCountTrend.Value))%
                     </div>
-                </div>
+                }
+            </div>
+            <div class="exz-kpi-body">
+                <h2>@Model.DownloadCount</h2>
+                <div class="exz-kpi-label">Report(s) downloaded</div>
+                <div class="exz-kpi-sub">On @Model.Month,@Model.Year</div>
             </div>
         </div>
-        <div class="col-md-4 mt-4">
-            <div class="dash-board-card-container2">
-                <div class="card-text">
-                    <h2><strong>@Model.BalanceCount</strong></h2>
-                    <h3 style="color: rgb(75, 74, 74);">Wallet balance</h3>
-                    <p style="color: rgb(119, 119, 119);">As of now</p>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right2">
-                        <i class="ri-file-list-3-line"></i>
-                    </div>
-                </div>
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-icon"><i class="ri-file-list-3-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2>@Model.BalanceCount</h2>
+                <div class="exz-kpi-label">Wallet balance</div>
+                <div class="exz-kpi-sub">As of now</div>
             </div>
         </div>
+    </div>
 
-
-
+    <div class="exz-dashboard-bottom-row">
+        <div class="exz-chart-card">
+            <h3>Reports generated this year</h3>
+            <div class="layoutchart">
+                <main class="contentmainchart">
+                    <div id="main"></div>
+                </main>
+            </div>
+        </div>
+        <div class="exz-activity-card">
+            <div class="exz-activity-head">
+                <h3>Recent activity</h3>
+                <p>Latest candidate searches</p>
+            </div>
+            <div id="recentSearchesList"></div>
+        </div>
     </div>
 </div>
+<script src="~/assets/js/echarts.min.js"></script>
+<script src="~/assets/js/canvasjs.min.js"></script>
+<script src="~/assets/js/chart.js?ver=1" asp-append-version="true"></script>
+<script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
+    $(function () {
+        var url = '@Url.Action("GetDashboardData", "Customer")';
+        drawDashboard(url);
+
+        var today = new Date();
+        var fromDate = new Date();
+        fromDate.setDate(today.getDate() - 90);
+        function fmt(d) {
+            var dd = String(d.getDate()).padStart(2, '0');
+            var mm = String(d.getMonth() + 1).padStart(2, '0');
+            return dd + '-' + mm + '-' + d.getFullYear();
+        }
+        $.ajax({
+            type: 'GET',
+            dataType: 'JSON',
+            url: '@Url.Action("GetSearchHistory", "Customer")',
+            data: { fromdate: fmt(fromDate), todate: fmt(today), finalresult: '' },
+            success: function (records) {
+                if (!records) {
+                    document.getElementById("recentSearchesList").innerHTML = '<p class="exz-activity-empty">Could not load recent activity.</p>';
+                    return;
+                }
+                var top = records.slice(0, 5);
+                var statusClass = function (r) {
+                    if (r === 'Approved') return 'success';
+                    if (r === 'Rejected') return 'danger';
+                    if (r === 'Searched') return 'info';
+                    return 'warning';
+                };
+                var html = top.map(function (r) {
+                    var initials = (r.name || '?').split(' ').map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase();
+                    return '<div class="exz-activity-row">' +
+                        '<div class="exz-activity-icon">' + initials + '</div>' +
+                        '<div class="exz-activity-body">' +
+                            '<div class="exz-activity-name">' + (r.name || r.employeecode) + '</div>' +
+                            '<div class="exz-activity-sub">' + r.employeecode + ' &middot; ' + r.searchresult + '</div>' +
+                        '</div>' +
+                        '<div class="exz-activity-meta">' +
+                            '<span class="exz-badge ' + statusClass(r.finalresult) + '">' + (r.finalresult || 'Searched') + '</span>' +
+                            '<div class="exz-activity-time">' + r.createddate + '</div>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+                document.getElementById("recentSearchesList").innerHTML = html || '<p class="exz-activity-empty">No searches in the last 90 days.</p>';
+            },
+            error: function () {
+                document.getElementById("recentSearchesList").innerHTML = '<p class="exz-activity-empty">Could not load recent activity.</p>';
+            }
+        });
+    });
+</script>
 }
 else
 {

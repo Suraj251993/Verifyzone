@@ -13,94 +13,77 @@
 </div>
 
 <div class="dashboard-content">
-    <div class="row">
-        <div class="col-md-4 mt-2">
-            <div class="dash-board-card-container4">
-                <div class="card-text">
-                    <h3 class="">Customers</h3>
-                    <p>As of now</p>
-                    <a href="/Admin/Customers" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Customers">
-                        <i class="ri-contacts-line"></i>
-                    </a>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right4">
-                        <i class="ri-contacts-line"></i>
-                    </div>
-                </div>
+    <div class="exz-page-head">
+        <h1>Admin dashboard</h1>
+        <p>Platform-wide customers, users, and report activity.</p>
+    </div>
+
+    <div class="exz-kpi-row">
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-top">
+                <div class="exz-kpi-icon"><i class="ri-contacts-line"></i></div>
+                <div class="exz-trend" id="customerstrend" style="display:none;"></div>
+            </div>
+            <div class="exz-kpi-body">
+                <h2 id="customerslabel">&ndash;</h2>
+                <div class="exz-kpi-label">Customers</div>
+                <div class="exz-kpi-sub" id="customerssubtitle">As of now</div>
             </div>
         </div>
-        <div class="col-md-4 mt-2">
-            <div class="dash-board-card-container5">
-                <div class="card-text">
-                    <h3 class="">Questions</h3>
-                    <p>As of now</p>
-                    <a href="/Admin/Questions" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Questions"> <i class="ri-question-line"></i></a>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right5">
-                        <i class="ri-question-line"></i>
-                    </div>
-                </div>
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-icon"><i class="ri-group-line"></i></div>
+            <div class="exz-kpi-body">
+                <h2 id="userslabel">&ndash;</h2>
+                <div class="exz-kpi-label">Users</div>
+                <div class="exz-kpi-sub">As of now</div>
             </div>
         </div>
-        <div class="col-md-4 mt-2">
-            <div class="dash-board-card-container6">
-                <div class="card-text">
-                    <h3 class="">Users</h3>
-                    <p>As of now</p>
-                    <a href="/Admin/Users" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Users">
-                        <i class="ri-group-line"></i>
-                    </a>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right6">
-                        <i class="ri-group-line"></i>
-                    </div>
-                </div>
+        <div class="exz-kpi-card">
+            <div class="exz-kpi-top">
+                <div class="exz-kpi-icon"><i class="ri-notification-3-line"></i></div>
+                <div class="exz-trend" id="reportstrend" style="display:none;"></div>
+            </div>
+            <div class="exz-kpi-body">
+                <h2 id="reportslabel">&ndash;</h2>
+                <div class="exz-kpi-label">Reports generated</div>
+                <div class="exz-kpi-sub">This month</div>
             </div>
         </div>
-        <div class="col-md-4 mt-4">
-            <div class="dash-board-card-container1">
-                <div class="card-text">
-                    <h3 class="">Customer credit</h3>
-                    <p>As of now</p>
-                    <a href="/Admin/CustomerCredit" class="navigation-dash-card-icon" data-bs-toggle="tooltip"
-                       data-bs-placement="top" title="Customer credit">
-                        <i class="ri-mastercard-line"></i>
-                    </a>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right1">
-                        <i class="ri-mastercard-line"></i>
-                    </div>
-                </div>
+    </div>
+
+    <p class="exz-section-title">Quick actions</p>
+    <div class="exz-actions-row">
+        <div class="exz-action-card">
+            <h3>Manage</h3>
+            <div class="exz-action-grid">
+                <a href="/Admin/Customers" class="exz-action-btn"><i class="ri-contacts-line"></i> Customers</a>
+                <a href="/Admin/Users" class="exz-action-btn"><i class="ri-group-line"></i> Users</a>
+                <a href="/Admin/Questions" class="exz-action-btn"><i class="ri-question-line"></i> Questions</a>
+                <a href="/Admin/CustomerCredit" class="exz-action-btn"><i class="ri-mastercard-line"></i> Customer credit</a>
             </div>
-        </div>        
-        <div class="col-md-4 mt-4">
-            <div class="dash-board-card-container3">
-                <div class="card-text">
-                    <h4 id="reportslabel"></h4>
-                    <h3 class="">Report generated</h3>
-                    <p>As of now</p>
-                </div>
-                <div class="m-4">
-                    <div class="dash-board-icon-right3">
-                        <i class="ri-notification-3-line"></i>
-                    </div>
-                </div>
+        </div>
+    </div>
+
+    <div class="chart-row-admin">
+        <div class="exz-chart-card">
+            <h3>Reports generated this year</h3>
+            <div id="adminMain" style="width: 100%; height: 320px;"></div>
+        </div>
+        <div class="exz-table-card admin-top-customers">
+            <div class="admin-top-customers-head">
+                <h3>Top customers this month</h3>
+                <p>By reports generated</p>
             </div>
+            <div id="topCustomersList"></div>
         </div>
     </div>
 </div>
 
-<script src="~/assets/js/pages/adminhome.js?ver=1" asp-append-version="true"></script>
+<script src="~/assets/js/echarts.min.js"></script>
+<script src="~/assets/js/pages/adminhome.js?ver=2" asp-append-version="true"></script>
 <script nonce="@ViewContext.HttpContext.Items["CSPNonce"]">
-    var dataurl = '@Url.Action("GetDashboardData", "Customer")';
-    document.ready(function() { 
+    var dataurl = '@Url.Action("GetDashboardData", "Admin")';
+    $(function () {
         GetDashboardData(dataurl);
     });
 </script>

@@ -6,8 +6,8 @@
 }
 @model OrgCheck.ViewModels.CustomerEmailSettingViewModel;
 <link rel="stylesheet" href="/assets/css/bulk.css">
-<link rel="stylesheet" href="/assets/css/exit-details.css">
-<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/new-request.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -22,7 +22,13 @@
 @if (ViewBag.AccessLevel == 2 || ViewBag.AccessLevel == 3)
 {
     <div class="content">
-        <h5 class="bulk-table-heading mb-4">Email settings</h5>
+        <div class="exz-page-head">
+            <h1>Email templates</h1>
+            <p>Choose the notification template employers receive for requisition and re-verification requests.</p>
+        </div>
+
+        <div class="exz-action-card mb-4">
+        <h3>Compose template</h3>
         <form id="msform">
             <div class="row">            
                 <div class="col-md-6">
@@ -81,6 +87,10 @@
                 </div>
             </button>
         </div>
+        </div>
+
+        <div class="exz-action-card">
+        <h3>Saved templates</h3>
         <div class="card p-0 mt-3 mb-4 border-0">
             <table>
                 <thead style="background: #f8ece2">
@@ -104,6 +114,7 @@
                 <img src="/assets/img/no-data-found-img.jpg" alt="no-record-found" style="height: 200px;">
                 <h6 class="no-data-found-text">No record found</h6>
             </div>
+        </div>
         </div>
     </div>
 }

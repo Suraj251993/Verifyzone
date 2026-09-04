@@ -1,10 +1,15 @@
-﻿@*
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     Layout = "";
 }
 @model OrgCheck.ViewModels.AbscondDetailViewModel
+<style>:root{--purple-color:#5c249a;--light-purple-color:#340c62;}</style>
+<link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/assets/remix/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="~/assets/css/dash.css" asp-append-version="true">
+<link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
 @section VendorStyles {
     <link rel="stylesheet" href="~/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.dist.css">
     <link rel="stylesheet" href="~/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.dist.css" />
@@ -17,85 +22,124 @@
     <script src="~/vendor/libs/toastr/toastr.dist.js"></script>
     <script src="~/js/common.js?ver=1"></script>
 }
-<div class="row gy-6">
-    <div class="col-xl-12">
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Add additional details</h5>
+<div class="content">
+    <h5 class="bulk-table-heading mb-4">Add additional details</h5>
+    <form>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "input-container", @type = "text", @placeholder = "Employee name", @autocomplete = "off", autofocus = "autofocus" })
+                    <label class="usernameLabel">Employee name</label>
+                    <i class="ri-user-6-line userIcon"></i>
+                </div>
             </div>
-            <div class="card-body">
-                <form>
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-4 col-md">
-                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @type = "text", @placeholder = "Please enter here", autofocus = "autofocus" })
-                            <label for='Name'>Employee name</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-4 col-md">
-                            @Html.TextBoxFor(model => model.Employeecode, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for='Name'>Employee code</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-4 col-md">
-                            @Html.TextBoxFor(model => model.Joindate, new { @class = "form-control", @type = "text", @placeholder = "DD/MM/YYYY" })
-                            <label for="Joindate">Join date</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-4 col-md">
-                            @Html.TextBoxFor(model => model.Lastworkingdate, new { @class = "form-control", @type = "text", @placeholder = "DD/MM/YYYY" })
-                            <label for="Lastworkingdate">Last working date</label>
-                        </div>
+            <div class="col-md-6">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Employeecode, new { @class = "input-container", @type = "text", @placeholder = "Employee code", @autocomplete = "off" })
+                    <label class="usernameLabel">Employee code</label>
+                    <i class="ri-user-settings-line userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dateInputContainer">
+                    @Html.TextBoxFor(model => model.Joindate, new { @class = "input-container", @type = "text", @placeholder = "DD/MM/YYYY", @autocomplete = "off" })
+                    <div class="label-container">
+                        <i class="ri-calendar-line label-icon"></i>
+                        <label class="dateLabel" for="Joindate">Join date</label>
                     </div>
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Mobileno, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for="Mobileno">Mobile no.</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Uannumber, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for="Uannumber">UAN number</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            @Html.TextBoxFor(model => model.Fathername, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for="Fathername">Father name</label>
-                        </div>
+                    <i class="ri-calendar-line dateIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dateInputContainer">
+                    @Html.TextBoxFor(model => model.Lastworkingdate, new { @class = "input-container", @type = "text", @placeholder = "DD/MM/YYYY", @autocomplete = "off" })
+                    <div class="label-container">
+                        <i class="ri-calendar-2-line label-icon"></i>
+                        <label class="dateLabel" for="Lastworkingdate">Last working date</label>
                     </div>
-                    <div class="row">                        
-                        <div class="form-floating form-floating-outline mb-4 col-md-4">
-                            @Html.TextBoxFor(model => model.Emailid, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                                <label for="Emailid">Email id</label>
-                        </div>
-                        <div class="form-floating form-floating-outline mb-4 col-md">
-                            @Html.DropDownList("discrepancytype", (IEnumerable<SelectListItem>)ViewBag.DiscrepancyTypes, "Please highlight", new { @class = "form-select", @id = "mdddiscrepancytype" })
-                        </div>
-                        <div class="form-floating form-floating-outline mb-4 col-md-4">
-                            @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for="Remarks">Remarks</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-6 col-md-8">
-                            @Html.TextBoxFor(model => model.Linkedinurl, new { @class = "form-control", @type = "text", @placeholder = "Please enter here" })
-                            <label for="Linkedinurl">Linked-in URL</label>
-                        </div>
-                    </div>
-                    <div class="row">                        
-                        <div class="form-floating form-floating-outline mb-6 col-md">
-                            <div class="dz-message needsclick">
-                                Drop files here or click to upload
-                                <span class="note needsclick">(This is just a demo dropzone. Selected files are <span class="fw-medium">not</span> actually uploaded.)</span>
-                            </div>
-                            <div class="fallback">
-                                <input name="resume" type="file" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-floating form-floating-outline mb-6 col-md-2">
-                            <button type="button" class="btn btn-primary" id="SaveDetail">Submit </button>
-                        </div>
-                    </div>
-                </form>
+                    <i class="ri-calendar-2-line dateIcon"></i>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Mobileno, new { @class = "input-container", @type = "text", @placeholder = "Mobile no.", @autocomplete = "off" })
+                    <label class="usernameLabel">Mobile no.</label>
+                    <i class="ri-phone-line userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Uannumber, new { @class = "input-container", @type = "text", @placeholder = "UAN number", @autocomplete = "off" })
+                    <label class="usernameLabel">UAN number</label>
+                    <i class="ri-numbers-line userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Fathername, new { @class = "input-container", @type = "text", @placeholder = "Father name", @autocomplete = "off" })
+                    <label class="usernameLabel">Father name</label>
+                    <i class="ri-group-2-line userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Emailid, new { @class = "input-container", @type = "text", @placeholder = "Email id", @autocomplete = "off" })
+                    <label class="usernameLabel">Email id</label>
+                    <i class="ri-mail-unread-line userIcon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="inputContainer">
+                    @Html.DropDownList("discrepancytype", (IEnumerable<SelectListItem>)ViewBag.DiscrepancyTypes, "Please highlight", new { @class = "form-select input-container", @id = "mdddiscrepancytype" })
+                    <label class="usernameLabel">Please highlight</label>
+                    <i class="ri-checkbox-circle-line userIcon"></i>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Remarks, new { @class = "input-container", @type = "text", @placeholder = "Remarks", @autocomplete = "off" })
+                    <label class="usernameLabel">Remarks</label>
+                    <i class="ri-file-text-line userIcon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="inputContainer">
+                    @Html.TextBoxFor(model => model.Linkedinurl, new { @class = "input-container", @type = "text", @placeholder = "Linked-in URL", @autocomplete = "off" })
+                    <label class="usernameLabel">Linked-in URL</label>
+                    <i class="ri-linkedin-box-line userIcon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="upload-resume-header-exitdetails">
+                    <i class="ri-upload-cloud-line"></i> <strong>Upload resume</strong>
+                </h6>
+                <label class="exit-resume-upload-field d-flex flex-column justify-content-center align-items-center">
+                    <input name="resume" type="file" hidden />
+                    <p class="file-prompt mb-1 pt-4"><i class="ri-upload-cloud-2-line fs-2"></i></p>
+                    <p class="text-muted mb-1">Drag &amp; Drop your file here</p>
+                    <p class="text-muted mb-1">or Click to Browse</p>
+                </label>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <button type="button" class="btn-submit" id="SaveDetail">
+                    <div class="original">Submit</div>
+                    <div class="letters">
+                        <span>S</span><span>u</span><span>b</span><span>m</span><span>i</span><span>t</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script>
@@ -129,7 +173,7 @@
                 emailid: $.trim($('#Emailid').val()),
                 discrepancytype: parseInt($('#mdddiscrepancytype option:selected').val()),
                 remarks: $.trim($('#Remarks').val()),
-                linkedinurl: $.trim($('#Linkedinurl').val())                
+                linkedinurl: $.trim($('#Linkedinurl').val())
             };
             $.ajax({
                 url: '@Url.Action("AddAbscondDetail", "Customer")',
@@ -171,4 +215,3 @@
         $('#mdddiscrepancytype').prop('selectedIndex', 0);
     }
 </script>
-

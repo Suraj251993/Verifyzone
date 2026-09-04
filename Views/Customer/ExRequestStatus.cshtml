@@ -4,8 +4,8 @@
 @{
     Layout = "~/Views/Shared/_VZoneLayout.cshtml";
 }
-<link rel="stylesheet" href="/assets/css/exit-details.css">
-<link rel="stylesheet" href="/assets/css/verification-request.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/new-request.css">
 <link rel="stylesheet" href="~/assets/css/bulk.css">
 <script src="~/js/common.js" asp-append-version="true"></script>
@@ -25,8 +25,11 @@
 @if (ViewBag.AccessLevel == 2 || ViewBag.AccessLevel == 3)
 {
     <div class="content">
-    <h5 class="bulk-table-heading mb-4">Initiated verification status</h5>
-    <div class="row justify-content-center">        
+    <div class="exz-page-head">
+        <h1>Initiated verification status</h1>
+        <p>Track and manage the verification requests you have raised, generate reports, or send reminders.</p>
+    </div>
+    <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="inputContainer reasonContainer" id="inputContainer"
                  style="position: relative;">
@@ -73,9 +76,9 @@
             </div>
         </button>
     </div>
-    <div class="card p-0 mt-5 mb-4 border-0">
+    <div class="card p-0 mt-5 mb-4 border-0 exz-table-card">
         <table>
-            <thead style="background: #f8ece2">
+            <thead style="background: #f6f1fd">
                 <tr>
                     @* <th class="sortable">
                         ID<i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>

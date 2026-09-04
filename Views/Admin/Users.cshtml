@@ -4,7 +4,7 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
 <link rel="stylesheet" href="/assets/css/active-autopilot.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -17,9 +17,12 @@
     style="color: var(--purple-color)"></i> <span style="font-size: 14px;">Users</span></div>
 
 <div class="content">
-    <h5 class="bulk-table-heading mb-4">Users</h5>
+    <div class="exz-page-head">
+        <h1>Users</h1>
+        <p>Manage internal user accounts, roles, and access levels.</p>
+    </div>
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-6 exz-filter-card">
             <div class="row">
                 <div class="col-md-8">
                     <div class="inputContainer reasonContainer" id="inputContainer" style="position: relative;">
@@ -64,10 +67,10 @@
             <div class="d-flex gap-2 justify-content-end pt-4">
                 <div class="pt-1">
                     @* data-bs-target="#adduser" data-bs-toggle="modal" *@
-                    <button class="btn-submit border-0" 
-                            style="background-color: rgb(16, 114, 16); width: 100px;" id="btnadd">
-                        <div class="original" style="background-color: rgb(16, 114, 16);"> Add User</div>
-                        <div class="letters" style="background-color: rgb(16, 114, 16);">
+                    <button class="btn-submit border-0"
+                            style="width: 100px;" id="btnadd">
+                        <div class="original"> Add User</div>
+                        <div class="letters">
                             <span>A</span>
                             <span>d</span>
                             <span>d</span>
@@ -83,9 +86,9 @@
 
         </div>
     </div>
-    <div class="card p-0 mt-3 mb-4 border-0">
+    <div class="card p-0 mt-3 mb-4 border-0 exz-table-card">
         <table>
-            <thead style="background: #f8ece2">
+            <thead style="background: #f4f1f8">
                 <tr>
                     <th class="sortable">
                         Name <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>

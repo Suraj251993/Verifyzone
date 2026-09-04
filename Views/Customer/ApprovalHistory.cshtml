@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
 }
 <link rel="stylesheet" href="~/assets/css/search-candidate.css">
-<link rel="stylesheet" href="~/assets/css/verification-request.css">
+<link rel="stylesheet" href="~/assets/css/verification-request.css" asp-append-version="true">
 <link rel="stylesheet" href="~/assets/css/bulk.css">
-<link rel="stylesheet" href="~/assets/css/exit-details.css">
+<link rel="stylesheet" href="~/assets/css/exit-details.css" asp-append-version="true">
 <link rel="stylesheet" href="~/assets/css/new-request.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -27,7 +27,10 @@
 {
     <div class="content">
 
-    <h5 class="bulk-table-heading mb-4 mt-3">Verification history</h5>
+    <div class="exz-page-head">
+        <h1>Verification history</h1>
+        <p>Review previously approved ex-employee verification requests by date range.</p>
+    </div>
 
     <div class="row justify-content-center">
         <div class="col-md-4">
@@ -67,10 +70,10 @@
         </button>
     </div>
 
-    <h5 class="bulk-table-heading mb-4 mt-3">Search Result</h5>
-    <div class="card p-0 mt-4 mb-4 border-0">
+    <p class="exz-section-title mt-4">Search Result</p>
+    <div class="card p-0 mt-2 mb-4 border-0 exz-table-card">
         <table>
-            <thead style="background: #f8ece2">
+            <thead style="background: #f6f1fd">
                 <tr>
                     <th class="sortable">
                         Employee code <i class="ri-arrow-down-line"></i><i class="ri-arrow-up-line d-none"></i>
@@ -142,10 +145,10 @@ else
 {
     <div class="container">
         <div class="container-access">
-            <img src="/assets/img/403 Access Denied.png" alt="">
+            <img src="/assets/img/403 Access Denied.png" alt="" />
             <h5 class="access-header-first-403">Oops !!!</h5>
             <h6 class="access-header-403">Access denied</h6>
-            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <p class="access-para-403">You are not authorized to view this page. <br /> Please return to the homepage or contact support.</p>
             <a href="/Home/Landing">
                 <button class="access-back-btn">Go back</button>
             </a>

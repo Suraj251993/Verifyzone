@@ -63,12 +63,28 @@ namespace OrgCheck.Services
         }
         public CustomerDashboardCount GetDashboardCount(int month, int year, int userId)
         {
+            var employeeDA = _serviceProvider.GetRequiredService<IEmployeeDA>();
             var dashboardCount = new CustomerDashboardCount();
-            dashboardCount.CompletedCount = _serviceProvider.GetRequiredService<IEmployeeDA>().GetApprovalGivenCount(month, year, userId);
-            dashboardCount.ApprovalCount = _serviceProvider.GetRequiredService<IEmployeeDA>().GetEmployeeApprovals(_executionContext.CustomerId, false).Count;
-            dashboardCount.DownloadCount = _serviceProvider.GetRequiredService<IEmployeeDA>().GetGeneratedReportsCountByCustomerMonth(month, year, userId);
-            dashboardCount.RequestCount = _serviceProvider.GetRequiredService<IEmployeeDA>().GetOpenRequestsByCustomer(_executionContext.CustomerId).Count;
+            dashboardCount.CompletedCount = employeeDA.GetApprovalGivenCount(month, year, userId);
+            dashboardCount.ApprovalCount = employeeDA.GetEmployeeApprovals(_executionContext.CustomerId, false).Count;
+            dashboardCount.DownloadCount = employeeDA.GetGeneratedReportsCountByCustomerMonth(month, year, userId);
+            dashboardCount.RequestCount = employeeDA.GetOpenRequestsByCustomer(_executionContext.CustomerId).Count;
+
+            int prevMonth = month == 1 ? 12 : month - 1;
+            int prevYear = month == 1 ? year - 1 : year;
+            var prevCompleted = employeeDA.GetApprovalGivenCount(prevMonth, prevYear, userId);
+            var prevDownload = employeeDA.GetGeneratedReportsCountByCustomerMonth(prevMonth, prevYear, userId);
+            dashboardCount.CompletedCountTrend = CalculateTrend(dashboardCount.CompletedCount, prevCompleted);
+            dashboardCount.DownloadCountTrend = CalculateTrend(dashboardCount.DownloadCount, prevDownload);
             return dashboardCount;
+        }
+
+        // Percentage change vs the prior month. Null when there's no comparable baseline (prior count was 0),
+        // since a "trend" against zero is undefined rather than an honest percentage.
+        private static double? CalculateTrend(int current, int previous)
+        {
+            if (previous <= 0) return null;
+            return Math.Round(((double)(current - previous) / previous) * 100, 1);
         }
         public string AddEmployee(EmployeeViewModel viewModel, string inputFormat, bool isApproved = true)
         {
@@ -1286,6 +1302,17 @@ namespace OrgCheck.Services
             //viewmodel.data.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = "Companies", Value = companies.Count.ToString() });
             viewmodel.data.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = "Users", Value = users.Count.ToString() });
             viewmodel.data.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem() { Text = "Reports", Value = rptcount.ToString() });
+
+            // Reports: real month-over-month comparison (report generation is already timestamped per month).
+            int prevMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
+            int prevYear = DateTime.Now.Month == 1 ? DateTime.Now.Year - 1 : DateTime.Now.Year;
+            var prevRptCount = _serviceProvider.GetRequiredService<IEmployeeDA>().GetMonthwiseGeneratedReportsCount(prevMonth, prevYear);
+            viewmodel.ReportsTrend = CalculateTrend(rptcount, prevRptCount);
+
+            // Customers: real growth comparison using Createddate (customers created on/before the end of last month).
+            var lastMonthCutoff = new DateTime(prevYear, prevMonth, DateTime.DaysInMonth(prevYear, prevMonth), 23, 59, 59, DateTimeKind.Utc);
+            var customersAsOfLastMonth = customers.Count(c => c.Createddate <= lastMonthCutoff);
+            viewmodel.CustomersTrend = CalculateTrend(customers.Count, customersAsOfLastMonth);
             foreach(var c in customers)
             {
                 var count = _serviceProvider.GetRequiredService<IEmployeeDA>().GetGeneratedReportsCountByCustomerMonth(month, year, c.Id);

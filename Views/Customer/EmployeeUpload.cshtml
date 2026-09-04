@@ -6,8 +6,8 @@
     Layout = "~/Views/Shared/_ExZoneLayout.cshtml";
 }
 <link rel="stylesheet" href="~/assets/css/bulk.css">
-<link rel="stylesheet" href="/assets/css/verification-request.css">
-<link rel="stylesheet" href="/assets/css/exit-details.css">
+<link rel="stylesheet" href="/assets/css/verification-request.css" asp-append-version="true">
+<link rel="stylesheet" href="/assets/css/exit-details.css" asp-append-version="true">
 <script src="~/assets/js/echarts.min.js"></script>
 <link rel="stylesheet" href="/assets/css/access-denied.css">
 
@@ -22,6 +22,11 @@
 {
     <div class="bulk-upload-card mb-3 shadow-sm">
         <h5 class=" bulk-table-heading mb-4">Upload your Ex-employee details in bulk</h5>
+        <div class="wf-flow">
+            <div class="wf-step active" id="wfStep1"><span class="wf-step-num">1</span><span class="wf-step-label">Upload</span></div>
+            <div class="wf-connector" id="wfConnector1"></div>
+            <div class="wf-step" id="wfStep2"><span class="wf-step-num">2</span><span class="wf-step-label">Review &amp; confirm</span></div>
+        </div>
 
         <div class="row align-items-center">
             <div class="col-md-2"></div>
@@ -226,6 +231,16 @@
                     DrawChart();
                 }, 5); // short delay ensures perfect size
             });
+        document.getElementById('uploadPop')
+            .addEventListener('shown.bs.modal', function () {
+                document.getElementById("wfStep2").classList.add("active");
+                document.getElementById("wfConnector1").classList.add("active");
+            });
+        document.getElementById('uploadPop')
+            .addEventListener('hidden.bs.modal', function () {
+                document.getElementById("wfStep2").classList.remove("active");
+                document.getElementById("wfConnector1").classList.remove("active");
+            });
 
         // Responsive
         window.addEventListener("resize", function () {
@@ -250,10 +265,10 @@ else
 {
     <div class="container">
         <div class="container-access">
-            <img src="/assets/img/403 Access Denied.png" alt="">
+            <img src="/assets/img/403 Access Denied.png" alt="" />
             <h5 class="access-header-first-403">Oops !!!</h5>
             <h6 class="access-header-403">Access denied</h6>
-            <p class="access-para-403">You are not authorized to view this page. <br> Please return to the homepage or contact support.</p>
+            <p class="access-para-403">You are not authorized to view this page. <br /> Please return to the homepage or contact support.</p>
             <a href="/Home/Landing">
                 <button class="access-back-btn">Go back</button>
             </a>

@@ -8,15 +8,87 @@
     body {
         height: 100vh;
         display: flex;
-        background: #ebebeb !important;
+        background: var(--vz-bg) !important;
         overflow: hidden;
         font-family: "IBM Plex Sans", Arial, sans-serif !important;
+        color: var(--vz-ink);
     }
 
 
     :root {
         --purple-color: #5c249a;
         --light-purple-color: #340c62;
+        --vz-bg: #f3eefa;
+        --vz-surface: #ffffff;
+        --vz-surface-2: #f6f1fd;
+        --vz-ink: #211a2b;
+        --vz-ink-soft: #7a7186;
+        --vz-ink-faint: #a79bb8;
+        --vz-line: #ece4f7;
+        --vz-shadow: rgba(52, 12, 98, 0.06);
+        --vz-shadow-lg: rgba(52, 12, 98, 0.14);
+        --vz-success: #1d8a4c;
+        --vz-success-soft: #e4f5ea;
+        --vz-warning: #b8790a;
+        --vz-warning-soft: #fbf0dd;
+        --vz-danger: #c9392f;
+        --vz-danger-soft: #fbe9e7;
+        --vz-info: #2563a8;
+        --vz-info-soft: #e8f0fa;
+    }
+
+    /* Dark mode is opt-in only (toggle button), never automatic from system preference.
+       Default is always light unless the user explicitly switches, per product decision. */
+    :root[data-theme="dark"] {
+        --vz-bg: #17111f;
+        --vz-surface: #211830;
+        --vz-surface-2: #271d38;
+        --vz-ink: #f1ecf7;
+        --vz-ink-soft: #b3a5c4;
+        --vz-ink-faint: #7d7190;
+        --vz-line: #382a4c;
+        --vz-shadow: rgba(0, 0, 0, 0.35);
+        --vz-shadow-lg: rgba(0, 0, 0, 0.5);
+        --vz-success: #6fd19a;
+        --vz-success-soft: #1c3327;
+        --vz-warning: #e8b563;
+        --vz-warning-soft: #362a17;
+        --vz-danger: #ea8a81;
+        --vz-danger-soft: #3a201d;
+        --vz-info: #7fb1e8;
+        --vz-info-soft: #1c2c3d;
+    }
+
+    .theme-toggle-btn {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: var(--vz-surface-2);
+        border: 1px solid var(--vz-line);
+        color: var(--vz-ink-soft);
+        font-size: 17px;
+        flex: none;
+        cursor: pointer;
+    }
+
+    .theme-toggle-btn:hover {
+        color: var(--purple-color);
+        border-color: var(--purple-color);
+    }
+
+    .theme-toggle-btn .ri-sun-line {
+        display: none;
+    }
+
+    :root[data-theme="dark"] .theme-toggle-btn .ri-moon-line {
+        display: none;
+    }
+
+    :root[data-theme="dark"] .theme-toggle-btn .ri-sun-line {
+        display: inline-block;
     }
 
     a {
@@ -50,7 +122,7 @@
         width: 80px;
         padding: 25px 0;
         border-radius: 30px;
-        background: linear-gradient(180deg, var(--purple-color), var(--purple-color));
+        background: linear-gradient(165deg, var(--light-purple-color), #240844);
         margin: 15px;
         display: flex;
         flex-direction: column;
@@ -179,7 +251,8 @@
     }
 
     .sidebar-items.active {
-        background-color: black;
+        background-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 16px rgba(184, 147, 234, 0.35);
         border-radius: 12px;
         width: 50px;
         justify-content: center;
@@ -325,9 +398,9 @@
     /* Navbar */
     .navbar {
         height: 60px;
-        background: white;
+        background: var(--vz-surface);
         border-radius: 12px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 16px var(--vz-shadow);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -346,18 +419,20 @@
 
     .content {
         flex-grow: 1;
-        background: white;
+        background: var(--vz-surface);
+        color: var(--vz-ink);
         border-radius: 12px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 16px var(--vz-shadow);
         padding: 20px;
     }
 
     /* Footer */
     .footer {
         height: 50px;
-        background: white;
+        background: var(--vz-surface);
+        color: var(--vz-ink-soft);
         border-radius: 12px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 16px var(--vz-shadow);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -491,6 +566,85 @@
         border-radius: 50%;
         object-fit: cover;
         /* border: 2px solid var(--purple-color); */
+    }
+
+    .profile-initials {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #8546cd, var(--purple-color));
+        color: #fff;
+        font-family: "Source Serif 4", Georgia, serif;
+        font-weight: 600;
+        font-size: 15px;
+        flex: none;
+    }
+
+    .profile-initials-sub {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .navbar-search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--vz-surface-2);
+        border: 1px solid var(--vz-line);
+        border-radius: 10px;
+        padding: 9px 14px;
+        width: 220px;
+        color: var(--vz-ink-faint);
+        font-size: 13px;
+        text-decoration: none !important;
+        transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .navbar-search-box:hover {
+        border-color: var(--purple-color);
+        color: var(--purple-color);
+    }
+
+    .navbar-bell {
+        position: relative;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: var(--vz-surface-2);
+        border: 1px solid var(--vz-line);
+        color: var(--vz-ink-soft);
+        font-size: 17px;
+        flex: none;
+        text-decoration: none !important;
+    }
+
+    .navbar-bell:hover {
+        color: var(--purple-color);
+        border-color: var(--purple-color);
+    }
+
+    .navbar-bell-dot {
+        position: absolute;
+        top: 7px;
+        right: 8px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--vz-danger);
+        border: 2px solid var(--vz-surface-2);
+    }
+
+    @media (max-width: 992px) {
+        .navbar-search-box {
+            display: none;
+        }
     }
 
     .drop-profile-items {
@@ -669,7 +823,8 @@
     }
 
     .sidebar-dropdown .sidebar-items1.active {
-        background-color: black;
+        background-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 16px rgba(184, 147, 234, 0.35);
         border-radius: 12px;
         width: 50px;
         justify-content: center;
@@ -690,7 +845,8 @@
     }
 
     .sidebar-subitem.active {
-        background-color: black;
+        background-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
         border-radius: 8px;
         color: #fff;
         padding: 8px 12px;
@@ -715,7 +871,8 @@
     }
 
     .sidebar-dropdown .sidebar-items1.active {
-        background-color: black;
+        background-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 16px rgba(184, 147, 234, 0.35);
         border-radius: 12px;
         width: 50px;
         justify-content: center;
