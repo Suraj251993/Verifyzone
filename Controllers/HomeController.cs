@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,9 @@ using OrgCheck.Services.Interfaces;
 using OrgCheck.ViewModels;
 using System;
 using System.Diagnostics;
+using System.Security.Claims;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace OrgCheck.Controllers
 {
@@ -104,6 +107,75 @@ namespace OrgCheck.Controllers
                 // Invalid user
                 ViewBag.error = "Unexpected error occured. Please contact support !";
                 return View(model);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GoogleLogin()
+        {
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleResponse", "Home")
+            };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var model = new LoginViewModel() { LoginName = "", Password = "" };
+            try
+            {
+                var externalResult = await HttpContext.AuthenticateAsync("ExternalGoogleCookie");
+                await HttpContext.SignOutAsync("ExternalGoogleCookie");
+
+                if (!externalResult.Succeeded || externalResult.Principal == null)
+                {
+                    ViewBag.error = "Google sign-in failed. Please try again.";
+                    return View("Index", model);
+                }
+
+                var email = externalResult.Principal.FindFirstValue(ClaimTypes.Email);
+                var googleId = externalResult.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+                var displayName = externalResult.Principal.FindFirstValue(ClaimTypes.Name);
+
+                if (string.IsNullOrEmpty(email))
+                {
+                    ViewBag.error = "Your Google account does not have a verified email.";
+                    return View("Index", model);
+                }
+
+                var result = _serviceProvider.GetRequiredService<IUserService>().GetOrCreateGoogleUser(googleId, email, displayName);
+                if (result == null || result.Id == 0)
+                {
+                    ViewBag.error = "Unable to sign in with Google. Please contact support.";
+                    return View("Index", model);
+                }
+
+                var principal = _serviceProvider.GetRequiredService<IAuthService>().GetClaimsPrincipal(result.DisplayName, result.Id, result.UserTypename, result.CustomerId, result.CustomerType);
+                Thread.CurrentPrincipal = principal;
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                if (result.UserType == 1)
+                {
+                    return RedirectToActionPermanent("Index", "Admin");
+                }
+                else if (result.UserType == 2)
+                {
+                    return RedirectToActionPermanent("Landing", "Home");
+                }
+                else if (result.UserType == 4)
+                {
+                    return RedirectToActionPermanent("Index", "Support");
+                }
+                ViewBag.error = "Unexpected error occured";
+                return View("Index", model);
+            }
+            catch (Exception ex)
+            {
+                _logService.Log(ex);
+                ViewBag.error = "Unexpected error occured. Please contact support !";
+                return View("Index", model);
             }
         }
 

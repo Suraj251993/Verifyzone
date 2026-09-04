@@ -1064,6 +1064,8 @@ public partial class PostgresContext : DbContext
 
             entity.ToTable("logins", "orgcheck");
 
+            entity.HasIndex(e => e.Googleid, "logins_googleid_key").IsUnique();
+
             entity.Property(e => e.Id)
                 .UseIdentityAlwaysColumn()
                 .HasColumnName("id");
@@ -1082,6 +1084,7 @@ public partial class PostgresContext : DbContext
                 .IsRequired()
                 .HasColumnName("emailid");
             entity.Property(e => e.Function).HasColumnName("function");
+            entity.Property(e => e.Googleid).HasColumnName("googleid");
             entity.Property(e => e.Loginname)
                 .IsRequired()
                 .HasColumnName("loginname");

@@ -7,6 +7,7 @@ namespace OrgCheck.Services.Interfaces
     {
         List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> GetUserTypes();
         UserViewModel GetUser(LoginViewModel viewModel);
+        UserViewModel GetOrCreateGoogleUser(string googleId, string email, string displayName);
         UserViewModel CheckUser(LoginViewModel viewModel);
         UserViewModel CheckUserByType(LoginViewModel viewModel, int userTypeId);
         List<UserViewModel> GetAllUsers(int usertypeId);

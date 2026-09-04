@@ -41,6 +41,60 @@ namespace OrgCheck.Services
             return new string(Enumerable.Repeat(chars, 8)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+        // Default tenant/role for a brand-new Google sign-up (no self-serve org creation flow exists,
+        // and access is customer-scoped, so a new external account can't safely guess its own tenant).
+        // Points at the existing "Demo Customer" org (customerid 2 / customertypeid 3), Customer role.
+        private const int GoogleDefaultCustomerId = 2;
+        private const int GoogleDefaultCustomerTypeId = 3;
+        private const int GoogleDefaultUserTypeId = 2;
+
+        public UserViewModel GetOrCreateGoogleUser(string googleId, string email, string displayName)
+        {
+            var userDA = _serviceProvider.GetRequiredService<IUserDA>();
+            var login = userDA.GetUserByGoogleId(googleId);
+
+            if (login == null)
+            {
+                login = userDA.GetUserByEmail(0, email);
+                if (login != null && login.Id > 0)
+                    userDA.UpdateGoogleId(login.Id, googleId);
+            }
+
+            if (login == null || login.Id == 0)
+            {
+                var newLogin = new Login()
+                {
+                    Loginname = email,
+                    Displayname = string.IsNullOrWhiteSpace(displayName) ? email : displayName,
+                    Emailid = email,
+                    Googleid = googleId,
+                    Customerid = GoogleDefaultCustomerId,
+                    Customertypeid = GoogleDefaultCustomerTypeId,
+                    Usertypeid = GoogleDefaultUserTypeId,
+                    Password = HashedPassword(GenerateRandomPassword()),
+                    Contactnumber = string.Empty,
+                    Status = 1
+                };
+                int newId = userDA.AddUser(newLogin);
+                login = userDA.GetUser(newId);
+            }
+
+            if (login == null || login.Id == 0)
+                return new UserViewModel();
+
+            return new UserViewModel()
+            {
+                Id = login.Id,
+                DisplayName = login.Displayname,
+                LoginName = login.Loginname,
+                UserType = login.Usertypeid,
+                UserTypename = login.Usertype?.Name,
+                CustomerType = login.Customertypeid.GetValueOrDefault(),
+                CustomerId = login.Customerid.GetValueOrDefault(),
+                Emailid = login.Emailid
+            };
+        }
         public List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> GetUserTypes()
         {
             return _serviceProvider.GetRequiredService<IUserDA>().GetUserTypes();

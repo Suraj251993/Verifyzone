@@ -93,6 +93,20 @@ namespace OrgCheck.DataAccess
                     .Where(_ => _.Id != Id && _.Emailid == email && _.Status > 0).FirstOrDefault();
             return user;
         }
+        public Login GetUserByGoogleId(string googleId)
+        {
+            return orgCheckContext.Logins.Include(x => x.Customer).Include(x => x.Usertype).Include(x => x.Customertype)
+                .AsNoTracking().FirstOrDefault(_ => _.Googleid == googleId && _.Status > 0);
+        }
+        public void UpdateGoogleId(int id, string googleId)
+        {
+            var existingEntity = orgCheckContext.Logins.FirstOrDefault(_ => _.Id == id);
+            if (existingEntity != null)
+            {
+                existingEntity.Googleid = googleId;
+                orgCheckContext.SaveChanges();
+            }
+        }
         public int AddUser(Login user)
         {
             orgCheckContext.Logins.Add(user);

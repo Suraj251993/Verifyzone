@@ -16,6 +16,8 @@ namespace OrgCheck.DataAccess.Interfaces
         List<Login> GetUsersByCustomer(int customerId);
         Login GetUser(int Id);
         Login GetUserByEmail(int Id, string email);
+        Login GetUserByGoogleId(string googleId);
+        void UpdateGoogleId(int id, string googleId);
         int AddUser(Login user);
         void UpdateUser(Login user);
         void UpdatePassword(Login user);

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.DataProtection;
@@ -36,14 +37,32 @@ namespace OrgCheck
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
-            {
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                options.LoginPath = "/Home/Index";
-                options.AccessDeniedPath = "/Home/AccessDenied";
-                options.SlidingExpiration = true;
-                options.ReturnUrlParameter = String.Empty;
-            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    options.LoginPath = "/Home/Index";
+                    options.AccessDeniedPath = "/Home/AccessDenied";
+                    options.SlidingExpiration = true;
+                    options.ReturnUrlParameter = String.Empty;
+                })
+                // Short-lived holding scheme for the Google OAuth handoff: the Google handler signs the
+                // external identity in here (not the main app cookie), so HomeController.GoogleResponse
+                // can look up/create the local user and mint our own claims principal before anyone is
+                // actually signed into the app - mirrors the existing username/password flow's claims shape.
+                .AddCookie("ExternalGoogleCookie", options =>
+                {
+                    options.Cookie.Name = ".Verifyzone.ExternalGoogle";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                })
+                .AddGoogle(options =>
+                {
+                    options.ClientId = Configuration["Authentication:Google:ClientId"];
+                    options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                    options.SignInScheme = "ExternalGoogleCookie";
+                    options.Scope.Add("email");
+                    options.Scope.Add("profile");
+                });
             services.AddSession(options =>
             {
                 options.Cookie.Name = ".Verifyzone.Session";
@@ -151,7 +170,15 @@ namespace OrgCheck
             {
                 HttpOnly = HttpOnlyPolicy.Always,
                 MinimumSameSitePolicy = SameSiteMode.Strict,
-                Secure = CookieSecurePolicy.SameAsRequest
+                Secure = CookieSecurePolicy.SameAsRequest,
+                OnAppendCookie = ctx =>
+                {
+                    // The Google OAuth correlation cookie must round-trip through Google's cross-site
+                    // redirect back to /signin-google - SameSite=Strict would stop the browser sending
+                    // it back, breaking the OAuth handshake with a "correlation failed" error.
+                    if (ctx.CookieName.StartsWith(".AspNetCore.Correlation.", StringComparison.Ordinal))
+                        ctx.CookieOptions.SameSite = SameSiteMode.Lax;
+                }
             });
             app.UseEndpoints(endpoints =>
             {

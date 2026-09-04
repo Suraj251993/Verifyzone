@@ -35,5 +35,14 @@
     "Version": "v3", // The ReCaptcha version to use, can be v2, v2invisible or v3
     "UseRecaptchaNet": true, // Value whether to use google recaptcha or recaptcha.net
     "ScoreThreshold": 0.5 // Only applicable for recaptcha v3, specifies the score threshold when it is considered successful
+  },
+  "Authentication": {
+    "Google": {
+      // OAuth 2.0 client from https://console.cloud.google.com/apis/credentials.
+      // Authorized redirect URI must be "<app base url>/signin-google" (e.g. https://app.verifyzone.in/signin-google).
+      // In production set via env vars instead of this file: Authentication__Google__ClientId / Authentication__Google__ClientSecret
+      "ClientId": "<REDACTED-GOOGLE-OAUTH-CLIENT-ID-SET-VIA-ENV-VAR-OR-USER-SECRETS>",
+      "ClientSecret": "<REDACTED-GOOGLE-OAUTH-CLIENT-SECRET-SET-VIA-ENV-VAR-OR-USER-SECRETS>"
+    }
   }
 }

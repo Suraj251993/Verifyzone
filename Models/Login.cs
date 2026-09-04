@@ -17,6 +17,8 @@ public partial class Login
 
     public string Emailid { get; set; }
 
+    public string Googleid { get; set; }
+
     public string Contactnumber { get; set; }
 
     public int Status { get; set; }
